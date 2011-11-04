@@ -1,0 +1,59 @@
+package pbs;
+
+import jig.engine.*;
+import jig.engine.physics.*;
+import jig.engine.util.*;
+
+public class Entity extends Body {
+
+    long age;
+    boolean alive;
+
+    CustomUpdate cu;
+    public void setCustomUpdate(CustomUpdate c){cu = c;}
+
+    CustomRender cr;
+    public void setCustomRender(CustomRender c){cr = c;}
+
+    public Entity(String img){
+	super(img);
+	age = 0;
+	alive = true;
+    }
+
+    public void render(RenderingContext rc){
+	if(cr != null) {
+	    cr.render(rc, frames.get(visibleFrame));
+	} else {
+	    super.render(rc);
+	}
+    }
+
+
+    public void update(long deltaMs){
+	if(cu != null){
+	    cu.update(deltaMs);
+	} else {
+	    age += deltaMs;
+	    position.translate(velocity.scale(deltaMs/100.0));
+	}
+
+    }
+
+    public interface CustomUpdate {
+	public void update(long deltaMs);
+    }
+
+    public interface CustomRender {
+	public void render(RenderingContext rc, ImageResource ir);
+    }
+
+
+    public static Entity getWavyMover(String img){
+	
+	Entity widget = new Entity(img);
+	widget.setPosition(new Vector2D(200,200));
+	return widget;
+
+    }
+}
