@@ -3,6 +3,7 @@ package pbs;
 import jig.engine.*;
 import jig.engine.hli.*;
 import jig.engine.physics.*;
+import jig.engine.util.*;
 
 public class PBSGame extends ScrollingScreenGame {
 
@@ -24,8 +25,17 @@ public class PBSGame extends ScrollingScreenGame {
 	l = new AbstractBodyLayer.IterativeUpdate<Body>();
 	e = Entity.getWavyMover(SPRITE_SHEET + "#generic_ship");
 	l.add(e);
+	e = Entity.getWavyMover(SPRITE_SHEET + "#generic_ship");
+	e.setPosition(new Vector2D(400,400));
+	l.add(e);
 	gameObjectLayers.add(l);
-	
+
+	GameClock.TimeManager tm = new GameClock.SleepIfNeededTimeManager(60.0);
+	theClock.setTimeManager(tm);
+    }
+
+    public void update(long deltaMs){
+	l.update(deltaMs);
     }
 
     public static void main(String[] args){

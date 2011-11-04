@@ -32,7 +32,7 @@ public class Entity extends Body {
 
     public void update(long deltaMs){
 	if(cu != null){
-	    cu.update(deltaMs);
+	    cu.update(this, deltaMs);
 	} else {
 	    age += deltaMs;
 	    position.translate(velocity.scale(deltaMs/100.0));
@@ -41,7 +41,7 @@ public class Entity extends Body {
     }
 
     public interface CustomUpdate {
-	public void update(long deltaMs);
+	public void update(Entity e, long deltaMs);
     }
 
     public interface CustomRender {
@@ -53,6 +53,19 @@ public class Entity extends Body {
 	
 	Entity widget = new Entity(img);
 	widget.setPosition(new Vector2D(200,200));
+	widget.setVelocity(new Vector2D(20, 0));
+	widget.setCustomUpdate(new CustomUpdate(){
+		public void update(Entity e, long deltaMs){
+		    //this method isnt stable, it produces drift... 
+
+		    double dy;
+		    e.age += deltaMs;
+		    dy = -50* Math.cos(e.age/80.0);
+		    e.setVelocity(new Vector2D(e.velocity.getX(), dy));
+		    e.setPosition(e.position.translate(e.velocity.scale(deltaMs/100.0)));
+		}
+	    });
+
 	return widget;
 
     }
