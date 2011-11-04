@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="pbs" default="all" basedir=".">
+
+  <property name="build" value="./build"/>
+  <property name="src" value="./src"/>
+  <property name="jig" value="./lib/jig.jar"/>
+  <property name="title" value="pbs" />
+
+  <target depends="compile, run" name="all"/>
+  
+  <target name="compile">
+    <javac srcdir="${src}" destdir="${build}" classpath="./lib/jig.jar"/>
+  </target>
+  
+  <target name="run" depends="compile">
+    <java classname="pbs.PBSGame" fork="true" classpath="${build}:${jig}"/>
+  </target>
+
+  <target name="clean" description="Removes previous build">
+    <delete verbose="true">
+      <fileset dir="${build}/${title}/"/>
+      <fileset dir="." includes="**/*~"/>
+    </delete>
+  </target>
+  
+  <target name="jar" depends="compile">
+    <jar destfile="${title}.jar" basedir="${build}" />	
+  </target>
+
+</project>
