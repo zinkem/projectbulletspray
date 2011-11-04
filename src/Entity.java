@@ -53,14 +53,14 @@ public class Entity extends Body {
 	
 	Entity widget = new Entity(img);
 	widget.setPosition(new Vector2D(200,200));
-	widget.setVelocity(new Vector2D(20, 0));
+	widget.setVelocity(new Vector2D(10, 0));
 	widget.setCustomUpdate(new CustomUpdate(){
 		public void update(Entity e, long deltaMs){
 		    //this method isnt stable, it produces drift... 
 
 		    double dy;
 		    e.age += deltaMs;
-		    dy = -50* Math.cos(e.age/80.0);
+		    dy = -50* Math.cos(e.age/128.0 * Math.PI);
 		    e.setVelocity(new Vector2D(e.velocity.getX(), dy));
 		    e.setPosition(e.position.translate(e.velocity.scale(deltaMs/100.0)));
 		}
