@@ -1,0 +1,2 @@
+jig.jar needs to be in lib/
+A directory called "build" may need to be created to use ant
