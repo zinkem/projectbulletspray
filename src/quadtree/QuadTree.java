@@ -3,7 +3,7 @@
  */
 package quadtree;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import jig.engine.util.Vector2D;
 
@@ -13,7 +13,7 @@ import pbs.Entity;
  * @author Skylar Hiebert
  *
  */
-public class QuadTree<T extends Entity> {
+public class QuadTree<T extends Entity> implements Iterable<T> {
 	QuadNode<T> root;
 	int size;
 	
@@ -38,4 +38,11 @@ public class QuadTree<T extends Entity> {
 	public ArrayList<Entity> getEntities(Vector2D min, Vector2D max) {
 		return null;
 	}
+	
+	//for conforming to iterable interface
+	public Iterator<T> iterator(){
+	    //should return entire tree as arraylist?
+	    return null;
+	}
+
 }

@@ -1,9 +1,12 @@
 package pbs;
 
+import pbs.Level.Layer;
+
 import jig.engine.*;
 import jig.engine.hli.*;
 import jig.engine.physics.*;
 import jig.engine.util.*;
+
 
 public class PBSGame extends ScrollingScreenGame {
 
@@ -12,6 +15,8 @@ public class PBSGame extends ScrollingScreenGame {
     public static String SPRITE_SHEET = "resources/pbs-spritesheet.png";
 
     ResourceFactory rf;
+
+    Level levelData;
 
     Entity e;
     BodyLayer<Body> l;
@@ -29,6 +34,9 @@ public class PBSGame extends ScrollingScreenGame {
 	e.setPosition(new Vector2D(400,400));
 	l.add(e);
 	gameObjectLayers.add(l);
+
+	levelData = new Level();
+	levelData.add(null, Layer.BACKGROUND);
 
 	GameClock.TimeManager tm = new GameClock.SleepIfNeededTimeManager(60.0);
 	theClock.setTimeManager(tm);
