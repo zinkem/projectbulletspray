@@ -54,7 +54,7 @@ public class Level {
 
 	
     public void setupCollisionHandlers(){
-	collisionHandlers.add(new CollisionHandler(getLayer(Layer.STATIC), 
+	collisionHandlers.add(new CollisionHandler(getLayer(Layer.ENEMY), 
 						   getLayer(Layer.PLAYER)){
 		public void collide(Entity body1, Entity body2){
 		    //this is where you define behavior for a collision
@@ -62,6 +62,11 @@ public class Level {
 		    //body2 is from player layer
 		}
 	    });
+
+	collisionHandlers.add(new ElasticCollisionHandler(getLayer(Layer.ENEMY), 
+							  getLayer(Layer.PLAYER)));
+
+	System.out.println("col handlers size " + collisionHandlers.size());
     }
 
     protected void updateLayers(long deltaMs){

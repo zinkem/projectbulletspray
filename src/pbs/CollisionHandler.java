@@ -6,6 +6,10 @@ import jig.engine.*;
 
 import quadtree.*;
 
+/* naive collision handler, performs n^2 algorithm for detection
+ *
+ */ 
+
 public abstract class CollisionHandler {
 
     protected EntityLayer<Entity> left;
@@ -25,7 +29,7 @@ public abstract class CollisionHandler {
 
     //treat everything like a rectangle, n^2 algorithm
     public void findAndReconcileCollisions(){
-	
+
 	double r = 0;
 	Rectangle2D bodyBoundingBox1 = null;
 	Rectangle2D bodyBoundingBox2 = null;
@@ -33,12 +37,17 @@ public abstract class CollisionHandler {
 	for( Entity body1 : left )
 	    for( Entity body2 : right ){
 		
-		if(bodyBoundingBox1 != null && bodyBoundingBox2 != null)
+		bodyBoundingBox1 = getBoundingBoxForBody(body1);
+		bodyBoundingBox2 = getBoundingBoxForBody(body2);
+
+		if(bodyBoundingBox1 != null && bodyBoundingBox2 != null){
 		    if (bodyBoundingBox1.intersects(bodyBoundingBox2)) {
+			System.out.println("collision!");
 			collide(body1, body2);
 		    }
-		
-		
+	    
+		    
+		}
 	    }
     }
     

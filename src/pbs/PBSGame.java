@@ -80,22 +80,27 @@ public class PBSGame extends ScrollingScreenGame {
 	    boolean fire = key.isPressed(KeyEvent.VK_SPACE);
 
 	    Vector2D pos = e.getPosition();
-
+	    e.setVelocity(new Vector2D(0, 0));
+	    
 	    if(left && !right){
-		e.setPosition(pos.translate(new Vector2D(-10, 0)));
+		e.setVelocity(e.getVelocity().translate(new Vector2D(-10, 0)));
 	    }
 	    
 	    if(right && !left){
-		e.setPosition(pos.translate(new Vector2D(10, 0)));
+		e.setVelocity(e.getVelocity().translate(new Vector2D(10, 0)));
 	    }
 	    
 	    if(up && !down){
-		e.setPosition(pos.translate(new Vector2D(0, -10)));
+		e.setVelocity(e.getVelocity().translate(new Vector2D(0, -10)));
 	    }
 	    
 	    if(down && !up){
-		e.setPosition(pos.translate(new Vector2D(0, 10)));
+		e.setVelocity(e.getVelocity().translate(new Vector2D(0, 10)));
 	    }
+
+	    e.setPosition(pos.translate(e.getVelocity().scale(deltaMs/100.0)));    
+	    e.age += deltaMs;
+
 	}
     }
 }
