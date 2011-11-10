@@ -36,7 +36,7 @@ public class Entity extends Body {
 	    cu.update(this, deltaMs);
 	} else {
 	    age += deltaMs;
-	    position.translate(velocity.scale(deltaMs/100.0));
+	    position = position.translate(velocity.scale(deltaMs/100.0));
 	}
 
     }
