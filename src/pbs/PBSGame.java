@@ -42,6 +42,7 @@ public class PBSGame extends ScrollingScreenGame {
 
     public void update(long deltaMs){
 	levelData.update(deltaMs);
+	centerOn(e);
     }
 
     public static void main(String[] args){
