@@ -19,24 +19,20 @@ public class PBSGame extends ScrollingScreenGame {
     Level levelData;
 
     Entity e;
-    BodyLayer<Body> l;
 
     public PBSGame(){
 	super(SCREEN_WIDTH, SCREEN_HEIGHT, false);
 	
 	rf = ResourceFactory.getFactory();
 	rf.loadResources("resources/", "pbs-resources.xml");
-	
-	l = new AbstractBodyLayer.IterativeUpdate<Body>();
-	e = Entity.getWavyMover(SPRITE_SHEET + "#generic_ship");
-	l.add(e);
-	e = Entity.getWavyMover(SPRITE_SHEET + "#generic_ship");
-	e.setPosition(new Vector2D(400,400));
-	l.add(e);
-
 
 	levelData = new Level();
+
+	e = Entity.getWavyMover(SPRITE_SHEET + "#generic_ship");
 	levelData.add(e, Layer.PLAYER);
+	e = Entity.getWavyMover(SPRITE_SHEET + "#generic_ship");
+	e.setPosition(new Vector2D(400,400));
+	levelData.add(e, Layer.ENEMY);
 
 	gameObjectLayers = levelData.getLayers();
 
@@ -45,7 +41,7 @@ public class PBSGame extends ScrollingScreenGame {
     }
 
     public void update(long deltaMs){
-	l.update(deltaMs);
+	levelData.update(deltaMs);
     }
 
     public static void main(String[] args){
