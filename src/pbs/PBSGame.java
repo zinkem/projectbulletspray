@@ -33,10 +33,12 @@ public class PBSGame extends ScrollingScreenGame {
 	e = Entity.getWavyMover(SPRITE_SHEET + "#generic_ship");
 	e.setPosition(new Vector2D(400,400));
 	l.add(e);
-	gameObjectLayers.add(l);
+
 
 	levelData = new Level();
-	levelData.add(null, Layer.BACKGROUND);
+	levelData.add(e, Layer.PLAYER);
+
+	gameObjectLayers = levelData.getLayers();
 
 	GameClock.TimeManager tm = new GameClock.SleepIfNeededTimeManager(60.0);
 	theClock.setTimeManager(tm);

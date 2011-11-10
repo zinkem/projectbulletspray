@@ -8,11 +8,11 @@ import quadtree.*;
 
 public abstract class CollisionHandler {
 
-    protected QuadTree<Entity> left;
-    protected QuadTree<Entity> right;
+    protected EntityLayer<Entity> left;
+    protected EntityLayer<Entity> right;
     
-    public CollisionHandler(QuadTree<Entity> layer1,
-			    QuadTree<Entity> layer2){
+    public CollisionHandler(EntityLayer<Entity> layer1,
+			    EntityLayer<Entity> layer2){
 	left = layer1;
 	right = layer2;
     }
@@ -23,7 +23,7 @@ public abstract class CollisionHandler {
 				      body.getWidth()-1,body.getHeight()-1);
     }
 
-    //treats all VanillaSpheres and VanillaAARectangles like rectangles
+    //treat everything like a rectangle, n^2 algorithm
     public void findAndReconcileCollisions(){
 	
 	double r = 0;

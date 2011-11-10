@@ -8,6 +8,7 @@ public class Entity extends Body {
 
     long age;
     boolean alive;
+    public boolean alive() { return alive; }
 
     CustomUpdate cu;
     public void setCustomUpdate(CustomUpdate c){cu = c;}

@@ -6,6 +6,7 @@ import jig.engine.*;
 
 public class Level {
 
+    public static int NUM_LAYERS = 7;
     public static enum Layer { 
 	BACKGROUND, 
 	    STATIC, 
@@ -15,28 +16,31 @@ public class Level {
 	    PLAYER, 
 	    FOREGROUND }
 
+
     //list of layers
-    ArrayList<ViewableLayer> allTheLayers;
+    ArrayList<EntityLayer> allTheLayers;
 
     //list of collision handlers 
     ArrayList<CollisionHandler> collisionHandlers;
 
     public Level(){
 	collisionHandlers = new ArrayList<CollisionHandler>();
+	allTheLayers = new ArrayList<EntityLayer>();
 	
-	allTheLayers = new ArrayList<ViewableLayer>();
-	
-	for(int i = 0; i < 7; i++){
-	    //allTheLayers.add(new ViewableLayer());
+	for(int i = 0; i < NUM_LAYERS; i++){
+	    //here we create a new empty layer for 
+	    //each category of entity
+	    allTheLayers.add(new EntityLayer());
 	}
-	
 
+	//after all layers are added, we can add collision handlers
+	setupCollisionHandlers();
     }
 
     //setters
     public void add(Entity e, Layer l){
 	System.out.println(l.ordinal());
-	//allTheLayers.get(l.ordinal()).add(e);
+	getLayer(l).add(e);
     }
 
     //getters
@@ -44,17 +48,42 @@ public class Level {
 	return allTheLayers;
     }
 
-	
+    public EntityLayer getLayer(Layer l){
+	return allTheLayers.get(l.ordinal());
+    }
 
-    //data init
-    public void initLevel(){
 	
+    public void setupCollisionHandlers(){
+	collisionHandlers.add(new CollisionHandler(getLayer(Layer.STATIC), 
+						   getLayer(Layer.PLAYER)){
+		public void collide(Entity body1, Entity body2){
+		    //this is where you define behavior for a collision
+		    //body1 is from static layer
+		    //body2 is from player layer
+		}
+	    });
+    }
+
+    protected void updateLayers(long deltaMs){
+	//pass the task of updating individual entities to the layer
+	for(EntityLayer v : allTheLayers){
+	    v.update(deltaMs);
+	}
+    }
+
+    protected void checkForCollisions(){
+	for(CollisionHandler c : collisionHandlers){
+	    c.findAndReconcileCollisions();
+	}
     }
 
     public void update(long deltaMs){
 	//call update on each layer
-
+	updateLayers(deltaMs);
+	
 	//check for collisions
+	checkForCollisions();
+	
     }
 
 }
