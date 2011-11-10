@@ -32,6 +32,7 @@ public class PBSGame extends ScrollingScreenGame {
 	levelData.add(e, Layer.PLAYER);
 	e = Entity.getWavyMover(SPRITE_SHEET + "#generic_ship");
 	e.setPosition(new Vector2D(400,400));
+	e.setVelocity(new Vector2D(5, 0));
 	levelData.add(e, Layer.ENEMY);
 
 	gameObjectLayers = levelData.getLayers();
@@ -42,7 +43,7 @@ public class PBSGame extends ScrollingScreenGame {
 
     public void update(long deltaMs){
 	levelData.update(deltaMs);
-	centerOn(e);
+	//centerOn(e); //method to use to centerOn any body
     }
 
     public static void main(String[] args){
