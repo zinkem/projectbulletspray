@@ -1,22 +1,44 @@
 Grammar for specifying levels
+
 note: not everything is perfectly consistent yet, some of this will
       get changed a little as the parser gets written
 
+11/16 6pm -- clearly defined "Events" and "Triggers"
+A Trigger is something that shows up in a layer. The player can collide with a trigger,
+a trigger can go off after a timer, or a trigger can fire when it is revealed on screen.
+(We used to call these events) A trigger fires off an event. 
 
-START -> (CLASS | CREATE)*
+Now, an Event is a mechanism that adds stuff to the layers.
+
+The scripter places a trigger when they use "create" with a Trigger Type (listed below).
+
+create { onscreen
+       (create Badguy (300, 300) (-15, 0))
+} (350, 0)
+
+_Triggers_ place _Events_ into the level's event loop. Each update, the level object consumes it's
+event loop. Each event has information to change the game state, ideally we can change scores, player
+behavior, and other gamestate information using events. Most commonly events are used to add entities
+to layers. New enemies, explosions, etc. 
+
+
+START -> (CLASS | ADDEVENT)*
 
 CLASS -> "class" + SYMBOL + OBJECT
 
 	notes: stores OBJECT at SYMBOL in dict
 
+
+ADDEVENT -> CREATE //other events will probably be added
+
 CREATE -> "create" + OBJECT + VECT + VECT
 
-	notes: adds new object to the map with position and velocity/size vectors
+	notes: adds new event to level event loop, specifying creation of an object
 
 OBJECT -> "{" + OBJ_TYPE + "}"
 
 OBJ_TYPE -> ENT_TYPE + {PARAM*} |
-	EVENT_TYPE + {CREATE*}
+	TRIGGER_TYPE + {ADDEVENT*}
 
 ENT_TYPE -> "enemy" | "fx" | "static"
 	notes: determines which layer to put this entity on
@@ -26,8 +48,8 @@ PARAM -> (update U_TYPE)
 	(render  R_TYPE)//set render method
 	(weapon  W_TYPE //set weapon
 	(image STRING) //set image
-	(ondeath EVENT) //set ondeath event
-	(onbirth EVENT) //set onbirth event
+	(ondeath TRIGGER) //set ondeath trigger
+	(onbirth TRIGGER) //set onbirth trigger
 	(ttl NUM)    //set time to live (ms?) default 0 is indefinite
 	(age NUM)    //set age (ms?)
 	(hp NUM)     //hits before death
@@ -40,53 +62,88 @@ R_TYPE -> "static" | "animated" | "rotating" | "face" + VECT
        note:face VECT faces the coordinates in VECT
 W_TYPE -> "straight" | "spread"
 
-EVENT_TYPE -> "collision" | "instant"
+TRIGGER_TYPE -> "collision" | "timed" + NUM | "onscreen"
+//collision triggers fire off when player collides with them
+//timed go off after NUM seconds
+//onscreen go off when the trigger enters view
 
-VECT -> "(" + NUM + "," + NUM ")"
+VECT -> "(" + NUM + "," + NUM ")" | GAMEVECT
+GAMEVECT -> USER_P //user's position
+
 NUM -> [1-9]*
 SYMBOL -> [a-z]*
 STRING -> [a-z]*
 ________________________________________________________________
 //example spec
 
+//creating new re-usable classes of entities
 class Brick { static 
-	(image "brick")
+	image "brick"
 } 
 
 create Brick (0 0) (20 10) //tiles image over area in 32x32(?) pixel chunks
 create Brick (0 20) (20 30) //these 2 commands create a horizontal hallway
 
 class Burst { fx //fx animate once and die by default
-	(image "burst")
+      	image "burst"
 }
 
-class Explosion { instant //an event that is instantly fired off
-	(create burst (100,100))
-	(create burst (103,101))
-	(create burst (99, 105))
+class Explosion { timed 0 //a trigger that is instantly fired off
+    	create burst (100,100)
+	create burst (103,101)
+	create burst (99, 105)
 }
 
 
 class Badguy { enemy //enemies animate indefinitely by default
-	(velocity (-20,0))
-	(image "badguy")
-	(ondeath Explosion)
+	velocity (-20,0)
+	image "badguy"
+	ondeath Explosion
 }
 
 class BigBadGuy { enemy
-      (velocity (-20,0))
+        velocity (-20,0)
 }
 
-create { event 
-	(create Badguy (400, 0))
-	(create Explosion USER_P USER_P)
-	(create {event collision
-		(create Explosion (0, 0) (0, 0))	
-	}
-	
-} (0, 100) (320, 400)
 
+//a trigger that fires if the user collides with it
+create { collision
+       
 
-create { event 
+} (320, 0) (32, 32)
+
+//example level structure : create a series of onscreen triggers at staggered x locations
+//every 500 pixels, a new group of enemies spawns
+
+create { onscreen
+       create Badguy (400, 0)
+       create Explosion USER_P USER_P
+} (500,0) (0,0)
+
+create { onscreen
 	
-}
+} (1000, 0) (0, 0)
+
+create { onscreen
+	
+} (1500, 0) (0, 0)
+
+create { onscreen
+	
+} (2000, 0) (0, 0)
+
+create { onscreen
+	
+} (2500, 0) (0, 0)
+
+create { onscreen
+	
+} (3000, 0) (0, 0)
+
+create { onscreen
+	
+} (3500, 0) (0, 0)
+
+create { onscreen
+	
+} (4000, 0) (0, 0)
