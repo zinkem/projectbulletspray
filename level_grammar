@@ -1,0 +1,92 @@
+Grammar for specifying levels
+note: not everything is perfectly consistent yet, some of this will
+      get changed a little as the parser gets written
+
+
+START -> (CLASS | CREATE)*
+
+CLASS -> "class" + SYMBOL + OBJECT
+
+	notes: stores OBJECT at SYMBOL in dict
+
+CREATE -> "create" + OBJECT + VECT + VECT
+
+	notes: adds new object to the map with position and velocity/size vectors
+
+OBJECT -> "{" + OBJ_TYPE + "}"
+
+OBJ_TYPE -> ENT_TYPE + {PARAM*} |
+	EVENT_TYPE + {CREATE*}
+
+ENT_TYPE -> "enemy" | "fx" | "static"
+	notes: determines which layer to put this entity on
+		if static, second vector parameter from create is the size
+
+PARAM -> (update U_TYPE)
+	(render  R_TYPE)//set render method
+	(weapon  W_TYPE //set weapon
+	(image STRING) //set image
+	(ondeath EVENT) //set ondeath event
+	(onbirth EVENT) //set onbirth event
+	(ttl NUM)    //set time to live (ms?) default 0 is indefinite
+	(age NUM)    //set age (ms?)
+	(hp NUM)     //hits before death
+	(score NUM) //score if killed
+
+	note:this is shorthand for now, too lazy to type it out formally
+
+U_TYPE -> "straight" | "wave" | "circle" | "chase"
+R_TYPE -> "static" | "animated" | "rotating" | "face" + VECT
+       note:face VECT faces the coordinates in VECT
+W_TYPE -> "straight" | "spread"
+
+EVENT_TYPE -> "collision" | "instant"
+
+VECT -> "(" + NUM + "," + NUM ")"
+NUM -> [1-9]*
+SYMBOL -> [a-z]*
+STRING -> [a-z]*
+________________________________________________________________
+//example spec
+
+class Brick { static 
+	(image "brick")
+} 
+
+create Brick (0 0) (20 10) //tiles image over area in 32x32(?) pixel chunks
+create Brick (0 20) (20 30) //these 2 commands create a horizontal hallway
+
+class Burst { fx //fx animate once and die by default
+	(image "burst")
+}
+
+class Explosion { instant //an event that is instantly fired off
+	(create burst (100,100))
+	(create burst (103,101))
+	(create burst (99, 105))
+}
+
+
+class Badguy { enemy //enemies animate indefinitely by default
+	(velocity (-20,0))
+	(image "badguy")
+	(ondeath Explosion)
+}
+
+class BigBadGuy { enemy
+      (velocity (-20,0))
+}
+
+create { event 
+	(create Badguy (400, 0))
+	(create Explosion USER_P USER_P)
+	(create {event collision
+		(create Explosion (0, 0) (0, 0))	
+	}
+	
+} (0, 100) (320, 400)
+
+
+create { event 
+	
+}
