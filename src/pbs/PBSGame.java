@@ -2,8 +2,6 @@ package pbs;
 
 import java.awt.event.*;
 
-
-
 import jig.engine.*;
 import jig.engine.hli.*;
 import jig.engine.physics.*;
