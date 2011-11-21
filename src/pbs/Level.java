@@ -6,16 +6,17 @@ import jig.engine.*;
 
 public class Level {
 
-    public static int NUM_LAYERS = 7;
     public static enum Layer { 
 	BACKGROUND, 
 	    STATIC, 
+	    FX,
 	    ENEMY, 
 	    HOSTILE, 
 	    FRIENDLY, 
 	    PLAYER, 
 	    FOREGROUND }
 
+    public static int NUM_LAYERS = Layer.values().length;
 
     //list of layers
     ArrayList<EntityLayer> allTheLayers;
@@ -26,10 +27,11 @@ public class Level {
     public Level(){
 	collisionHandlers = new ArrayList<CollisionHandler>();
 	allTheLayers = new ArrayList<EntityLayer>();
-	
+
 	for(int i = 0; i < NUM_LAYERS; i++){
 	    //here we create a new empty layer for 
-	    //each category of entity
+	    //each entity category
+	    //enumerated in Layer
 	    allTheLayers.add(new EntityLayer());
 	}
 

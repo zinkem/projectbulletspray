@@ -9,7 +9,9 @@ import jig.engine.util.*;
 
 import pbs.Level.Layer;
 import pbs.Entity.*;
+
 import pbs.Updater.*;
+import pbs.parser.*;
 
 public class PBSGame extends ScrollingScreenGame {
 
@@ -24,32 +26,37 @@ public class PBSGame extends ScrollingScreenGame {
 	EntityFactory ef;
 	long deltaMs;
 
-	Entity e,plr;
+	Entity e, plr;
 
 	public PBSGame() {
 		super(SCREEN_WIDTH, SCREEN_HEIGHT, false);
-		
-		deltaMs = (long)10.0;
+
+		deltaMs = (long) 10.0;
 		ef = new EntityFactory();
-		
+
 		rf = ResourceFactory.getFactory();
 		rf.loadResources("resources/", "pbs-resources.xml");
 
+		LevelParser lp = new LevelParser("resources/test.lvl");
+		lp.createLevel();
+
 		levelData = new Level();
-		
+
+		levelData = new Level();
+
 		plr = new Entity(SPRITE_SHEET + "#hex");
 		plr.setPosition(new Vector2D(300, 300));
 		plr.setCustomUpdate(new KeyboardControls(keyboard));
 		levelData.add(plr, Layer.PLAYER);
-		
-		e = ef.get_bullet_arc(new Vector2D(200, 200), new Vector2D(10, 0), -0.005);
-		levelData.add(e, Layer.ENEMY);
-		
 
-		
-		//e = ef.get_chaser(new Vector2D(400,100), new Vector2D(-5, 5), plr);
-		//e = ef.target_point(new Vector2D(400,100), new Vector2D(1,1), new Vector2D(0,0));
-		//levelData.add(e, Layer.ENEMY);
+		e = ef.get_bullet_arc(new Vector2D(200, 200), new Vector2D(10, 0),
+				-0.005);
+		levelData.add(e, Layer.ENEMY);
+
+		// e = ef.get_chaser(new Vector2D(400,100), new Vector2D(-5, 5), plr);
+		// e = ef.target_point(new Vector2D(400,100), new Vector2D(1,1), new
+		// Vector2D(0,0));
+		// levelData.add(e, Layer.ENEMY);
 
 		gameObjectLayers = levelData.getLayers();
 
@@ -65,12 +72,13 @@ public class PBSGame extends ScrollingScreenGame {
 		}
 
 		public void update(Entity e, long deltaMs) {
-			System.out.println("X:"+e.getPosition().getX()+" Y:"+e.getPosition().getY());
+			System.out.println("X:" + e.getPosition().getX() + " Y:"
+					+ e.getPosition().getY());
 			boolean left = key.isPressed(KeyEvent.VK_LEFT);
 			boolean right = key.isPressed(KeyEvent.VK_RIGHT);
 			boolean up = key.isPressed(KeyEvent.VK_UP);
 			boolean down = key.isPressed(KeyEvent.VK_DOWN);
-			
+
 			boolean reset = left && right;
 
 			boolean fire = key.isPressed(KeyEvent.VK_SPACE);
@@ -99,7 +107,7 @@ public class PBSGame extends ScrollingScreenGame {
 
 		}
 	}
-	
+
 	public void update(long deltaMs) {
 		levelData.update(deltaMs);
 		centerOn(plr); // method to use to centerOn any body
@@ -111,6 +119,5 @@ public class PBSGame extends ScrollingScreenGame {
 		game.run();
 
 	}
-
 
 }
