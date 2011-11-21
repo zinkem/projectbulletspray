@@ -9,7 +9,7 @@ import jig.engine.util.*;
 
 import pbs.Level.Layer;
 import pbs.Entity.*;
-
+import pbs.parser.*;
 
 public class PBSGame extends ScrollingScreenGame {
 
@@ -28,6 +28,9 @@ public class PBSGame extends ScrollingScreenGame {
 	
 	rf = ResourceFactory.getFactory();
 	rf.loadResources("resources/", "pbs-resources.xml");
+
+	LevelParser lp = new LevelParser("resources/test.lvl");
+	lp.createLevel();
 
 	levelData = new Level();
 
