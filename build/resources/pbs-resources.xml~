@@ -1,7 +1,0 @@
-<resources>
-  <spritesheet>
-    <imagesrc>pbs-spritesheet.png</imagesrc>
-    <framesrc>pbs-spritesheet.xml</framesrc>
-  </spritesheet>
-
-</resources>
