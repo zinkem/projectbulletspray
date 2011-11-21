@@ -35,7 +35,7 @@ CREATE -> "create" + OBJECT + VECT + VECT
 
 	notes: adds new event to level event loop, specifying creation of an object
 
-OBJECT -> "{" + OBJ_TYPE + "}"
+OBJECT -> "{" + OBJ_TYPE + "}" | SYMBOL
 
 OBJ_TYPE -> ENT_TYPE + {PARAM*} |
 	TRIGGER_TYPE + {ADDEVENT*}
@@ -68,24 +68,24 @@ TRIGGER_TYPE -> "collision" | "timed" + NUM | "onscreen"
 //onscreen go off when the trigger enters view
 
 VECT -> "(" + NUM + "," + NUM ")" | GAMEVECT
-GAMEVECT -> USER_P //user's position
+GAMEVECT -> USER_P //user's position ... other important vectors here
 
 NUM -> [1-9]*
 SYMBOL -> [a-z]*
-STRING -> [a-z]*
+STRING -> "'" + [a-z0-9]* + "'"
 ________________________________________________________________
 //example spec
 
 //creating new re-usable classes of entities
 class Brick { static 
-	image "brick"
+	image 'brick'
 } 
 
 create Brick (0 0) (20 10) //tiles image over area in 32x32(?) pixel chunks
 create Brick (0 20) (20 30) //these 2 commands create a horizontal hallway
 
 class Burst { fx //fx animate once and die by default
-      	image "burst"
+      	image 'burst'
 }
 
 class Explosion { timed 0 //a trigger that is instantly fired off
@@ -97,7 +97,7 @@ class Explosion { timed 0 //a trigger that is instantly fired off
 
 class Badguy { enemy //enemies animate indefinitely by default
 	velocity (-20,0)
-	image "badguy"
+	image 'badguy'
 	ondeath Explosion
 }
 
