@@ -13,7 +13,7 @@
   </target>
   
   <target name="run" depends="compile">
-    <java classname="pbs.GameRun" fork="true" classpath="${build}:${jig}"/>
+    <java classname="pbs.PBSGame" fork="true" classpath="${build}:${jig}"/>
   </target>
 
   <target name="clean" description="Removes previous build">
