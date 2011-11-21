@@ -12,5 +12,21 @@
     <width>40</width>
     <height>24</height>
   </frameset>
+  
+  <frameset>
+  	<name>hex</name>
+  	<top>448</top>
+  	<left>0</left>
+  	<width>28</width>
+  	<height>32</height>
+  </frameset>
+  
+  <frameset>
+  	<name>ball</name>
+  	<top>457</top>
+  	<left>34</left>
+  	<width>22</width>
+  	<height>22</height>
+  </frameset>
 
 </spriteset>

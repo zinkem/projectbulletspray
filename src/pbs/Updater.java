@@ -6,6 +6,8 @@ import jig.engine.util.Vector2D;
 import java.awt.event.KeyEvent;
 import java.math.*;
 
+import pbs.Entity.CustomUpdate;
+
 public class Updater {
 
 	public Updater(){}
@@ -59,18 +61,37 @@ public class Updater {
 		
 	}
 	
-	public void get_target(Entity e, Vector2D target, long deltaMs){
-		
-		
+	public void chase_target(Entity e, Vector2D target, long deltaMs){
+		Vector2D velocity = e.getVelocity();
+
+		double targetAngle = e.getPosition().angleTo(target);
+		e.angle = velocity.scale(-1).angleTo(new Vector2D(0, 0));
+		if (e.angle > 0) {
+			if (targetAngle >= e.angle - Math.PI && targetAngle <= e.angle) {
+				e.setVelocity(velocity.rotate(-e.angleVelocity * deltaMs
+						/ 100.0));
+			} else {
+				e.setVelocity(velocity.rotate(e.angleVelocity * deltaMs
+						/ 100.0));
+			}
+		} else {
+			if (targetAngle <= e.angle + Math.PI && targetAngle >= e.angle) {
+				e.setVelocity(velocity.rotate(e.angleVelocity * deltaMs
+						/ 100.0));
+			} else {
+				e.setVelocity(velocity.rotate(-e.angleVelocity * deltaMs
+						/ 100.0));
+			}
+		}
+		e.setPosition(e.getPosition().translate(e.getVelocity().scale(deltaMs/100.0)));
 	}
 
 	public void boss_charge(Entity e, long deltaMs, double cooldown, double distance) {
 		
-
+		
 	}
 
 	public void boss_shuffle(Entity e, long deltaMs, int cooldown) {
 
 	}
-
 }

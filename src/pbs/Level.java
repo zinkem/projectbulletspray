@@ -42,6 +42,7 @@ public class Level {
 	System.out.println(l.ordinal());
 	getLayer(l).add(e);
     }
+    
 
     //getters
     public List getLayers(){
