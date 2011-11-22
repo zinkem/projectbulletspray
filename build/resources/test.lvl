@@ -1,10 +1,19 @@
-template fignewtons
+template fignewtons onscreen
 end
-template fsckingsck
+
+template blackcoffee collision
+	 create
+	 create
+	 create
+	 template innercoffee static
+	 end
 end
+
 create
 create
 create
-template you'rebad
+
+template hobbittoes enemy
 end
+
 create

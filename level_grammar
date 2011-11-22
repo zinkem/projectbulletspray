@@ -22,20 +22,20 @@ behavior, and other gamestate information using events. Most commonly events are
 to layers. New enemies, explosions, etc. 
 
 
-START -> (CLASS | ADDEVENT)*
+START -> (TEMPLATE | ADDEVENT)*
 
-CLASS -> "class" + SYMBOL + OBJECT
+TEMPLATE -> "template" + SYMBOL + OBJECT + "end"
 
 	notes: stores OBJECT at SYMBOL in dict
 
 
 ADDEVENT -> CREATE //other events will probably be added
 
-CREATE -> "create" + OBJECT + VECT + VECT
+CREATE -> "create" + VECT + VECT + OBJECT + "end"
 
 	notes: adds new event to level event loop, specifying creation of an object
 
-OBJECT -> "{" + OBJ_TYPE + "}" | SYMBOL
+OBJECT -> OBJ_TYPE | SYMBOL
 
 OBJ_TYPE -> ENT_TYPE + {PARAM*} |
 	TRIGGER_TYPE + {ADDEVENT*}
@@ -44,16 +44,16 @@ ENT_TYPE -> "enemy" | "fx" | "static"
 	notes: determines which layer to put this entity on
 		if static, second vector parameter from create is the size
 
-PARAM -> (update U_TYPE)
-	(render  R_TYPE)//set render method
-	(weapon  W_TYPE //set weapon
-	(image STRING) //set image
-	(ondeath TRIGGER) //set ondeath trigger
-	(onbirth TRIGGER) //set onbirth trigger
-	(ttl NUM)    //set time to live (ms?) default 0 is indefinite
-	(age NUM)    //set age (ms?)
-	(hp NUM)     //hits before death
-	(score NUM) //score if killed
+PARAM -> update U_TYPE
+	render  R_TYPE	 //set render method
+	weapon  W_TYPE 	 //set weapon
+	image STRING 	 //set image
+	ondeath TRIGGER //set ondeath trigger
+	onbirth TRIGGER //set onbirth trigger
+	ttl NUM    //set time to live (ms?) default 0 is indefinite
+	age NUM    //set age (ms?)
+	hp NUM     //hits before death
+	score NUM //score if killed
 
 	note:this is shorthand for now, too lazy to type it out formally
 
@@ -71,79 +71,94 @@ VECT -> "(" + NUM + "," + NUM ")" | GAMEVECT
 GAMEVECT -> USER_P //user's position ... other important vectors here
 
 NUM -> [1-9]*
-SYMBOL -> [a-z]*
-STRING -> "'" + [a-z0-9]* + "'"
+SYMBOL -> <any valid Java String>
+STRING -> "'" + <a valid java string> + "'"
 ________________________________________________________________
 //example spec
 
-//creating new re-usable classes of entities
-class Brick { static 
+//creating new re-usable templates of entities
+template Brick static 
 	image 'brick'
-} 
+end
 
 create Brick (0 0) (20 10) //tiles image over area in 32x32(?) pixel chunks
 create Brick (0 20) (20 30) //these 2 commands create a horizontal hallway
 
-class Burst { fx //fx animate once and die by default
+template Burst fx //fx animate once and die by default
       	image 'burst'
-}
+end
 
-class Explosion { timed 0 //a trigger that is instantly fired off
+template Explosion timed 0 //a trigger that is instantly fired off
     	create burst (100,100)
 	create burst (103,101)
 	create burst (99, 105)
-}
+end
 
 
-class Badguy { enemy //enemies animate indefinitely by default
+template Badguy enemy //enemies animate indefinitely by default
 	velocity (-20,0)
 	image 'badguy'
 	ondeath Explosion
-}
+end
 
-class BigBadGuy { enemy
+template BigBadGuy enemy
         velocity (-20,0)
-}
+end
 
 
 //a trigger that fires if the user collides with it
-create { collision
+create (320, 0) (32, 32) collision
        
 
-} (320, 0) (32, 32)
+end
 
 //example level structure : create a series of onscreen triggers at staggered x locations
 //every 500 pixels, a new group of enemies spawns
 
-create { onscreen
+create (500,0) (0,0) onscreen		
        create Badguy (400, 0)
        create Explosion USER_P USER_P
-} (500,0) (0,0)
+end 
 
-create { onscreen
+create (1000, 0) (0, 0) onscreen
 	
-} (1000, 0) (0, 0)
+end
 
-create { onscreen
+create (1500, 0) (0, 0) onscreen
 	
-} (1500, 0) (0, 0)
+end
 
-create { onscreen
+create (2000, 0) (0, 0) onscreen
 	
-} (2000, 0) (0, 0)
+end
 
-create { onscreen
+create (2500, 0) (0, 0) onscreen
 	
-} (2500, 0) (0, 0)
+end
 
-create { onscreen
+create (3000, 0) (0, 0) onscreen
 	
-} (3000, 0) (0, 0)
+end
 
-create { onscreen
+create (3500, 0) (0, 0) onscreen
 	
-} (3500, 0) (0, 0)
+end
 
-create { onscreen
+create (4000, 0) (0, 0) onscreen
 	
-} (4000, 0) (0, 0)
+end
+
+
+
+
+//any positions within a trigger are relative to itself... 
+//a level could be defiend recursively as follows:
+//this level would go on forever... hmmm?
+
+template rec_trigger onscreen
+	 create BigBadGuy (0,0) (0,0)
+	 create rec_trigger (1000,0) (0,0)
+end
+
+
+create rec_trigger (500, 250) (0,0)

@@ -1,10 +1,13 @@
 package pbs.parser;
 
+import java.io.File;
+import java.util.*;
+
+
 import pbs.parser.Elements.*;
 import pbs.Level;
 
-import java.io.File;
-import java.util.Scanner;
+
 
 public class LevelParser {
 
@@ -27,7 +30,6 @@ public class LevelParser {
 	    source = new Scanner(LevelParser.class.getResourceAsStream("/"+fname));
 	    ready = true;
 	} catch(Exception e){
-	    
 	    System.out.println("Error in LevelParser: " + e);
 	    err = e.toString();
 	    ready = false;
@@ -39,7 +41,6 @@ public class LevelParser {
 	if(!ready){
 	    System.out.println("Parser not ready: " + err);
 	}
-
 	thislevel = new Level();
 	ctoken = source.next();
 	Statement s;
@@ -101,6 +102,7 @@ public class LevelParser {
     }
 
     public Statement nextStatement(){
+
 	if(match(Lexeme.TEMPLATE)){
 	    return addTemplate();
 	} else if(match(Lexeme.CREATE)) {
@@ -136,11 +138,43 @@ public class LevelParser {
     protected ObjectDescription objdesc(){
 	//type followed by param list
 	String type = ctoken;
+
 	if(match(Lexeme.ENTTYPE)){
-	    return entobject(type);
+	    EntityDescription ed = null;
+
+	    if(type.compareTo("fx") == 0) {
+		ed = new fxEntity();
+	    } else if(type.compareTo("enemy") == 0) {
+		ed = new enemyEntity();
+	    } else if(type.compareTo("static") == 0) {
+		ed = new staticEntity();
+	    }
+	        
+	    return ed;
 	} else if(match(Lexeme.TRIGGERTYPE)){
-	    return trigobject(type);
+	    TriggerDescription td = null;
+
+	    if(type.compareTo("timed") == 0) {
+		td = new timedTrigger();
+	    } else if(type.compareTo("onscreen") == 0) {
+		td = new onscreenTrigger();
+	    } else if(type.compareTo("collision") == 0) {
+		td = new collisionTrigger();
+	    }
+	    
+	    ArrayList<Statement> stmtlist = new ArrayList<Statement>();
+	    
+	    Statement s = nextStatement();
+	    while(s != null){
+		stmtlist.add(s);
+		s = nextStatement();
+	    }
+	    
+	    td.setStatements(stmtlist);
+	    
+	    return td;
 	}
+
 	System.out.println("ret null:" + ctoken);
 	return null;
 

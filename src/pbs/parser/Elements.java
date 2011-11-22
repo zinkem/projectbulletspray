@@ -1,9 +1,10 @@
 package pbs.parser;
 
-import pbs.*;
+import java.util.ArrayList;
 
 import jig.engine.util.Vector2D;
 
+import pbs.*;
 
 public class Elements {
 
@@ -36,6 +37,8 @@ public class Elements {
 	public boolean execute(Level l){
 	    //l.add(root);
 	    System.out.println("Add event to level event queue!");
+	    
+
 	    return true;
 	}
     }
@@ -54,6 +57,7 @@ public class Elements {
 	    //adds new 'class template' to level
 	    System.out.println("Add template <" + name + 
 			       "> to level template hash!");
+	    theObject.insertInto(l);
 	    return true;
 	}
 
@@ -74,25 +78,77 @@ public class Elements {
     //entity descriptions... 
     public abstract static class ObjectDescription {
 	//returns an entity matching this description
-	public abstract Entity getEntity();	
+	public abstract void insertInto(Level l);	
     }
 
     public static class TriggerDescription extends ObjectDescription {
+	//triggers have a list of statements that get added to the
+	//event queue when they are triggered
+	ArrayList<Statement> stmtlist;
 
-	public TriggerDescription(){
+	public void setStatements(ArrayList<Statement> sl){
+	    stmtlist = sl;
 	}
 
-	public Entity getEntity(){
-	    return null;
+	public TriggerDescription(){
+	    stmtlist = null;
+	}
+
+	public void insertInto(Level l){
+	    //this method SHOULD add a trigger with the specified stmtlist to the event layer
+	    System.out.println("Trigger Description");
+
+	    if(stmtlist != null){
+		for(Statement s : stmtlist){
+		    s.execute(l);
+		}
+	    }
 	}
     }
 
+    public static class timedTrigger extends TriggerDescription {
+	public timedTrigger(){
+	}
+    }
+
+    public static class collisionTrigger extends TriggerDescription {
+	public collisionTrigger(){
+	}
+    }
+
+    public static class onscreenTrigger extends TriggerDescription {
+	public onscreenTrigger(){
+	}
+    }
+
+
     public static class EntityDescription extends ObjectDescription {
+
+	//ArrayList<Param> paramlist;
+
 	public EntityDescription(){
 	}
 
-	public Entity getEntity(){
-	    return null;
+	public void insertInto(Level l){
+	    //
+	    System.out.println("Entity Description");
 	}
     }
+
+    public static class fxEntity extends EntityDescription {
+	public fxEntity(){
+	}
+    }
+
+    public static class enemyEntity extends EntityDescription {
+
+	public enemyEntity(){
+	}
+    }
+
+    public static class staticEntity extends EntityDescription {
+	public staticEntity(){
+	}
+    }
+
 }
