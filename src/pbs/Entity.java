@@ -24,6 +24,7 @@ public class Entity extends Body {
 	
 	protected CustomUpdate cu;
 	protected CustomRender cr;
+	protected CustomWeapon cw;
 	
 	public Entity(String imgrsc) {
 		super(imgrsc);
@@ -45,6 +46,9 @@ public class Entity extends Body {
 	public interface CustomRender {
 		public void render(RenderingContext rc, ImageResource ir);
 	}
+	public interface CustomWeapon{
+		public void shoot(Level lvl, Entity type, long deltaMs);
+	}
 	
 	public void setCustomRender(CustomRender c) {
 		cr = c;
@@ -52,6 +56,10 @@ public class Entity extends Body {
 	public void setCustomUpdate(CustomUpdate u){
 		cu = u;
 	}
+	public void setCustomWeapon(CustomWeapon w){
+		cw = w;
+	}
+	
 	public void render(RenderingContext rc) {
 		if (cr != null) {
 			cr.render(rc, frames.get(visibleFrame));
@@ -68,6 +76,16 @@ public class Entity extends Body {
 			System.out.println("Custom update for object:"+this.toString()+" Not found");
 		}
 	}
+	
+	public void shoot(Level lvl, long deltaMs){
+		if(cw != null){
+			cw.shoot(lvl, this, deltaMs);
+		}else{
+			System.out.println("Custom Weapon class not found for:"+this.toString());
+		}
+		
+	}
+	
 	public boolean alive() {
 		return this.alive;
 	}
