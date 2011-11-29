@@ -42,7 +42,7 @@ public class PBSGame extends ScrollingScreenGame {
 
 		levelData = new Level();
 
-		levelData = new Level();
+		//levelData = new Level();
 
 		plr = new Entity(SPRITE_SHEET + "#hex");
 		plr.setPosition(new Vector2D(300, 300));
@@ -112,12 +112,12 @@ public class PBSGame extends ScrollingScreenGame {
 		levelData.update(deltaMs);
 		centerOn(plr); // method to use to centerOn any body
 	}
-
+/*
 	public static void main(String[] args) {
 
 		PBSGame game = new PBSGame();
 		game.run();
 
 	}
-
+*/
 }

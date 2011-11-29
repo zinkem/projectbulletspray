@@ -18,6 +18,13 @@ public class Level {
 
     public static int NUM_LAYERS = Layer.values().length;
 
+    //important level info
+    protected int score;
+    public int getScore(){ return score; }
+
+    protected int gametime;
+    public int getTime(){ return gametime/1000; }
+
     //list of layers
     ArrayList<EntityLayer> allTheLayers;
 
@@ -25,6 +32,10 @@ public class Level {
     ArrayList<CollisionHandler> collisionHandlers;
 
     public Level(){
+	score = 0;
+	gametime = 0;
+
+
 	collisionHandlers = new ArrayList<CollisionHandler>();
 	allTheLayers = new ArrayList<EntityLayer>();
 
@@ -75,6 +86,7 @@ public class Level {
     protected void updateLayers(long deltaMs){
 	//pass the task of updating individual entities to the layer
 	for(EntityLayer v : allTheLayers){
+	    gametime += deltaMs;
 	    v.update(deltaMs);
 	}
     }

@@ -2,7 +2,7 @@ package pbs.parser;
 
 import java.io.File;
 import java.util.*;
-
+import java.util.regex.Pattern;
 
 import pbs.parser.Elements.*;
 import pbs.parser.Statements.*;
@@ -59,15 +59,19 @@ public class LevelParser {
 	}
 
 	thislevel = new Level();
+	
 	ctoken = source.next();
 	Statement s;
+
+	System.out.print(ctoken + " ");
 
 	//from the start statement, parse out statements and execute them
 	while(source.hasNext()){
 	    s = nextStatement();
-	    if(s != null)
+	    if(s != null){
 		s.execute(thislevel);
-	    else {
+		//normally, we would add statements to level event queue
+	    } else {
 		System.out.println("Aborting parse: " + err);
 		return null;
 	    }

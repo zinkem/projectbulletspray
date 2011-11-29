@@ -1,89 +1,82 @@
 package pbs;
 
 import jig.engine.util.Vector2D;
+import pbs.Entity.CustomUpdate;
 import pbs.Entity.*;
+import pbs.Updater.*;
 
 public class EntityFactory {
 	public static String sheet_path, ship, ball, hex;
-	Updater up;
+	private Level lvl;
 	public EntityFactory(){
 		sheet_path = "resources/pbs-spritesheet.png";
-		ship = "#generic_ship";
-		ball = "#ball";
-		hex  = "#hex";
-		up = new Updater();
+		ship = sheet_path+"#generic_ship";
+		ball = sheet_path+"#ball";
+		hex  = sheet_path+"#hex";
+		//up = new Updater();
+	}
+	
+	public void setLevel(Level l){
+		this.lvl = l;
 	}
 	
 	public Entity get_yocil(Vector2D pos, Vector2D vel){
-		Entity e = new Entity(sheet_path + ship);
-		e.set_up(new Updater());
+		
+		Entity e = new Entity( ship);
+		
 		e.setPosition(pos);
 		e.setVelocity(vel);
-		e.setCustomUpdate(new CustomUpdate(){
-			@Override
-			public void update(Entity e, long deltaMs) {
-				up.y_ocilation(e, deltaMs);
-			}
-		});
+		e.setCustomUpdate(new YOcil());
 		
 		return e;
 	}
 	
 	public Entity get_xocil(Vector2D pos, Vector2D vel){
-		Entity e = new Entity(sheet_path + ship);
-		e.set_up(up);
+		Entity e = new Entity(ship);
+		
 		e.setPosition(pos);
 		e.setVelocity(vel);
-		e.setCustomUpdate(new CustomUpdate(){
-			@Override
-			public void update(Entity e, long deltaMs){
-				up.x_ocilation(e, deltaMs);
-			}
-		});
+		e.setCustomUpdate(new XOcil());
 		return e;
 	}
+	
 	public Entity get_bullet_arc(Vector2D pos, Vector2D vel, double arc){
-		Entity e = new Entity(sheet_path + ball);
-		e.set_up(up);
+		Entity e = new Entity( ball);
+		
 		e.theta = arc;
 		e.setPosition(pos);
 		e.setVelocity(vel);
-		e.setCustomUpdate(new CustomUpdate(){
-			@Override
-			public void update(Entity e, long deltaMs){
-				up.missile_arc(e, deltaMs);
-			}
-		});
+		e.setCustomUpdate(new MissileArc(0.0005));
+		return e;
+	}
+	
+	public Entity shoot_bullet(Vector2D pos, Vector2D vel, double arc){
+		Entity e = new Entity(ball);
+		
+		e.theta = arc;
+		e.setPosition(pos);
+		e.setVelocity(vel);
+		e.setCustomUpdate(new MissileArc(e.theta));
 		return e;
 	}
 	
 	public Entity get_chaser(Vector2D pos, Vector2D vel, Entity target){
-		Entity e = new Entity(sheet_path + hex);
-		e.set_up(up);
+		Entity e = new Entity(hex);
+		
 		e.target = target;
 		e.setPosition(pos);
 		e.setVelocity(vel);
-		e.setCustomUpdate(new CustomUpdate(){
-			@Override
-			public void update(Entity e, long deltaMs){
-				up.chase_target(e, e.target.getCenterPosition(), deltaMs);
-			}
-		});
+		e.setCustomUpdate(new Target(target));
 		return e;
 	}
 	
 	public Entity target_point(Vector2D pos, Vector2D vel, final Vector2D target_pos){
-		Entity e = new Entity(sheet_path + hex);
-		e.set_up(up);
+		Entity e = new Entity( hex);
+		
 		e.setPosition(pos);
 		e.setVelocity(vel);
 		e.tar = target_pos;
-		e.setCustomUpdate(new CustomUpdate(){
-			@Override
-			public void update(Entity e, long deltaMs){
-				up.chase_target(e, e.tar, deltaMs);
-			}
-		});
+		e.setCustomUpdate(new TargetPoint(target_pos));
 		return e;
 	}
 	
