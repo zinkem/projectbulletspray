@@ -64,7 +64,7 @@ public class LevelParser {
 
 	Pattern p = source.delimiter();
 	System.out.println(p.pattern());
-
+	/*
 	try{
 	char[] t = new char[1];
 	ctoken = source.next(Pattern.compile("\p{Punct}"));
@@ -72,7 +72,7 @@ public class LevelParser {
 	    System.out.println(e);
 	}
 	System.out.print(ctoken + " ");
-
+	*/
 	ctoken = source.next();
 	Statement s;
 
