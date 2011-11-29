@@ -1,4 +1,5 @@
 package pbs.parser;
+import pbs.*;
 
 public class ExpressionElements {
     public static abstract class Expression {
@@ -40,4 +41,28 @@ public class ExpressionElements {
 	public Constant(int v) { value = v; }
 	public int eval(){ return value; }
     }
+
+    public static abstract class LevelData extends Expression {
+	Level leveldata;
+	public LevelData(Level l){
+	    leveldata = l;
+	}
+    }
+
+    public static class Score extends LevelData {
+	public Score(Level l){ super(l); }
+	public int eval(){
+	    return leveldata.getScore();
+	}
+    }
+
+    public static class GameTime extends LevelData {
+	public GameTime(Level l){ super(l); }
+	public int eval(){
+	    return leveldata.getTime();
+	}
+    }
+    
+
+
 }
