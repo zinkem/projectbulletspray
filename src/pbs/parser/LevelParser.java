@@ -16,6 +16,8 @@ public class LevelParser {
     //static strings, define 'reserved words'
     public static String TEMPLATE = "template";
     public static String CREATE = "create";
+    public static String IF = "if";
+    public static String SET = "set";
     public static String END = "end";
 
     //the following constants are entity types
@@ -59,7 +61,18 @@ public class LevelParser {
 	}
 
 	thislevel = new Level();
-	
+
+	Pattern p = source.delimiter();
+	System.out.println(p.pattern());
+
+	try{
+	char[] t = new char[1];
+	ctoken = source.next(Pattern.compile("\p{Punct}"));
+	} catch(Exception e){
+	    System.out.println(e);
+	}
+	System.out.print(ctoken + " ");
+
 	ctoken = source.next();
 	Statement s;
 
@@ -100,9 +113,11 @@ public class LevelParser {
 	    return addTemplate();
 	} else if(match(CREATE)) {
 	    return addEntity();
+	} else if(match(IF)){
+	    return ifStmt();
+	} else if(match(SET)){
+	    return setStmt();
 	}
-	//if(match(IF))
-	//if(match(SET))
 
 	return null;
     }
@@ -144,6 +159,29 @@ public class LevelParser {
 	return s;
     }
     
+
+    protected Statement ifStmt(){
+	
+	return null;
+
+	/*
+	//parse conditional
+	Conditional c = boolExpr();
+	//parse statement after
+	Statement s = nextStatement();
+	
+	return new Conditional(c, s);
+	*/
+    }
+
+    
+
+    protected Statement setStmt(){
+	return null;
+    }
+
+
+
     protected ObjectDescription objdesc(){
 	//type followed by param list
 
