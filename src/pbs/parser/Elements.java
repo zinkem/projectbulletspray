@@ -21,15 +21,24 @@ public class Elements {
 
 
     //statements are top level commands that alter the level data
-    //upon execution
+    //upon execution-- usually adding events. 
     public static abstract class Statement {
 	public abstract boolean execute(Level l);
     }
 
+    public static class Conditional extends Statement {
+	public Conditional(){
+	}
+
+	public boolean execute(Level l){
+	    return true;
+	}
+    }
+
+
     //add event is a list of events to get added to the level's event queue
     public static class AddEvent extends Statement {
 	//Event root;
-
 	public AddEvent(){
 	}
 
@@ -37,8 +46,6 @@ public class Elements {
 	public boolean execute(Level l){
 	    //l.add(root);
 	    System.out.println("Add event to level event queue!");
-	    
-
 	    return true;
 	}
     }
@@ -69,10 +76,6 @@ public class Elements {
 	    theObject = od;
 	}
 
-    }
-    
-    enum EntType {
-		    
     }
 
     //entity descriptions... 

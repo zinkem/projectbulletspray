@@ -5,9 +5,9 @@ import java.util.*;
 
 
 import pbs.parser.Elements.*;
+import pbs.parser.ExpressionElements.*;
+import pbs.parser.BooleanElements.*;
 import pbs.Level;
-
-
 
 public class LevelParser {
 
@@ -40,7 +40,9 @@ public class LevelParser {
     public Level createLevel(){
 	if(!ready){
 	    System.out.println("Parser not ready: " + err);
+	    return null;
 	}
+
 	thislevel = new Level();
 	ctoken = source.next();
 	Statement s;
@@ -60,6 +62,9 @@ public class LevelParser {
 
     }
 
+    private boolean match(String s){
+	return ctoken.compareTo(s) == 0;
+    }
 
     private boolean match(Lexeme l){
 
@@ -93,12 +98,8 @@ public class LevelParser {
 	    break;
 	}
 
-	if(matches){
-	    ctoken = source.next();
-	    return true;
-	}
-	
-	return false;
+	return matches;
+
     }
 
     public Statement nextStatement(){
