@@ -5,11 +5,26 @@ import java.util.*;
 
 
 import pbs.parser.Elements.*;
+import pbs.parser.Statements.*;
 import pbs.parser.ExpressionElements.*;
 import pbs.parser.BooleanElements.*;
 import pbs.Level;
 
 public class LevelParser {
+
+
+    //static strings, define 'reserved words'
+    public static String TEMPLATE = "template";
+    public static String CREATE = "create";
+    public static String END = "end";
+
+    //the following constants are entity types
+    public static String FX =  "fx";
+    public static String ENEMY = "enemy";
+    public static String STATIC = "static";
+    public static String TIMED = "timed";
+    public static String COLLISION = "collision";
+    public static String ONSCREEN = "onscreen";
 
     protected boolean ready;
     protected String err;
@@ -63,57 +78,27 @@ public class LevelParser {
     }
 
     private boolean match(String s){
-	return ctoken.compareTo(s) == 0;
-    }
-
-    private boolean match(Lexeme l){
-
-	boolean matches = false;
-	String s = "";
-
-	//System.out.println(ctoken);
-
-	switch(l){
-	case TEMPLATE:
-	    matches = ctoken.compareTo("template") == 0;
-	    break;
-	case CREATE:
-	    matches = ctoken.compareTo("create") == 0;
-	    break;
-	case END:
-	    matches = ctoken.compareTo("end") == 0;
-	    break;
-	case ENTTYPE:
-	    matches = ctoken.compareTo("fx") == 0 ||
-		ctoken.compareTo("enemy") == 0 ||
-		ctoken.compareTo("static") == 0;
-	    break;
-	case TRIGGERTYPE:
-	    matches = ctoken.compareTo("timed") == 0 ||
-		ctoken.compareTo("collision") == 0 ||
-		ctoken.compareTo("onscreen") == 0;
-	    break;
-	case SYMBOL:
-	    matches = true;
-	    break;
-	default:
-	    break;
+	boolean matches = ctoken.equalsIgnoreCase(s);
+	if(matches){
+	    try{
+		ctoken = source.next();
+	    } catch (Exception e) {
+		System.out.println("Scanner halted unexpectedly");
+	    }
 	}
-	
-	if(matches)
-	    ctoken = source.next();
 
 	return matches;
-
     }
 
     public Statement nextStatement(){
 
-	if(match(Lexeme.TEMPLATE)){
+	if(match(TEMPLATE)){
 	    return addTemplate();
-	} else if(match(Lexeme.CREATE)) {
-	    return addEvent();
+	} else if(match(CREATE)) {
+	    return addEntity();
 	}
+	//if(match(IF))
+	//if(match(SET))
 
 	return null;
     }
@@ -124,7 +109,7 @@ public class LevelParser {
 	AddTemplate s = new AddTemplate();
 
 	String name = ctoken;
-	if(match(Lexeme.SYMBOL)){
+	if(match(name)){
 	    s.setName(name);
 	} 
 
@@ -133,7 +118,7 @@ public class LevelParser {
 	    s.setDescription(od);
 	}
 
-	if(match(Lexeme.END)){
+	if(match(END)){
 	    return s;
 	}
 
@@ -141,67 +126,110 @@ public class LevelParser {
 	return null;
     }
 
-    protected ObjectDescription objdesc(){
-	//type followed by param list
-	String type = ctoken;
+    //events get added to level event queue
+    public Statement addEntity(){
+	AddEntity s = new AddEntity();
 
-	if(match(Lexeme.ENTTYPE)){
-	    EntityDescription ed = null;
-
-	    //ArrayList<Parameter> paramlist = new ArrayList<Parameter>();
-
-	    if(type.compareTo("fx") == 0) {
-		ed = new fxEntity();
-	    } else if(type.compareTo("enemy") == 0) {
-		ed = new enemyEntity();
-	    } else if(type.compareTo("static") == 0) {
-		ed = new staticEntity();
-	    }
-	        
-	    //ed.setParameters(paramlist);
-
-	    return ed;
-	} else if(match(Lexeme.TRIGGERTYPE)){
-	    TriggerDescription td = null;
-
-	    if(type.compareTo("timed") == 0) {
-		td = new timedTrigger();
-	    } else if(type.compareTo("onscreen") == 0) {
-		td = new onscreenTrigger();
-	    } else if(type.compareTo("collision") == 0) {
-		td = new collisionTrigger();
-	    }
-	    
-	    ArrayList<Statement> stmtlist = new ArrayList<Statement>();
-	    
-	    Statement s = nextStatement();
-	    while(s != null){
-		stmtlist.add(s);
-		s = nextStatement();
-	    }
-	    
-	    td.setStatements(stmtlist);
-	    
-	    return td;
+	ObjectDescription od = objdesc();
+	if(od != null){
+	    s.setDescription(od);
+	} else {
+	    System.out.println(err);
 	}
 
-	System.out.println("ret null:" + ctoken);
-	return null;
-
-    }
-
-    protected ObjectDescription entobject(String s){
-	return null;
+	return s;
     }
     
-    protected ObjectDescription trigobject(String s){
+    protected ObjectDescription objdesc(){
+	//type followed by param list
+
+	ObjectDescription od;
+
+	if(match("fx")) {
+	    return fx();
+	} else if(match("enemy")) {
+	    return enemy();
+	} else if(match("static")) {
+	    return staticEnt();
+	} else if(match("timed")) {
+	    return timed();
+	} else if(match("onscreen")) {
+	    return onscreen();
+	} else if(match("collision")) {
+	    return collision();
+	}
+
+	err = "Invalid entity identifier";
 	return null;
-    }
-
-
-    //events get added to level event queue
-    public Statement addEvent(){
-	return new AddEvent();
+	
     }
     
-}
+    protected ObjectDescription fx(){
+	return new fxEntity(paramList());
+    }
+
+    protected ObjectDescription enemy(){
+	return new enemyEntity(paramList());
+    }
+
+    protected ObjectDescription staticEnt(){
+	return new staticEntity(paramList());
+    }
+
+    protected ObjectDescription timed(){
+	return new timedTrigger(stmtList());
+    }
+
+    protected ObjectDescription onscreen(){
+	return new onscreenTrigger(stmtList());
+    }
+
+    protected ObjectDescription collision(){
+	return new collisionTrigger(stmtList());
+    }
+
+    protected ArrayList<Statement> stmtList(){
+	
+	ArrayList<Statement> stmtlist = new ArrayList<Statement>();
+	
+	Statement s = nextStatement();
+	while(s != null){
+	    stmtlist.add(s);
+	    s = nextStatement();
+	}
+	
+	return stmtlist;
+    }
+
+    protected ArrayList<Param> paramList(){
+	ArrayList<Param> paramlist = new ArrayList<Param>();
+
+	Param p = nextParam();
+	while(p != null){
+	    paramlist.add(p);
+	    p = nextParam();
+	}
+
+	return paramlist;
+    }
+
+
+    protected Param nextParam(){
+	//here we define list of parameters and return the proper parameter
+	if(match("position")){
+
+	} else if(match("velocity")){
+
+	} else if(match("update")){
+
+	} else if(match("render")){
+
+	} else if(match("weapon")){
+
+	}
+
+	return null;
+
+    }
+
+ }

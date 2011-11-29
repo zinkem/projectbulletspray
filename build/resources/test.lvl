@@ -2,19 +2,19 @@ template fignewtons onscreen
 end
 
 template blackcoffee collision
-	 create
-	 create
-	 create
+	 create enemy
+	 create enemy
+	 create enemy
 	 template innercoffee static
 	 end
 end
 
-create
-create
-create
+create enemy
+create enemy
+create static
 
 template hobbittoes enemy
 end
 
-create
+create static
 
