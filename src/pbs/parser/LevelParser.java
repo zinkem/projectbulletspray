@@ -71,6 +71,8 @@ public class LevelParser {
 	boolean matches = false;
 	String s = "";
 
+	//System.out.println(ctoken);
+
 	switch(l){
 	case TEMPLATE:
 	    matches = ctoken.compareTo("template") == 0;
@@ -97,6 +99,9 @@ public class LevelParser {
 	default:
 	    break;
 	}
+	
+	if(matches)
+	    ctoken = source.next();
 
 	return matches;
 
@@ -143,6 +148,8 @@ public class LevelParser {
 	if(match(Lexeme.ENTTYPE)){
 	    EntityDescription ed = null;
 
+	    //ArrayList<Parameter> paramlist = new ArrayList<Parameter>();
+
 	    if(type.compareTo("fx") == 0) {
 		ed = new fxEntity();
 	    } else if(type.compareTo("enemy") == 0) {
@@ -151,6 +158,8 @@ public class LevelParser {
 		ed = new staticEntity();
 	    }
 	        
+	    //ed.setParameters(paramlist);
+
 	    return ed;
 	} else if(match(Lexeme.TRIGGERTYPE)){
 	    TriggerDescription td = null;

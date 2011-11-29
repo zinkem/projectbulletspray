@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import jig.engine.util.Vector2D;
 
 import pbs.*;
+import pbs.parser.BooleanElements.*;
+import pbs.parser.ExpressionElements.*;
 
 public class Elements {
 
@@ -27,11 +29,23 @@ public class Elements {
     }
 
     public static class Conditional extends Statement {
-	public Conditional(){
+	
+	BooleanOperation boolop;
+	Statement stmt;
+
+	public Conditional(BooleanOperation b, Statement s){
+	    boolop = b;
+	    stmt = s;
 	}
 
 	public boolean execute(Level l){
-	    return true;
+	    boolean b = boolop.eval();
+	    
+	    if(b){
+		stmt.execute(l);
+	    }
+
+	    return b;
 	}
     }
 
@@ -64,7 +78,7 @@ public class Elements {
 	    //adds new 'class template' to level
 	    System.out.println("Add template <" + name + 
 			       "> to level template hash!");
-	    theObject.insertInto(l);
+	    theObject.mutate(l);
 	    return true;
 	}
 
@@ -81,7 +95,8 @@ public class Elements {
     //entity descriptions... 
     public abstract static class ObjectDescription {
 	//returns an entity matching this description
-	public abstract void insertInto(Level l);	
+	//public abstract ALAYERTYPE getLayerType();
+	public abstract void mutate(Level l);	
     }
 
     public static class TriggerDescription extends ObjectDescription {
@@ -97,7 +112,7 @@ public class Elements {
 	    stmtlist = null;
 	}
 
-	public void insertInto(Level l){
+	public void mutate(Level l){
 	    //this method SHOULD add a trigger with the specified stmtlist to the event layer
 	    System.out.println("Trigger Description");
 
@@ -132,7 +147,7 @@ public class Elements {
 	public EntityDescription(){
 	}
 
-	public void insertInto(Level l){
+	public void mutate(Level l){
 	    //
 	    System.out.println("Entity Description");
 	}
