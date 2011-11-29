@@ -1,12 +1,30 @@
 package pbs.parser;
 
+import java.io.File;
+import java.util.*;
+import java.util.regex.Pattern;
+
 import pbs.parser.Elements.*;
+import pbs.parser.Statements.*;
+import pbs.parser.ExpressionElements.*;
+import pbs.parser.BooleanElements.*;
 import pbs.Level;
 
-import java.io.File;
-import java.util.Scanner;
-
 public class LevelParser {
+
+
+    //static strings, define 'reserved words'
+    public static String TEMPLATE = "template";
+    public static String CREATE = "create";
+    public static String END = "end";
+
+    //the following constants are entity types
+    public static String FX =  "fx";
+    public static String ENEMY = "enemy";
+    public static String STATIC = "static";
+    public static String TIMED = "timed";
+    public static String COLLISION = "collision";
+    public static String ONSCREEN = "onscreen";
 
     protected boolean ready;
     protected String err;
@@ -27,7 +45,6 @@ public class LevelParser {
 	    source = new Scanner(LevelParser.class.getResourceAsStream("/"+fname));
 	    ready = true;
 	} catch(Exception e){
-	    
 	    System.out.println("Error in LevelParser: " + e);
 	    err = e.toString();
 	    ready = false;
@@ -38,18 +55,23 @@ public class LevelParser {
     public Level createLevel(){
 	if(!ready){
 	    System.out.println("Parser not ready: " + err);
+	    return null;
 	}
 
 	thislevel = new Level();
+	
 	ctoken = source.next();
 	Statement s;
+
+	System.out.print(ctoken + " ");
 
 	//from the start statement, parse out statements and execute them
 	while(source.hasNext()){
 	    s = nextStatement();
-	    if(s != null)
+	    if(s != null){
 		s.execute(thislevel);
-	    else {
+		//normally, we would add statements to level event queue
+	    } else {
 		System.out.println("Aborting parse: " + err);
 		return null;
 	    }
@@ -59,53 +81,28 @@ public class LevelParser {
 
     }
 
-
-    private boolean match(Lexeme l){
-
-	boolean matches = false;
-	String s = "";
-
-	switch(l){
-	case TEMPLATE:
-	    matches = ctoken.compareTo("template") == 0;
-	    break;
-	case CREATE:
-	    matches = ctoken.compareTo("create") == 0;
-	    break;
-	case END:
-	    matches = ctoken.compareTo("end") == 0;
-	    break;
-	case ENTTYPE:
-	    matches = ctoken.compareTo("fx") == 0 ||
-		ctoken.compareTo("enemy") == 0 ||
-		ctoken.compareTo("static") == 0;
-	    break;
-	case TRIGGERTYPE:
-	    matches = ctoken.compareTo("timed") == 0 ||
-		ctoken.compareTo("collision") == 0 ||
-		ctoken.compareTo("onscreen") == 0;
-	    break;
-	case SYMBOL:
-	    matches = true;
-	    break;
-	default:
-	    break;
-	}
-
+    private boolean match(String s){
+	boolean matches = ctoken.equalsIgnoreCase(s);
 	if(matches){
-	    ctoken = source.next();
-	    return true;
+	    try{
+		ctoken = source.next();
+	    } catch (Exception e) {
+		System.out.println("Scanner halted unexpectedly");
+	    }
 	}
-	
-	return false;
+
+	return matches;
     }
 
     public Statement nextStatement(){
-	if(match(Lexeme.TEMPLATE)){
+
+	if(match(TEMPLATE)){
 	    return addTemplate();
-	} else if(match(Lexeme.CREATE)) {
-	    return addEvent();
+	} else if(match(CREATE)) {
+	    return addEntity();
 	}
+	//if(match(IF))
+	//if(match(SET))
 
 	return null;
     }
@@ -116,7 +113,7 @@ public class LevelParser {
 	AddTemplate s = new AddTemplate();
 
 	String name = ctoken;
-	if(match(Lexeme.SYMBOL)){
+	if(match(name)){
 	    s.setName(name);
 	} 
 
@@ -125,7 +122,7 @@ public class LevelParser {
 	    s.setDescription(od);
 	}
 
-	if(match(Lexeme.END)){
+	if(match(END)){
 	    return s;
 	}
 
@@ -133,31 +130,110 @@ public class LevelParser {
 	return null;
     }
 
+    //events get added to level event queue
+    public Statement addEntity(){
+	AddEntity s = new AddEntity();
+
+	ObjectDescription od = objdesc();
+	if(od != null){
+	    s.setDescription(od);
+	} else {
+	    System.out.println(err);
+	}
+
+	return s;
+    }
+    
     protected ObjectDescription objdesc(){
 	//type followed by param list
-	String type = ctoken;
-	if(match(Lexeme.ENTTYPE)){
-	    return entobject(type);
-	} else if(match(Lexeme.TRIGGERTYPE)){
-	    return trigobject(type);
+
+	ObjectDescription od;
+
+	if(match("fx")) {
+	    return fx();
+	} else if(match("enemy")) {
+	    return enemy();
+	} else if(match("static")) {
+	    return staticEnt();
+	} else if(match("timed")) {
+	    return timed();
+	} else if(match("onscreen")) {
+	    return onscreen();
+	} else if(match("collision")) {
+	    return collision();
 	}
-	System.out.println("ret null:" + ctoken);
-	return null;
 
-    }
-
-    protected ObjectDescription entobject(String s){
+	err = "Invalid entity identifier";
 	return null;
+	
     }
     
-    protected ObjectDescription trigobject(String s){
+    protected ObjectDescription fx(){
+	return new fxEntity(paramList());
+    }
+
+    protected ObjectDescription enemy(){
+	return new enemyEntity(paramList());
+    }
+
+    protected ObjectDescription staticEnt(){
+	return new staticEntity(paramList());
+    }
+
+    protected ObjectDescription timed(){
+	return new timedTrigger(stmtList());
+    }
+
+    protected ObjectDescription onscreen(){
+	return new onscreenTrigger(stmtList());
+    }
+
+    protected ObjectDescription collision(){
+	return new collisionTrigger(stmtList());
+    }
+
+    protected ArrayList<Statement> stmtList(){
+	
+	ArrayList<Statement> stmtlist = new ArrayList<Statement>();
+	
+	Statement s = nextStatement();
+	while(s != null){
+	    stmtlist.add(s);
+	    s = nextStatement();
+	}
+	
+	return stmtlist;
+    }
+
+    protected ArrayList<Param> paramList(){
+	ArrayList<Param> paramlist = new ArrayList<Param>();
+
+	Param p = nextParam();
+	while(p != null){
+	    paramlist.add(p);
+	    p = nextParam();
+	}
+
+	return paramlist;
+    }
+
+
+    protected Param nextParam(){
+	//here we define list of parameters and return the proper parameter
+	if(match("position")){
+
+	} else if(match("velocity")){
+
+	} else if(match("update")){
+
+	} else if(match("render")){
+
+	} else if(match("weapon")){
+
+	}
+
 	return null;
+
     }
 
-
-    //events get added to level event queue
-    public Statement addEvent(){
-	return new AddEvent();
-    }
-    
-}
+ }

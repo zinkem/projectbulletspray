@@ -1,0 +1,19 @@
+template fignewtons onscreen
+end
+
+template blackcoffee collision
+	 create enemy
+	 create enemy
+	 create enemy
+	 template innercoffee static
+	 end
+end
+
+create enemy
+create enemy
+create static
+
+template hobbittoes enemy
+end
+
+create static

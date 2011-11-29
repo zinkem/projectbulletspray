@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="pbs" default="all" basedir=".">
+<project name="pbs" default="test" basedir=".">
 
   <property name="build" value="./build"/>
   <property name="src" value="./src"/>
@@ -13,7 +13,11 @@
   </target>
   
   <target name="run" depends="compile">
-    <java classname="pbs.GameRun" fork="true" classpath="${build}:${jig}"/>
+    <java classname="pbs.PBSGame" fork="true" classpath="${build}:${jig}"/>
+  </target>
+
+  <target name="test" depends="compile">
+    <java classname="pbs.Test" fork="true" classpath="${build}:${jig}"/>
   </target>
 
   <target name="clean" description="Removes previous build">

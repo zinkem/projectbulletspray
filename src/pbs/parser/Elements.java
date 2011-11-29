@@ -1,98 +1,143 @@
 package pbs.parser;
 
-import pbs.*;
+import java.util.ArrayList;
 
 import jig.engine.util.Vector2D;
 
+import pbs.*;
+import pbs.parser.Statements.*;
+import pbs.parser.BooleanElements.*;
+import pbs.parser.ExpressionElements.*;
 
 public class Elements {
-
-    public enum Lexeme {
-	TEMPLATE,
-	    CREATE,
-	    SYMBOL,
-	    VECTOR,
-	    PARAM,
-	    TRIGGERTYPE,
-	    ENTTYPE,
-	    END	    
-    }
-
-
-    //statements are top level commands that alter the level data
-    //upon execution
-    public static abstract class Statement {
-	public abstract boolean execute(Level l);
-    }
-
-    //add event is a list of events to get added to the level's event queue
-    public static class AddEvent extends Statement {
-	//Event root;
-
-	public AddEvent(){
-	}
-
-	//does the work of adding events to levels
-	public boolean execute(Level l){
-	    //l.add(root);
-	    System.out.println("Add event to level event queue!");
-	    return true;
-	}
-    }
-
-    public static class AddTemplate extends Statement {
-	
-	String name;
-	ObjectDescription theObject;
-
-	public AddTemplate(){
-	    name = "";
-	    theObject = null;
-	}
-
-	public boolean execute(Level l){
-	    //adds new 'class template' to level
-	    System.out.println("Add template <" + name + 
-			       "> to level template hash!");
-	    return true;
-	}
-
-	public void setName(String n){
-	    name = n;
-	}
-
-	public void setDescription(ObjectDescription od){
-	    theObject = od;
-	}
-
-    }
-    
-    enum EntType {
-		    
-    }
 
     //entity descriptions... 
     public abstract static class ObjectDescription {
 	//returns an entity matching this description
-	public abstract Entity getEntity();	
+	//public abstract ALAYERTYPE getLayerType();
+	public abstract void mutate(Level l);	
     }
 
     public static class TriggerDescription extends ObjectDescription {
+	//triggers have a list of statements that get added to the
+	//event queue when they are triggered
+	ArrayList<Statement> stmtlist;
 
-	public TriggerDescription(){
+	public TriggerDescription(ArrayList<Statement> sl){
+	    stmtlist = sl;
 	}
 
-	public Entity getEntity(){
-	    return null;
+	public void mutate(Level l){
+	    //this method SHOULD add a trigger with the specified stmtlist to the event layer
+	    System.out.println("Trigger Description");
+
+	    if(stmtlist != null){
+		for(Statement s : stmtlist){
+		    System.out.print("Not executed yet: ");
+		    s.execute(l);
+		}
+	    }
 	}
     }
+
+    public static class timedTrigger extends TriggerDescription {
+	public timedTrigger(ArrayList<Statement> sl){ super(sl); }
+
+	public void mutate(Level l){
+	    System.out.print("Timed ");
+	    super.mutate(l);
+	}
+    }
+
+    public static class collisionTrigger extends TriggerDescription {
+	public collisionTrigger(ArrayList<Statement> sl){ super(sl); }
+
+	public void mutate(Level l){
+	    System.out.print("Collision ");
+	    super.mutate(l);
+	}
+    }
+
+    public static class onscreenTrigger extends TriggerDescription {
+	public onscreenTrigger(ArrayList<Statement> sl){ super(sl); }
+
+	public void mutate(Level l){
+	    System.out.print("Onscreen ");
+	    super.mutate(l);
+	}
+    }
+
 
     public static class EntityDescription extends ObjectDescription {
-	public EntityDescription(){
+
+	ArrayList<Param> paramlist;
+
+	public EntityDescription(ArrayList<Param> pl){
+	    paramlist = pl;
 	}
 
-	public Entity getEntity(){
-	    return null;
+	public void mutate(Level l){
+	    System.out.println("Entity Description");
 	}
     }
+
+    public static class fxEntity extends EntityDescription {
+	public fxEntity(ArrayList<Param> pl){ super(pl); }
+
+	public void mutate(Level l){
+	    //get fx layer from level
+	    //create entity
+	    //evaluate parameters
+	    //add entity to level layer
+	    System.out.print("Fx ");
+	    super.mutate(l);
+	}
+    }
+
+    public static class enemyEntity extends EntityDescription {
+	public enemyEntity(ArrayList<Param> pl){ super(pl); }
+
+	public void mutate(Level l){
+	    //get enemy layer from level
+	    //create entity
+	    //evaluate parameters
+	    //add entity to level layer
+	    System.out.print("Enemy ");
+	    super.mutate(l);
+
+	}
+    }
+
+    public static class staticEntity extends EntityDescription {
+	public staticEntity(ArrayList<Param> pl){ super(pl); }
+
+	public void mutate(Level l){
+	    //get static layer from level
+	    //create entity
+	    //evaluate parameters
+	    //add entity to level layer
+	    System.out.print("Static ");
+	    super.mutate(l);
+	}
+    }
+
+    //parameters for entities
+    public interface Param {
+	public abstract boolean mutate(Entity e);
+    }
+
+    public static class VelocitySetter implements Param {
+	Vector2D vel;
+
+	public VelocitySetter(Vector2D v){
+	    vel = v;
+	}
+
+	public boolean mutate(Entity e){
+	    e.setVelocity(vel);
+	    return true;
+	}
+    }
+
+
 }
