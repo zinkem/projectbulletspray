@@ -73,5 +73,9 @@ public class PBSQuadLayer<T extends Entity> implements Iterable<T>, BodyLayer<T>
 	public T get(int i) {
 		return entities.get(i);
 	}
+	
+	public List<T> get(Vector2D min, Vector2D max) {
+		return tree.getEntities(min, max);
+	}
 
 }
