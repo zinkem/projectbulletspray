@@ -48,7 +48,7 @@ public class Level {
 	gametime = 0;
 
 	camera = new Vector2D(120,240);
-	scrollspeed = new Vector2D(0, 10);
+	scrollspeed = new Vector2D(10, 0);
 	
 	collisionHandlers = new ArrayList<CollisionHandler>();
 	allTheLayers = new ArrayList<PBSQuadLayer<Entity>>();
