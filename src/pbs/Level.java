@@ -22,6 +22,7 @@ public class Level {
     
     //important level info
     protected int score;
+    public int modScore(int m){ return score += m; }
     public int getScore(){ return score; }
     
     protected int gametime;

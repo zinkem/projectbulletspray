@@ -111,7 +111,27 @@ public class Statements {
       
      */
 
+    public static abstract class VectorSetter implements Statement {
+	Vector2D vec;
+	public VectorSetter(Vector2D v) { vec = v; }
+	public abstract boolean execute(Level l);
+    }
+
+    public static class CameraSetter extends VectorSetter {
+	public CameraSetter(Vector2D c) { super(c); }
+	public boolean execute(Level l) { l.setCam(vec); return true; }
+    }
+
+    public static class ScrollSetter extends VectorSetter {
+	public ScrollSetter(Vector2D c) { super(c); }
+	public boolean execute(Level l) { l.setScrollSpeed(vec); return true; }
+    }
 
 
+    public static class ScoreModifier implements Statement {
+	int mod;
+	public ScoreModifier(int m) { mod = m; }
+	public boolean execute(Level l) { l.modScore(mod); return true; }
+    }
 
 }

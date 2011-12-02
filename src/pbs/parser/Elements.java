@@ -126,18 +126,24 @@ public class Elements {
 	public abstract boolean mutate(Entity e);
     }
 
-    public static class VelocitySetter implements Param {
-	Vector2D vel;
+    public static abstract class VectorParam implements Param {
+	Vector2D vec;
+	public VectorParam(Vector2D v){ vec = v; }
+    }
 
-	public VelocitySetter(Vector2D v){
-	    vel = v;
-	}
-
+    public static class VelocityParam extends VectorParam {
+	public VelocityParam(Vector2D v){ super(v); }
 	public boolean mutate(Entity e){
-	    e.setVelocity(vel);
+	    e.setVelocity(vec);
 	    return true;
 	}
     }
 
-
+   public static class PositionParam extends VectorParam {
+	public PositionParam(Vector2D p){ super(p); }
+	public boolean mutate(Entity e){
+	    e.setPosition(vec);
+	    return true;
+	}
+    }
 }
