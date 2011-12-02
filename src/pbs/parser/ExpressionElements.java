@@ -2,11 +2,11 @@ package pbs.parser;
 import pbs.*;
 
 public class ExpressionElements {
-    public static abstract class Expression {
+    public interface Expression {
 	public abstract int eval();
     }
 
-    public static abstract class BinaryOp extends Expression {
+    public static abstract class BinaryOp implements Expression {
 	Expression left;
 	Expression right;
 	
@@ -36,13 +36,13 @@ public class ExpressionElements {
 	public int eval(){ return left.eval() / right.eval(); }
     }
 
-    public static class Constant extends Expression {
+    public static class Constant implements Expression {
 	int value;
 	public Constant(int v) { value = v; }
 	public int eval(){ return value; }
     }
 
-    public static abstract class LevelData extends Expression {
+    public static abstract class LevelData implements Expression {
 	Level leveldata;
 	public LevelData(Level l){
 	    leveldata = l;
