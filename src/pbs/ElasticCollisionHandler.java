@@ -5,8 +5,8 @@ import jig.engine.physics.*;
 
 public class ElasticCollisionHandler extends CollisionHandler {
 
-    public ElasticCollisionHandler(EntityLayer<Entity> layer1, 
-				   EntityLayer<Entity> layer2){
+    public ElasticCollisionHandler(BodyLayer<Entity> layer1, 
+				   BodyLayer<Entity> layer2){
 	super(layer1, layer2);
     }
 

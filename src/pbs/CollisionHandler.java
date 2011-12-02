@@ -3,6 +3,7 @@ package pbs;
 import java.awt.geom.Rectangle2D;
 
 import jig.engine.*;
+import jig.engine.physics.BodyLayer;
 
 import quadtree.*;
 
@@ -12,11 +13,11 @@ import quadtree.*;
 
 public abstract class CollisionHandler {
 
-    protected EntityLayer<Entity> left;
-    protected EntityLayer<Entity> right;
+    protected BodyLayer<Entity> left;
+    protected BodyLayer<Entity> right;
     
-    public CollisionHandler(EntityLayer<Entity> layer1,
-			    EntityLayer<Entity> layer2){
+    public CollisionHandler(BodyLayer<Entity> layer1,
+			    BodyLayer<Entity> layer2){
 	left = layer1;
 	right = layer2;
     }
