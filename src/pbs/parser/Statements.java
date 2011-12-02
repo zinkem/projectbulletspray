@@ -104,14 +104,45 @@ public class Statements {
     }
 
     /*
-      Candidates:
-      background image
-      score
-      avatar hp
-      
+      Each of the below methods get created by lines in the level spec...
+      Adding a type here means adding a new method in the parser, and a switch
+      to invoke it. 
+      Usually they will be attached to triggers, and execute when the trigger fires. 
+      They may also be used by themselves to initialize the level. 
      */
 
+    public static abstract class VectorSetter implements Statement {
+	Vector2D vec;
+	public VectorSetter(Vector2D v) { vec = v; }
+	public abstract boolean execute(Level l);
+    }
+
+    //Sets the Camera position
+    public static class CameraSetter extends VectorSetter {
+	public CameraSetter(Vector2D c) { super(c); }
+	public boolean execute(Level l) { l.setCam(vec); return true; }
+    }
 
 
+    //sets the scroll vector
+    public static class ScrollSetter extends VectorSetter {
+	public ScrollSetter(Vector2D c) { super(c); }
+	public boolean execute(Level l) { l.setScrollSpeed(vec); return true; }
+    }
+
+    //modifies the score
+    public static class ScoreModifier implements Statement {
+	int mod;
+	public ScoreModifier(int m) { mod = m; }
+	public boolean execute(Level l) { l.modScore(mod); return true; }
+    }
+
+    public static class LevelEnder implements Statement {
+	//way of signalling the level is over
+	//perhaps we should have a successor file to 
+	//specify a successor level
+	public LevelEnder() {}
+	public boolean execute(Level l) { return true; }
+    }
 
 }

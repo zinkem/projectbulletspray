@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="pbs" default="test" basedir=".">
+<project name="pbs" default="run" basedir=".">
 
   <property name="build" value="./build"/>
   <property name="src" value="./src"/>
