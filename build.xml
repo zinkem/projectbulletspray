@@ -5,11 +5,12 @@
   <property name="src" value="./src"/>
   <property name="jig" value="./lib/jig.jar"/>
   <property name="title" value="pbs" />
+   <property name="junit" value="./lib/junit.jar:./lib/org.hamcrest.core.jar" />
 
   <target depends="compile, run" name="all"/>
   
   <target name="compile">
-    <javac srcdir="${src}" destdir="${build}" classpath="./lib/jig.jar"/>
+    <javac srcdir="${src}" destdir="${build}" classpath="${jig}"/>
   </target>
   
   <target name="run" depends="compile">
@@ -26,6 +27,24 @@
       <fileset dir="." includes="**/*~"/>
     </delete>
   </target>
+	
+	<target name="junit" depends="compile" description="Performs JUnit Tests">
+		<junit printsummary="yes" showoutput="yes" failureproperty="junit.failure">
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir = "lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<batchtest fork="yes" todir="#{reports}/raw/">
+				<formatter type="plain" usefile="false" />
+				<fileset dir="${src}">
+					<include name="**/*Test*.java" />
+				</fileset>
+			</batchtest>
+
+		</junit>
+	</target>
   
   <target name="jar" depends="compile">
     <jar destfile="${title}.jar" basedir="${build}" />	
