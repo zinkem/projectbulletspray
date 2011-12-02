@@ -40,9 +40,7 @@ public class PBSGame extends ScrollingScreenGame {
 		LevelParser lp = new LevelParser("resources/test.lvl");
 		lp.createLevel();
 
-		levelData = new Level();
-
-		//levelData = new Level();
+		levelData = new Level(new Vector2D(0,0), new Vector2D(SCREEN_WIDTH, SCREEN_HEIGHT));
 
 		plr = new Entity(SPRITE_SHEET + "#hex");
 		plr.setPosition(new Vector2D(300, 300));
@@ -109,15 +107,17 @@ public class PBSGame extends ScrollingScreenGame {
 	}
 
 	public void update(long deltaMs) {
-		levelData.update(deltaMs);
+		levelData.update(deltaMs, 
+				screenToWorld(new Vector2D(0,0)), 
+				screenToWorld(new Vector2D(SCREEN_WIDTH, SCREEN_HEIGHT)));
 		centerOn(plr); // method to use to centerOn any body
 	}
-/*
+
 	public static void main(String[] args) {
 
 		PBSGame game = new PBSGame();
 		game.run();
 
 	}
-*/
+
 }
