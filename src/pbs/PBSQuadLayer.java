@@ -17,7 +17,7 @@ public class PBSQuadLayer<T extends Entity> implements Iterable<T>, BodyLayer<T>
 	private static final int MAX_ENTITIES = 1;
     
     //goal will be to change this to a quad tree
-    protected ArrayList<T> entities;
+    protected List<T> entities;
     protected QuadTree<T> tree;
 
     public PBSQuadLayer(Vector2D min, Vector2D max){
@@ -36,6 +36,11 @@ public class PBSQuadLayer<T extends Entity> implements Iterable<T>, BodyLayer<T>
 		for(T e : entities){
 		    e.render(rc);
 		}
+    }
+    
+    public void updateTreeBounds(Vector2D min, Vector2D max) {
+    	tree.min = min;
+    	tree.max = max;
     }
 
     public void update(long deltaMs){
