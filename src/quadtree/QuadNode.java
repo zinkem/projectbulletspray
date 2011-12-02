@@ -46,7 +46,8 @@ public class QuadNode<T extends Sprite> {
 			double midX = minX + (maxX - minX) / 2, midY = minY + (maxY - minY) / 2;
 			double xPos = entity.getPosition().getX(), yPos = entity.getPosition().getY();
 			double width = entity.getWidth(), height = entity.getHeight();
-			if((xPos > minX && xPos < midX) && (yPos > minY && yPos < midY)) { // Width and Height won't matter
+			if(((xPos > minX || xPos + width > minX) && (xPos < midX || xPos + width < midX)) &&
+					((yPos > minY || yPos + height > minY) && (yPos < midY || yPos + height < midY))) {
 				nwNode.addEntity(entity); // nwNode
 			} 
 			if(((xPos > midX || xPos + width > midX) && (xPos < maxX || xPos + width < maxX)) &&

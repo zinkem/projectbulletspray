@@ -12,40 +12,40 @@ import jig.engine.util.Vector2D;
  * @author Skylar Hiebert
  *
  */
-public class QuadTree<T extends Sprite> implements Iterable<T> {
-	private QuadNode<T> root;
+public class QuadTree<E extends Sprite> implements Iterable<E> {
+	private QuadNode<E> root;
 	private int size;
-	private int width, height;
+	public Vector2D min, max;
+	public int maxEntitiesPerNode;
 	
 	public QuadTree() {
-		this(1, 100, 100);
+		this(1, new Vector2D(0,0), new Vector2D(1000,1000));
 	}
 	
-	public QuadTree(int maxEntitiesPerNode, int width, int height) {
+	public QuadTree(int maxEntitiesPerNode, Vector2D min, Vector2D max) {
 		QuadNode.setMaxEntitiesPerNode(maxEntitiesPerNode);
-		this.width = width;
-		this.height = height;
-		this.root = null;
+		this.maxEntitiesPerNode = maxEntitiesPerNode;
+		this.min = min;
+		this.max = max;
+		this.root = new QuadNode<E>(null, min, max);
 		size = 0;
 	}
 	
-	public void add(T entity) {
-		if(root == null) 
-			root = new QuadNode<T>(null, new Vector2D(0,0), new Vector2D(width, height));
+	public void add(E entity) {
 		root.addEntity(entity);
 		size++;
 	}
 	
-	public List<T> getAllEntities() {
+	public List<E> getAllEntities() {
 		return root.getEntities();
 	}
 	
-	public List<T> getEntities(Vector2D min, Vector2D max) {
+	public List<E> getEntities(Vector2D min, Vector2D max) {
 		return root.getEntities(min, max);
 	}
 	
 	//for conforming to iterable interface
-	public Iterator<T> iterator(){
+	public Iterator<E> iterator(){
 	    return root.getEntities().iterator();
 	}
 	
@@ -56,7 +56,7 @@ public class QuadTree<T extends Sprite> implements Iterable<T> {
 	/**
 	 * @return the root
 	 */
-	public QuadNode<T> getRoot() {
+	public QuadNode<E> getRoot() {
 		return root;
 	}
 
