@@ -29,7 +29,6 @@ public class PBSGame extends ScrollingScreenGame {
     Level levelData;
 
     EntityFactory ef;
-    long deltaMs;
 
     Entity e, plr;
 
@@ -39,7 +38,6 @@ public class PBSGame extends ScrollingScreenGame {
     public PBSGame() {
 	super(SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
-	deltaMs = (long) 10.0;
 	ef = new EntityFactory();
 
 	rf = ResourceFactory.getFactory();
