@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jig.engine.physics.Body;
+import jig.engine.Sprite;
 import jig.engine.util.Vector2D;
 
 /**
  * @author Skylar Hiebert
  *
  */
-public class QuadNode<T extends Body> {
-	protected static final int MAX_ENTITIES = 1;
+public class QuadNode<T extends Sprite> {
+	private static int maxEntities = 1;
 	private QuadNode<T> parent, nwNode, neNode, swNode, seNode;
 	private Vector2D min, max;
 	private List<T> entities;
@@ -40,7 +40,7 @@ public class QuadNode<T extends Body> {
 	}
 	
 	public void addEntity(T entity) {
-		if(entities != null && entities.size() < MAX_ENTITIES) {
+		if(entities != null && entities.size() < maxEntities) {
 			entities.add(entity);
 		} else if (entities == null) {
 			double minX = min.getX(), maxX = max.getX();
@@ -48,6 +48,8 @@ public class QuadNode<T extends Body> {
 			double midX = (maxX - minX) / 2, midY = (maxY - minY) / 2;
 			double xPos = entity.getPosition().getX(), yPos = entity.getPosition().getY();
 			double width = entity.getWidth(), height = entity.getHeight();
+			System.out.println("xPos:" + xPos + " yPos:" + yPos + " minX,minY" + minX + "," + minY);
+			System.out.println("maxX,maxY" + maxX + "," + maxY + "  midX,midY" + midX + "," + midY);
 			if((xPos > minX && xPos < midX) && (yPos > minY && yPos < midY)) { // Width and Height won't matter
 				nwNode.addEntity(entity); // nwNode
 			} 
@@ -57,10 +59,12 @@ public class QuadNode<T extends Body> {
 			} 
 			if(((xPos > minX || xPos + width > minX) && (xPos < midX || xPos + width < midX)) &&
 					((yPos > midY || yPos + height > midY) && (yPos < maxY || yPos + height < maxY))) {
+				System.out.println("SW Entity:" + entity.getPosition());
 				swNode.addEntity(entity); //swNode
 			} 
 			if(((xPos > midX || xPos + width > midX) && (xPos < maxX || xPos + width < maxX)) &&
 					((yPos > minY || yPos + height > minY) && (yPos < maxY || yPos + height < maxY))) {
+				System.out.println("SE Entity:" + entity.getPosition());
 				seNode.addEntity(entity); //seNode
 			}
 		} else {
@@ -93,6 +97,10 @@ public class QuadNode<T extends Body> {
 		return list;
 	}
 	
+	public List<T> getPayload() {
+		return entities;
+	}
+	
 	public List<T> getEntities(Vector2D min, Vector2D max) {
 		List<T> list = new ArrayList<T>();
 		double aMinX = min.getX(), aMaxX = max.getX(); 
@@ -118,8 +126,15 @@ public class QuadNode<T extends Body> {
 		return list;
 	}
 	
-	public QuadNode<T> getParent() {
-		return parent;
+	public int getSize() {
+		if(entities != null)
+			return entities.size();
+		else 
+			return nwNode.getSize() + neNode.getSize() + swNode.getSize() + seNode.getSize();
+	}
+	
+	public static void setMaxEntitiesPerNode(int newMaxEntities) {
+		maxEntities = newMaxEntities;
 	}
 	
 	public Vector2D getMin() {
@@ -128,5 +143,40 @@ public class QuadNode<T extends Body> {
 	
 	public Vector2D getMax() {
 		return max;
+	}
+	
+	/**
+	 * @return the parent
+	 */
+	public QuadNode<T> getParent() {
+		return parent;
+	}
+
+	/**
+	 * @return the nwNode
+	 */
+	public QuadNode<T> getNwNode() {
+		return nwNode;
+	}
+
+	/**
+	 * @return the neNode
+	 */
+	public QuadNode<T> getNeNode() {
+		return neNode;
+	}
+
+	/**
+	 * @return the swNode
+	 */
+	public QuadNode<T> getSwNode() {
+		return swNode;
+	}
+
+	/**
+	 * @return the seNode
+	 */
+	public QuadNode<T> getSeNode() {
+		return seNode;
 	}
 }

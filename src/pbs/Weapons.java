@@ -1,8 +1,9 @@
 package pbs;
 
-import jig.engine.util.Vector2D;
-import pbs.Entity.*;
+
+import jig.engine.util.*;
 import pbs.Level.Layer;
+import pbs.Entity.*;
 import pbs.Updater.MissileArc;
 
 public class Weapons {
@@ -32,9 +33,9 @@ public class Weapons {
 			m1 = shoot_bullet(pos, new Vector2D(20, 0), 0.0);
 			m2 = shoot_bullet(pos, new Vector2D(20, 1), 0.0);
 			
-			ld.add(m0, Layer.ENEMY);
-			ld.add(m1, Layer.ENEMY);
-			ld.add(m2, Layer.ENEMY);
+			ld.add(m0, Layer.FRIENDLY);
+			ld.add(m1, Layer.FRIENDLY);
+			ld.add(m2, Layer.FRIENDLY);
 		}
 	}
 	
