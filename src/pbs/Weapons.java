@@ -8,19 +8,14 @@ import pbs.Updater.*;
 
 public class Weapons {
 
-    public Weapons(){
-	
-    }
-
     public static class TriShot implements CustomWeapon{
 
 	public Entity shoot_bullet(Vector2D pos, Vector2D vel, double arc){
 	    Entity e = new Entity("resources/pbs-spritesheet.png#ball");
 			
-	    e.theta = arc;
 	    e.setPosition(pos);
 	    e.setVelocity(vel);
-	    e.setCustomUpdate(new MissileArc(e.theta));
+	    e.setCustomUpdate(new MissileArc(arc));
 	    return e;
 	}
 		

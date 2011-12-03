@@ -43,7 +43,6 @@ public class EntityFactory {
 	public Entity get_bullet_arc(Vector2D pos, Vector2D vel, double arc){
 		Entity e = new Entity( ball);
 		
-		e.theta = arc;
 		e.setPosition(pos);
 		e.setVelocity(vel);
 		e.setCustomUpdate(new MissileArc(0.0005));
@@ -52,18 +51,16 @@ public class EntityFactory {
 	
 	public Entity shoot_bullet(Vector2D pos, Vector2D vel, double arc){
 		Entity e = new Entity(ball);
-		
-		e.theta = arc;
+	
 		e.setPosition(pos);
 		e.setVelocity(vel);
-		e.setCustomUpdate(new MissileArc(e.theta));
+		e.setCustomUpdate(new MissileArc(arc));
 		return e;
 	}
 	
 	public Entity get_chaser(Vector2D pos, Vector2D vel, Entity target){
 		Entity e = new Entity(hex);
 		
-		e.target = target;
 		e.setPosition(pos);
 		e.setVelocity(vel);
 		e.setCustomUpdate(new Target(target));
@@ -75,7 +72,6 @@ public class EntityFactory {
 		
 		e.setPosition(pos);
 		e.setVelocity(vel);
-		e.tar = target_pos;
 		e.setCustomUpdate(new TargetPoint(target_pos));
 		return e;
 	}

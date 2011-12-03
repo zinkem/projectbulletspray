@@ -12,7 +12,7 @@ public class Entity extends Body {
     }
 
     public interface CustomRender {
-	public void render(RenderingContext rc, ImageResource ir);
+	public void render(RenderingContext rc, Entity e);
     }
 
     public interface CustomWeapon {
@@ -37,14 +37,6 @@ public class Entity extends Body {
     protected int score; //score value of this entity
     public int value() { return score; }
     public void setValue(int v) { score = v; }
-
-    protected double theta;
-    protected double cooldown;
-    
-    protected double angle, angleVelocity;
-    
-    protected Entity target;
-    protected Vector2D tar;
     
     //custom methods for entity specialization
     protected CustomUpdate cu;
@@ -62,18 +54,18 @@ public class Entity extends Body {
 	alive = true;
 	hp = 1;
 	score = 100;
-	theta = 0.005;
-	angle = 0.0;
-	angleVelocity = Math.PI/32.0;
-	score = 100;
     }
 
     public void render(RenderingContext rc) {
 	if (cr != null) {
-	    cr.render(rc, frames.get(visibleFrame));
+	    cr.render(rc, this);
 	} else {
 	    super.render(rc);
 	}
+    }
+    
+    public ImageResource getImage(){
+		return frames.get(visibleFrame);
     }
     
     @Override
