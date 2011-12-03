@@ -16,7 +16,8 @@ public class Level {
 	    HOSTILE, 
 	    FRIENDLY, 
 	    PLAYER, 
-	    FOREGROUND }
+	    FOREGROUND,
+	    HUD }
     
     public static int NUM_LAYERS = Layer.values().length;
     
@@ -60,6 +61,7 @@ public class Level {
 		    //enumerated in Layer
 		    allTheLayers.add(new PBSQuadLayer<Entity>(new Vector2D(0,0), camera.scale(2.0)));
 		}
+		allTheLayers.add(new PBSHudLayer(new Vector2D(0,0), camera.scale(2.0), this));
 		
 		//after all layers are added, we can add collision handlers
 		setupCollisionHandlers();
