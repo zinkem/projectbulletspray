@@ -82,9 +82,9 @@ public class Elements {
 	}
 
 	public void mutate(Level l){
-	    Entity e = new Entity(img);
+	    Entity e = new Entity(imgsrc);
 	    
-	    for(i = 0; i < paramlist.size(); i++){
+	    for(int i = 0; i < paramlist.size(); i++){
 		paramlist.get(i).mutate(e);
 	    }
 	    
