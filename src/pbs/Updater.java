@@ -278,7 +278,7 @@ public abstract class Updater implements CustomUpdate{
 		}
 	}
 	
-	public class Strait implements CustomUpdate{
+	public static class Strait implements CustomUpdate{
 		@Override
 		public void update(Entity e, long deltaMs){
 			e.setPosition(e.getPosition().translate(e.getVelocity().scale(deltaMs/100.0)));

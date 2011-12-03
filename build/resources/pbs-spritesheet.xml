@@ -14,6 +14,30 @@
   </frameset>
   
   <frameset>
+  	<name>green_laser</name>
+  	<top>24</top>
+  	<left>0</left>
+  	<width>16</width>
+  	<height>4</height>
+  </frameset>
+  
+  <frameset>
+  	<name>red_laser</name>
+  	<top>24</top>
+  	<left>16</left>
+  	<width>16</width>
+  	<height>4</height>
+  </frameset>
+  
+  <frameset>
+  	<name>blue_laser</name>
+  	<top>24</top>
+  	<left>32</left>
+  	<width>16</width>
+  	<height>4</height>
+  </frameset>
+  
+  <frameset>
   	<name>hex</name>
   	<top>448</top>
   	<left>0</left>
