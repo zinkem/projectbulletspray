@@ -1,6 +1,8 @@
 package pbs;
 
+import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.*;
 
 import jig.engine.*;
 import jig.engine.hli.*;
@@ -18,6 +20,8 @@ public class PBSGame extends ScrollingScreenGame {
 
     public static int SCREEN_WIDTH = 640;
     public static int SCREEN_HEIGHT = 480;
+    public static int X_MID = SCREEN_WIDTH/2;
+    public static int Y_MID = SCREEN_HEIGHT/2;
     public static String SPRITE_SHEET = "resources/pbs-spritesheet.png";
     
     ResourceFactory rf;
@@ -29,6 +33,9 @@ public class PBSGame extends ScrollingScreenGame {
 
     Entity e, plr;
 
+    //hud variables
+    protected FontResource hudFont;
+
     public PBSGame() {
 	super(SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
@@ -37,6 +44,7 @@ public class PBSGame extends ScrollingScreenGame {
 
 	rf = ResourceFactory.getFactory();
 	rf.loadResources("resources/", "pbs-resources.xml");
+	hudFont = rf.getFontResource(new Font("Sans Serif", Font.PLAIN, 24), Color.white, null);
 
 	LevelParser lp = new LevelParser("resources/test.lvl");
 	lp.createLevel();
@@ -63,6 +71,27 @@ public class PBSGame extends ScrollingScreenGame {
 	GameClock.TimeManager tm = new GameClock.SleepIfNeededTimeManager(60.0);
 	theClock.setTimeManager(tm);
     }
+
+    public void render(RenderingContext rc){
+	super.render(rc);
+	
+	String message = "High Score: " + levelData.getScore();
+	int x = X_MID - hudFont.getStringWidth(message)/ 2;
+	int y = 10;
+	hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
+
+	message = "Score: ";
+	x = X_MID - hudFont.getStringWidth(message);
+	y = SCREEN_HEIGHT - hudFont.getHeight() - 10;
+	hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
+	
+	message = "" + levelData.getScore();
+	x = X_MID;
+	hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
+
+    }
+
+
 
     protected class KeyboardControls implements CustomUpdate {
 	Keyboard key;

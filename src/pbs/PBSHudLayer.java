@@ -28,19 +28,42 @@ public class PBSHudLayer extends PBSQuadLayer<Entity> {
 	}
 	
 	public void render(RenderingContext rc) {
-		super.render(rc);
+
+	    //alternate method, requires less math and allows using screen coords...
+	    //upon writing this i realized maybe we should consider ditching the layer
+	    //completely, and add this stuff to the "render" method in PBSGame
+	    
+	    AffineTransform aft = rc.getTransform();
+	    rc.setTransform(AffineTransform.getTranslateInstance(0,0));
+
+	    String message = "High Score: " + level.getScore();
+
+	    hudFont.render(message, rc,
+			   AffineTransform.getTranslateInstance(30, 30));
+
+
+	    rc.setTransform(aft);
+
+	    /*
+
+	super.render(rc);
 		
-		String info = "High Score: " + level.getScore();
-		hudFont.render(info, rc, 
-				AffineTransform.getTranslateInstance(level.getCam().getX() - hudFont.getStringWidth(info) / 2, 10));
-		info = "Score: ";
-		hudFont.render(info, rc, 
-				AffineTransform.getTranslateInstance(level.getCam().getX() - hudFont.getStringWidth(info) - 75, 
-						level.getCam().getY() * 2 - hudFont.getHeight() - 10));
-		info = Integer.toString(level.getScore());
-		hudFont.render(info, rc, 
-				AffineTransform.getTranslateInstance(level.getCam().getX() - hudFont.getStringWidth(info) - 10, 
-						level.getCam().getY() * 2 - hudFont.getHeight() - 10));
+	String info = "High Score: " + level.getScore();
+	
+	hudFont.render(info, rc,
+		       AffineTransform.getTranslateInstance(30,30));
+	
+	hudFont.render(info, rc, 
+		       AffineTransform.getTranslateInstance(level.getCam().getX() - hudFont.getStringWidth(info) / 2, 10));
+	info = "Score: ";
+	hudFont.render(info, rc, 
+		       AffineTransform.getTranslateInstance(level.getCam().getX() - hudFont.getStringWidth(info) - 75, 
+							    level.getCam().getY() * 2 - hudFont.getHeight() - 10));
+	info = Integer.toString(level.getScore());
+	hudFont.render(info, rc, 
+		       AffineTransform.getTranslateInstance(level.getCam().getX() - hudFont.getStringWidth(info) - 10, 
+		       level.getCam().getY() * 2 - hudFont.getHeight() - 10));*/
+	    
 	}
 
 }

@@ -62,8 +62,8 @@ public class Level {
 		    allTheLayers.add(new PBSQuadLayer<Entity>(new Vector2D(0,0), camera.scale(2.0)));
 		}
 
-		//last we add the hud layer, drawn on top
-		allTheLayers.add(new PBSHudLayer(new Vector2D(0,0), camera.scale(2.0), this));
+		//decided the hud might be better in the PBSGame's render method... 
+		//allTheLayers.add(new PBSHudLayer(new Vector2D(0,0), camera.scale(2.0), this));
 		
 		//after all layers are added, we can add collision handlers
 		setupCollisionHandlers();
