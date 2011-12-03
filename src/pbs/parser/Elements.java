@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import jig.engine.util.Vector2D;
 
 import pbs.*;
+import pbs.Level.*;
 import pbs.Entity.*;
 import pbs.parser.Statements.*;
 import pbs.parser.BooleanElements.*;
@@ -72,37 +73,44 @@ public class Elements {
     public static class EntityDescription extends ObjectDescription {
 
 	ArrayList<Param> paramlist;
+	String imgsrc;
+	Layer targetLayer;
 
-	public EntityDescription(ArrayList<Param> pl){
+	public EntityDescription(String img, ArrayList<Param> pl){
+	    imgsrc = img;
 	    paramlist = pl;
 	}
 
 	public void mutate(Level l){
+	    Entity e = new Entity(img);
+	    
+	    for(i = 0; i < paramlist.size(); i++){
+		paramlist.get(i).mutate(e);
+	    }
+	    
+	    l.add(e, targetLayer);
+
 	    System.out.println("Entity Description");
 	}
     }
 
     public static class fxEntity extends EntityDescription {
-	public fxEntity(ArrayList<Param> pl){ super(pl); }
+	public fxEntity(String img, ArrayList<Param> pl){ super(img, pl); }
 
 	public void mutate(Level l){
-	    //get fx layer from level
-	    //create entity
-	    //evaluate parameters
-	    //add entity to level layer
+	    //set layer
+	    targetLayer = Layer.FX;
 	    System.out.print("Fx ");
 	    super.mutate(l);
 	}
     }
 
     public static class enemyEntity extends EntityDescription {
-	public enemyEntity(ArrayList<Param> pl){ super(pl); }
+	public enemyEntity(String img, ArrayList<Param> pl){ super(img, pl); }
 
 	public void mutate(Level l){
-	    //get enemy layer from level
-	    //create entity
-	    //evaluate parameters
-	    //add entity to level layer
+	    //set layer
+	    targetLayer = Layer.ENEMY;
 	    System.out.print("Enemy ");
 	    super.mutate(l);
 
@@ -110,13 +118,11 @@ public class Elements {
     }
 
     public static class staticEntity extends EntityDescription {
-	public staticEntity(ArrayList<Param> pl){ super(pl); }
+	public staticEntity(String img, ArrayList<Param> pl){ super(img, pl); }
 
 	public void mutate(Level l){
-	    //get static layer from level
-	    //create entity
-	    //evaluate parameters
-	    //add entity to level layer
+	    //set layer
+	    targetLayer = Layer.STATIC;
 	    System.out.print("Static ");
 	    super.mutate(l);
 	}

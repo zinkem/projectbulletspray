@@ -46,33 +46,33 @@ public class Level {
     private List<QuadLayerCollisionHandler> collisionHandlers;
     
     public Level(){
-		score = 0;
-		gametime = 0;
+	score = 0;
+	gametime = 0;
 	
-		camera = new Vector2D(120,240);
-		scrollspeed = new Vector2D(10, 0);
-		
-		collisionHandlers = new ArrayList<QuadLayerCollisionHandler>();
-		allTheLayers = new ArrayList<PBSQuadLayer<Entity>>();
-		
-		for(int i = 0; i < NUM_LAYERS; i++){
-		    //here we create a new empty layer for 
-		    //each entity category
-		    //enumerated in Layer
-		    allTheLayers.add(new PBSQuadLayer<Entity>(new Vector2D(0,0), camera.scale(2.0)));
-		}
-
-		//decided the hud might be better in the PBSGame's render method... 
-		//allTheLayers.add(new PBSHudLayer(new Vector2D(0,0), camera.scale(2.0), this));
-		
-		//after all layers are added, we can add collision handlers
-		setupCollisionHandlers();
+	camera = new Vector2D(120,240);
+	scrollspeed = new Vector2D(10, 0);
+	
+	collisionHandlers = new ArrayList<QuadLayerCollisionHandler>();
+	allTheLayers = new ArrayList<PBSQuadLayer<Entity>>();
+	
+	for(int i = 0; i < NUM_LAYERS; i++){
+	    //here we create a new empty layer for 
+	    //each entity category
+	    //enumerated in Layer
+	    allTheLayers.add(new PBSQuadLayer<Entity>(new Vector2D(0,0), camera.scale(2.0)));
+	}
+	
+	//decided the hud might be better in the PBSGame's render method... 
+	//allTheLayers.add(new PBSHudLayer(new Vector2D(0,0), camera.scale(2.0), this));
+	
+	//after all layers are added, we can add collision handlers
+	setupCollisionHandlers();
     }
     
     //setters
     public void add(Entity e, Layer l){
-		System.out.println(l.ordinal());
-		getLayer(l).add(e);
+	System.out.println(l.ordinal());
+	getLayer(l).add(e);
     }
     
     
