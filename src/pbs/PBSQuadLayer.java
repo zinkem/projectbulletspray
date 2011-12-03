@@ -53,7 +53,7 @@ public class PBSQuadLayer<T extends Entity> implements Iterable<T>, BodyLayer<T>
 		    	entities.remove(i);
 		    } else {
 		    	e.update(deltaMs);
-		    	tree.add(e);
+		    	//tree.add(e);
 		    }
 		}
     }
@@ -73,14 +73,14 @@ public class PBSQuadLayer<T extends Entity> implements Iterable<T>, BodyLayer<T>
     public void clear(){
     	entities.clear();
     }
-
-	@Override
-	public T get(int i) {
-		return entities.get(i);
-	}
-	
-	public List<T> get(Vector2D min, Vector2D max) {
-		return tree.getEntities(min, max);
-	}
-
+    
+    @Override
+    public T get(int i) {
+	return entities.get(i);
+    }
+    
+    public List<T> get(Vector2D min, Vector2D max) {
+	return tree.getEntities(min, max);
+    }
+    
 }

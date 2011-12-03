@@ -9,9 +9,10 @@ import jig.engine.util.*;
 
 import pbs.Level.Layer;
 import pbs.Entity.*;
-
+import pbs.Weapons.*;
 import pbs.Updater.*;
 import pbs.parser.*;
+
 
 public class PBSGame extends ScrollingScreenGame {
 
@@ -45,6 +46,7 @@ public class PBSGame extends ScrollingScreenGame {
 	plr = new Entity(SPRITE_SHEET + "#hex");
 	plr.setPosition(new Vector2D(300, 300));
 	plr.setCustomUpdate(new KeyboardControls(keyboard));
+	plr.setCustomWeapon(new FriendlySpread());
 	levelData.add(plr, Layer.PLAYER);
 
 	e = ef.get_bullet_arc(new Vector2D(200, 200), new Vector2D(10, 0),
@@ -83,6 +85,10 @@ public class PBSGame extends ScrollingScreenGame {
 	    Vector2D pos = e.getPosition();
 	    e.setVelocity(new Vector2D(0, 0));
 
+	    if(fire){
+		e.shoot(levelData, deltaMs);
+	    }
+
 	    if (left && !right) {
 		e.setVelocity(e.getVelocity().translate(new Vector2D(-30, 0)));
 	    }
@@ -107,7 +113,7 @@ public class PBSGame extends ScrollingScreenGame {
 
     public void update(long deltaMs) {
 
-	centerOnPoint(levelData.getCam()); // method to use to centerOn any body
+	centerOnPoint(levelData.getCam()); //center on level camera
 	levelData.update(deltaMs, 
 			 screenToWorld(new Vector2D(0,0)), 
 			 screenToWorld(new Vector2D(SCREEN_WIDTH, SCREEN_HEIGHT)));
