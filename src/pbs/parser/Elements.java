@@ -5,19 +5,20 @@ import java.util.ArrayList;
 import jig.engine.util.Vector2D;
 
 import pbs.*;
+import pbs.Entity.*;
 import pbs.parser.Statements.*;
 import pbs.parser.BooleanElements.*;
 import pbs.parser.ExpressionElements.*;
 
 public class Elements {
-
+    
     //entity descriptions... 
     public abstract static class ObjectDescription {
 	//returns an entity matching this description
 	//public abstract ALAYERTYPE getLayerType();
 	public abstract void mutate(Level l);	
     }
-
+    
     public static class TriggerDescription extends ObjectDescription {
 	//triggers have a list of statements that get added to the
 	//event queue when they are triggered
@@ -138,12 +139,50 @@ public class Elements {
 	    return true;
 	}
     }
-
-   public static class PositionParam extends VectorParam {
+    
+    public static class PositionParam extends VectorParam {
 	public PositionParam(Vector2D p){ super(p); }
 	public boolean mutate(Entity e){
 	    e.setPosition(vec);
 	    return true;
 	}
     }
+    
+    public static class ScoreValueParam implements Param {
+	int score;
+	public ScoreValueParam(int s){ score = s; }
+	public boolean mutate(Entity e){
+	    e.setValue(score);
+	    return true;
+	}
+    } 
+	
+
+    public static class UpdateParam implements Param {
+	CustomUpdate cu;
+	public UpdateParam(CustomUpdate u){ cu = u; }
+	public boolean mutate(Entity e){
+	    e.setCustomUpdate(cu);
+	    return true;
+	}
+    }
+
+    public static class RenderParam implements Param {
+	CustomRender cr;
+	public RenderParam(CustomRender r){ cr = r; }
+	public boolean mutate(Entity e){
+	    e.setCustomRender(cr);
+	    return true;
+	}
+    }
+
+    public static class WeaponParam implements Param {
+	CustomWeapon cw;
+	public WeaponParam(CustomWeapon w){ cw = w; }
+	public boolean mutate(Entity e){
+	    e.setCustomWeapon(cw);
+	    return true;
+	}
+    }
+
 }

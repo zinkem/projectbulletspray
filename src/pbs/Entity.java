@@ -36,6 +36,7 @@ public class Entity extends Body {
 
     protected int score; //score value of this entity
     public int value() { return score; }
+    public void setValue(int v) { score = v; }
 
     protected double theta;
     protected double cooldown;
