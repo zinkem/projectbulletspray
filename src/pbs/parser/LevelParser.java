@@ -207,15 +207,15 @@ public class LevelParser {
     }
     
     protected ObjectDescription fx(){
-	return new fxEntity(paramList());
+	return new fxEntity(null, paramList());
     }
 
     protected ObjectDescription enemy(){
-	return new enemyEntity(paramList());
+	return new enemyEntity(null, paramList());
     }
 
     protected ObjectDescription staticEnt(){
-	return new staticEntity(paramList());
+	return new staticEntity(null, paramList());
     }
 
     protected ObjectDescription timed(){
