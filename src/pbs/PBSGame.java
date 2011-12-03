@@ -72,6 +72,8 @@ public class PBSGame extends ScrollingScreenGame {
 	theClock.setTimeManager(tm);
     }
 
+
+    //this method renders the hud
     public void render(RenderingContext rc){
 	super.render(rc);
 	
@@ -135,8 +137,6 @@ public class PBSGame extends ScrollingScreenGame {
 	    }
 
 	    e.setPosition(pos.translate(e.getVelocity().scale(deltaMs / 100.0)));
-	    e.age += deltaMs;
-
 	}
     }
 

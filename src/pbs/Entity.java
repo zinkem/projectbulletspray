@@ -20,13 +20,23 @@ public class Entity extends Body {
     }
 
     //entity members
-    protected Vector2D location;
-    protected Updater up;
-    protected long age;
-    protected boolean alive;
-    protected int hp = 0;
-    protected int score;
+    protected long age; //age of entity
+    protected long age() { return age; }
+
+    protected boolean alive; //is the entity alive? (dead entities get removed)
+    public boolean alive() { return this.alive; }
     
+    protected int hp; //hit points left, hitting zero turns alive to false
+    public int hp() { return hp; }
+    public boolean modhp(int m) { 
+	hp += m;
+	alive = (hp > 0);
+	return alive;
+    }
+
+    protected int score; //score value of this entity
+    public int value() { return score; }
+
     protected double theta;
     protected double cooldown;
     
@@ -35,7 +45,7 @@ public class Entity extends Body {
     protected Entity target;
     protected Vector2D tar;
     
-    
+    //custom methods for entity specialization
     protected CustomUpdate cu;
     public void setCustomUpdate(CustomUpdate u){ cu = u; }
 
@@ -47,23 +57,21 @@ public class Entity extends Body {
         
     public Entity(String imgrsc) {
 	super(imgrsc);
-	age = (long)0.0;
+	age = 0;
 	alive = true;
+	hp = 1;
+	score = 100;
 	theta = 0.005;
 	angle = 0.0;
 	angleVelocity = Math.PI/32.0;
 	score = 100;
     }
-    
-    public void set_up(Updater u){
-	up = u;
-    }
-        
+
     public void render(RenderingContext rc) {
 	if (cr != null) {
 	    cr.render(rc, frames.get(visibleFrame));
 	} else {
-			super.render(rc);
+	    super.render(rc);
 	}
     }
     
@@ -73,7 +81,9 @@ public class Entity extends Body {
 	    cu.update(this, deltaMs);
 	}else{
 	    System.out.println("Custom update for object:"+this.toString()+" Not found");
-		}
+	}
+
+	age += deltaMs;
     }
 	
     public void shoot(Level lvl, long deltaMs){
@@ -84,11 +94,5 @@ public class Entity extends Body {
 	}
 	
     }
-    
-    public boolean alive() {
-	return this.alive;
-    }
-    
-	
 
 }
