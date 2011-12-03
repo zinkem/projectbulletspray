@@ -14,7 +14,7 @@ import jig.engine.util.Vector2D;
 import quadtree.*;
 
 public class PBSQuadLayer<T extends Entity> implements Iterable<T>, BodyLayer<T>, ViewableLayer {
-	private static final int MAX_ENTITIES = 1;
+	private static final int MAX_ENTITIES = 10;
     
     //goal will be to change this to a quad tree
     protected List<T> entities;
@@ -53,7 +53,7 @@ public class PBSQuadLayer<T extends Entity> implements Iterable<T>, BodyLayer<T>
 		    	entities.remove(i);
 		    } else {
 		    	e.update(deltaMs);
-		    	//tree.add(e);
+		    	tree.add(e);
 		    }
 		}
     }
