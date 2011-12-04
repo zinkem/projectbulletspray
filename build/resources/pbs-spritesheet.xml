@@ -41,24 +41,24 @@
     <name>red_bullet</name>
     <top>28</top>
     <left>0</left>
-    <width>8</width>
-    <height>8</height>
+    <width>6</width>
+    <height>6</height>
   </frameset>
 
   <frameset>
     <name>purple_bullet</name>
     <top>28</top>
     <left>8</left>
-    <width>8</width>
-    <height>8</height>
+    <width>6</width>
+    <height>6</height>
   </frameset>
 
   <frameset>
     <name>blue_bullet</name>
     <top>28</top>
     <left>16</left>
-    <width>8</width>
-    <height>8</height>
+    <width>6</width>
+    <height>6</height>
   </frameset>
 
    <frameset>
@@ -66,6 +66,14 @@
     <top>28</top>
     <left>24</left>
     <width>8</width>
+    <height>8</height>
+  </frameset>
+
+  <frameset>
+    <name>laser_trail</name>
+    <top>36</top>
+    <left>0</left>
+    <width>32</width>
     <height>8</height>
   </frameset>
 
