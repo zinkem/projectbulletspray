@@ -1,9 +1,13 @@
 package pbs;
 
+import java.awt.geom.AffineTransform;
+
+import jig.engine.RenderingContext;
 import jig.engine.util.Vector2D;
-import pbs.Entity.CustomUpdate;
 import pbs.Entity.*;
 import pbs.Updater.*;
+import pbs.Renders.*;
+
 
 public class EntityFactory {
 	public static String sheet_path, ship, ball, hex;
@@ -41,11 +45,30 @@ public class EntityFactory {
 	}
 	
 	public Entity get_bullet_arc(Vector2D pos, Vector2D vel, double arc){
-		Entity e = new Entity( ball);
+		Entity e = new Entity( hex);
 		
 		e.setPosition(pos);
 		e.setVelocity(vel);
 		e.setCustomUpdate(new MissileArc(0.0005));
+		return e;
+	}
+	
+	public Entity get_directed(Vector2D pos, Vector2D vel, Entity t, RenderingContext rc){
+		Entity e = new Entity(hex);
+		
+		Vector2D target = t.getCenterPosition();
+		AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
+		double angle = e.getCenterPosition().angleTo(target);
+		at.translate(e.getCenterPosition().getX(), e.getCenterPosition().getY());
+		at.rotate(angle);
+		at.translate(-e.getWidth()/2, -e.getWidth()/2);
+		e.getImage().render(rc, at);
+		
+		e.setPosition(pos);
+		e.setVelocity(vel);
+		e.setCustomUpdate(new MissileArc(0.05));
+		e.setCustomRender(new PointDirection(t));
+		
 		return e;
 	}
 	
