@@ -75,7 +75,27 @@
     <left>0</left>
     <width>32</width>
     <height>8</height>
+    <columns>4</columns>
   </frameset>
+
+  <frameset>
+    <name>small_burst</name>
+    <top>68</top>
+    <left>0</left>
+    <width>10</width>
+    <height>10</height>
+    <columns>4</columns>
+  </frameset>
+
+  <frameset>
+    <name>large_burst</name>
+    <top>78</top>
+    <left>0</left>
+    <width>36</width>
+    <height>36</height>
+    <columns>4</columns>
+  </frameset>
+ 
 
   <frameset>
     <name>hex</name>
