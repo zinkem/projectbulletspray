@@ -12,6 +12,14 @@
     <width>40</width>
     <height>24</height>
   </frameset>
+
+  <frameset>
+    <name>shuttle</name>
+    <top>0</top>
+    <left>40</left>
+    <width>40</width>
+    <height>24</height>
+  </frameset>
   
   <frameset>
     <name>green_laser</name>
