@@ -170,23 +170,20 @@ public class Updater {
 		}
 	}
 
-	public class BossCharge implements CustomUpdate {
+	public static class BossCharge implements CustomUpdate {
 		private Vector2D basePos;
 		private double cooldown;
 		private double speed;
 		private double dist;
-		private boolean atking;
-		private double accel;
-		private int direct;
+		private boolean atking, resting;
 
 		public BossCharge(Entity e) {
 			basePos = e.getCenterPosition();
-			direct = -1;
 			atking = false;
-			cooldown = 2000;
+			resting = true;
+			cooldown = 3000;
 			dist = 300;
 			speed = 30;
-			accel = 1.0;
 		}
 
 		@Override
@@ -195,13 +192,25 @@ public class Updater {
 			if (!atking && cooldown < 0.0) {
 				//Time to return to base
 				e.setVelocity(new Vector2D(35, 0));
+				atking = true;
+				resting = false;
 			} else if (atking) {
-				this.speed -= 0.5;
+				cooldown = 2000.0;
+				speed -= 1.5;
 				e.setVelocity(new Vector2D(speed, 0));
-			
-			} else if(!atking){
-				
-				
+				if(Math.abs(e.getCenterPosition().getX() - basePos.getX()) > dist ){
+					atking = false;
+					speed = 35;
+					e.setVelocity(new Vector2D(speed, 0));
+				}
+			} else if(!atking && !resting){
+				cooldown = 2000.0;
+				speed += 0.2;
+				if(Math.abs(e.getCenterPosition().getX() - basePos.getX()) < 50){ resting = true; }
+				e.setVelocity(new Vector2D(speed, 0));
+			}else{
+				e.setVelocity(new Vector2D(0,0));
+				//Shoot or shuffle about
 			}
 			e.setPosition(e.getPosition().translate(
 					e.getVelocity().scale(deltaMs / 100.0)));

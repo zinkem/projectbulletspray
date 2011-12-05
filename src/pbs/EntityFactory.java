@@ -81,6 +81,15 @@ public class EntityFactory {
 		return e;
 	}
 	
+	public Entity Boss(Vector2D pos){
+		Entity e = new Entity(ship);
+		e.setPosition(pos);
+		e.setVelocity(new Vector2D(0,0));
+		e.setCustomUpdate(new BossCharge(e));
+		
+		return e;
+	}
+	
 	public Entity get_chaser(Vector2D pos, Vector2D vel, Entity target){
 		Entity e = new Entity(hex);
 		

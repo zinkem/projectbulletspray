@@ -9,15 +9,16 @@ import pbs.Entity.*;
 public class Renders {
 	
 	public static class FollowVelocity implements CustomRender{
-		public FollowVelocity(){}
+		private Vector2D origin;
+		public FollowVelocity(){ this.origin = new Vector2D(0,0); }
 		
 		@Override
 		public void render(RenderingContext rc, Entity e) {
 			Vector2D vel = e.getVelocity();
-			Vector2D origin = new Vector2D(0, 0);
+			
 			
 			AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
-			double angle = origin.angleTo(vel);
+			double angle = this.origin.angleTo(vel);
 			at.translate(e.getCenterPosition().getX(), e.getCenterPosition().getY());
 			at.rotate(angle);
 			at.translate(-e.getWidth()/2, -e.getHeight()/2);
@@ -31,7 +32,6 @@ public class Renders {
 	
 		@Override
 		public void render(RenderingContext rc, Entity e) {
-			Vector2D origin = new Vector2D(0,0);
 			Vector2D target = tar.getCenterPosition();
 			
 			AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
