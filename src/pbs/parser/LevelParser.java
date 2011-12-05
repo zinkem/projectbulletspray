@@ -166,8 +166,8 @@ public class LevelParser {
 	*/
     }
 
-    protected BooleanExpression {
-	
+    protected BooleanExpression boolExpr(){
+	return null;
     }
 
     protected Statement setStmt(){
