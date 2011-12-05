@@ -6,6 +6,9 @@ import jig.engine.*;
 import jig.engine.physics.BodyLayer;
 import jig.engine.util.Vector2D;
 
+import pbs.parser.Statements.*;
+import pbs.parser.Elements.*;
+
 public class Level {
 
     public static enum Layer { 
@@ -44,7 +47,29 @@ public class Level {
 
     //list of collision handlers 
     private List<QuadLayerCollisionHandler> collisionHandlers;
-    
+
+
+    //statement list
+    private Stack<Statement> events;
+    public void addStatement(Statement s){ events.push(s); }
+    public void execute(){
+	Statement s;
+	while(!events.empty()){
+	    s = events.pop();
+	    s.execute(this);
+	}
+    }
+
+    //symbol table with templated entities/triggers
+    HashMap<String, ObjectDescription> templates;
+    public ObjectDescription getTemplate(String s){
+	return templates.get(s); 
+    }
+    public void addTemplate(String s, ObjectDescription od){
+	templates.put(s, od);
+    }
+
+
     public Level(){
 	score = 0;
 	gametime = 0;
@@ -52,6 +77,9 @@ public class Level {
 	camera = new Vector2D(120,240);
 	scrollspeed = new Vector2D(10, 0);
 	
+	events = new Stack<Statement>();
+	templates = new HashMap<String, ObjectDescription>();
+
 	collisionHandlers = new ArrayList<QuadLayerCollisionHandler>();
 	allTheLayers = new ArrayList<PBSQuadLayer<Entity>>();
 	
@@ -62,18 +90,12 @@ public class Level {
 	    allTheLayers.add(new PBSQuadLayer<Entity>(new Vector2D(0,0), camera.scale(2.0)));
 	}
 	
-	//decided the hud might be better in the PBSGame's render method... 
-	//allTheLayers.add(new PBSHudLayer(new Vector2D(0,0), camera.scale(2.0), this));
-	
 	//after all layers are added, we can add collision handlers
 	setupCollisionHandlers();
     }
     
     //setters
-    public void add(Entity e, Layer l){
-	System.out.println(l.ordinal());
-	getLayer(l).add(e);
-    }
+    public void add(Entity e, Layer l){	getLayer(l).add(e); }
     
     
     //getters
@@ -100,7 +122,7 @@ public class Level {
 		collisionHandlers.add(new ElasticCollisionHandler(getLayer(Layer.ENEMY), 
 								  getLayer(Layer.PLAYER)));
 		
-		System.out.println("col handlers size " + collisionHandlers.size());
+		//System.out.println("col handlers size " + collisionHandlers.size());
     }
     
     /* stwMin, stwMax are ScreenToWorld coordinates for QuadTree */
@@ -122,6 +144,9 @@ public class Level {
 	public void update(long deltaMs, Vector2D stwMin, Vector2D stwMax){
 		
 		camera = camera.translate(scrollspeed.scale(deltaMs/100.0));
+
+		//execute all statements on queue
+		execute();
 	
 		//call update on each layer
 		updateLayers(deltaMs, stwMin, stwMax);

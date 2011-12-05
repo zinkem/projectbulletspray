@@ -43,7 +43,7 @@ public abstract class CollisionHandler {
 
 		if(bodyBoundingBox1 != null && bodyBoundingBox2 != null){
 		    if (bodyBoundingBox1.intersects(bodyBoundingBox2)) {
-			System.out.println("collision!");
+			//System.out.println("collision!");
 			collide(body1, body2);
 		    }
 	    
