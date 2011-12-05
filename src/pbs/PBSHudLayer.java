@@ -33,8 +33,9 @@ public class PBSHudLayer extends PBSQuadLayer<Entity> {
 	    //upon writing this i realized maybe we should consider ditching the layer
 	    //completely, and add this stuff to the "render" method in PBSGame
 	    
-	    AffineTransform aft = rc.getTransform();
-	    rc.setTransform(AffineTransform.getTranslateInstance(0,0));
+	    AffineTransform aft = rc.getTransform(); //saves the current global transform
+
+	    rc.setTransform(AffineTransform.getTranslateInstance(0,0)); //sets transform to 0,0
 
 	    String message = "High Score: " + level.getScore();
 
@@ -42,7 +43,7 @@ public class PBSHudLayer extends PBSQuadLayer<Entity> {
 			   AffineTransform.getTranslateInstance(30, 30));
 
 
-	    rc.setTransform(aft);
+	    rc.setTransform(aft); //puts global transform back on rc
 
 	    /*
 
@@ -62,7 +63,8 @@ public class PBSHudLayer extends PBSQuadLayer<Entity> {
 	info = Integer.toString(level.getScore());
 	hudFont.render(info, rc, 
 		       AffineTransform.getTranslateInstance(level.getCam().getX() - hudFont.getStringWidth(info) - 10, 
-		       level.getCam().getY() * 2 - hudFont.getHeight() - 10));*/
+		       level.getCam().getY() * 2 - hudFont.getHeight() - 10));
+	    */
 	    
 	}
 
