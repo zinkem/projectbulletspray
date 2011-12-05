@@ -9,8 +9,9 @@ package pbs;
  */
 import java.util.*;
 import jig.engine.*;
-import jig.engine.physics.BodyLayer;
+import jig.engine.physics.*;
 import jig.engine.util.Vector2D;
+
 import quadtree.*;
 
 public class PBSQuadLayer<T extends Entity> implements Iterable<T>, BodyLayer<T>, ViewableLayer {

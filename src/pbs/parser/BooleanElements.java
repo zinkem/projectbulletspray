@@ -76,6 +76,11 @@ public class BooleanElements {
 	public boolean eval(){ return left.eval() >= right.eval(); }
     }
 
+    public static class BooleanValue implements BooleanExpression {
+	boolean val;
+	public BooleanValue(boolean b){ val = b; }
+	public boolean eval(){ return val; }
+    }
 
     //level switches give various yes/no answers about the level
     public static abstract class LevelSwitch implements BooleanExpression {
@@ -93,5 +98,5 @@ public class BooleanElements {
 	public boolean eval(){ return true; }
     }
 
-    
+    //what other yes/no questions would we ask?
 }

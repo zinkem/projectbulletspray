@@ -48,7 +48,6 @@ public class Level {
     //list of collision handlers 
     private List<QuadLayerCollisionHandler> collisionHandlers;
 
-
     //statement list
     private Stack<Statement> events;
     public void addStatement(Statement s){ events.push(s); }
@@ -114,7 +113,7 @@ public class Level {
 							   getLayer(Layer.PLAYER)){
 			public void collide(Entity body1, Entity body2){
 			    //this is where you define behavior for a collision
-			    //body1 is from static layer
+			    //body1 is from enemy layer
 			    //body2 is from player layer
 			}
 		    });
@@ -136,24 +135,24 @@ public class Level {
     }
     
     protected void checkForCollisions(){
-		for(QuadLayerCollisionHandler c : collisionHandlers){
-		    c.findAndReconcileCollisions();
-		}
+	for(QuadLayerCollisionHandler c : collisionHandlers){
+	    c.findAndReconcileCollisions();
 	}
+    }
+    
+    public void update(long deltaMs, Vector2D stwMin, Vector2D stwMax){
 	
-	public void update(long deltaMs, Vector2D stwMin, Vector2D stwMax){
-		
-		camera = camera.translate(scrollspeed.scale(deltaMs/100.0));
-
-		//execute all statements on queue
-		execute();
+	camera = camera.translate(scrollspeed.scale(deltaMs/100.0));
 	
-		//call update on each layer
-		updateLayers(deltaMs, stwMin, stwMax);
-		
-		//check for collisions
-		checkForCollisions();	
-
-   }
+	//execute all statements on queue
+	execute();
+	
+	//call update on each layer
+	updateLayers(deltaMs, stwMin, stwMax);
+	
+	//check for collisions
+	checkForCollisions();	
+	
+    }
 
 }

@@ -64,15 +64,7 @@ public class LevelParser {
 
 	Pattern p = source.delimiter();
 	System.out.println(p.pattern());
-	/*
-	try{
-	char[] t = new char[1];
-	ctoken = source.next(Pattern.compile("\p{Punct}"));
-	} catch(Exception e){
-	    System.out.println(e);
-	}
-	System.out.print(ctoken + " ");
-	*/
+
 	ctoken = source.next();
 	Statement s;
 
@@ -166,7 +158,7 @@ public class LevelParser {
 
 	/*
 	//parse conditional
-	Conditional c = boolExpr();
+	BooleanExpression c = boolExpr();
 	//parse statement after
 	Statement s = nextStatement();
 	
@@ -174,7 +166,9 @@ public class LevelParser {
 	*/
     }
 
-    
+    protected BooleanExpression {
+	
+    }
 
     protected Statement setStmt(){
 	return null;
