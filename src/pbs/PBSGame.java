@@ -102,6 +102,8 @@ public class PBSGame extends ScrollingScreenGame {
 
 	centerOnPoint(levelData.getCam());
 	pushPlayerToBounds(topleft, botright);
+	player.setPosition(player.getPosition().translate(levelData.getScrollSpeed()
+							  .scale(deltaMs/100.0)));
 	levelData.update(FRAME_SIZE, topleft, botright);
 	    
     }
