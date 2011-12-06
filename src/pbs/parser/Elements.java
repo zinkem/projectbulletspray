@@ -162,7 +162,15 @@ public class Elements {
 	    return true;
 	}
     } 
-	
+
+    public static class SpawnTime implements Param {
+	long time;
+	public SpawnTime(long t){ time = t; }
+	public boolean mutate(Entity e){
+	    e.setAge(-time * 1000); //sets age to negative, entity spawns at age > 0
+	    return true;
+	}
+    }
 
     public static class UpdateParam implements Param {
 	CustomUpdate cu;

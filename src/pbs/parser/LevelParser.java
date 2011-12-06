@@ -294,6 +294,8 @@ public class LevelParser {
 
 	} else if(match("weapon")){
 
+	} else if(match("spawnin")){
+	    return new SpawnTime(num());
 	}
 
 	return null;

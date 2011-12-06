@@ -1,4 +1,10 @@
 create enemy 
 	position 340 300
 	velocity 0 1
+	spawnin 1
+
+create enemy 
+	position 340 300
+	velocity 0 1
+	spawnin 2
 endspec
