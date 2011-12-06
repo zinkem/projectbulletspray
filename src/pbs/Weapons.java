@@ -5,6 +5,7 @@ import pbs.Entity.*;
 //import pbs.GameRun.*;
 import pbs.Level.Layer;
 import pbs.Updater.*;
+import pbs.Animations.*;
 
 public class Weapons {
 
@@ -47,30 +48,35 @@ public class Weapons {
 		}
 	}
 
-	public static class FriendlySpread extends FriendlyWeapon {
-		public FriendlySpread() {
-			super();
-		}
-
-		public void shoot(Level lvl, Entity e, long deltaMs) {
-			Entity shot;
-
-			for (int i = 0; i < 4; i++) {
-				shot = new Entity("resources/pbs-spritesheet.png#green_laser");
-				shot.setPosition(e.getCenterPosition().translate(
-						new Vector2D(0, -16 + (i * 8))));
-				shot.setVelocity(new Vector2D(50, (i * 2) - 4));
-				shot.setCustomUpdate(new Strait());
-				lvl.add(shot, targetLayer);
-			}
-		}
+    public static class FriendlySpread extends FriendlyWeapon {
+	public FriendlySpread() {
+	    super();
 	}
+	
+	public void shoot(Level lvl, Entity e, long deltaMs) {
+	    Entity shot;
+	    
+	    for (int i = 0; i < 4; i++) {
+		shot = new Entity("resources/pbs-spritesheet.png#green_laser");
+		shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -16 + (i * 8))));
+		shot.setVelocity(new Vector2D(50, (i * 2) - 4));
+		shot.setCustomUpdate(new Strait());
+		lvl.add(shot, targetLayer);
+	    }
 
-	// base class for all enemy weapons
-	public static abstract class HostileWeapon extends AbstractWeapon {
-		public HostileWeapon() {
-			super(Layer.HOSTILE);
-		}
+	    shot = new Entity("resources/pbs-spritesheet.png#laser_trail");
+	    shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8)));
+	    shot.setVelocity(new Vector2D(-Math.random()*20, -Math.random()*10));
+	    shot.setCustomAnimation(new AnimateOnce(64));
+	    lvl.add(shot, Layer.FX);
 	}
-
+    }
+    
+    // base class for all enemy weapons
+    public static abstract class HostileWeapon extends AbstractWeapon {
+	public HostileWeapon() {
+	    super(Layer.HOSTILE);
+	}
+    }
+    
 }
