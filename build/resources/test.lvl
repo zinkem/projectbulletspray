@@ -18,7 +18,7 @@ create enemy hex
 	position 360 300
 	velocity 3 -3
 	spawnin 10
-	weapon outward 6 10 250
+	weapon outward 6 10 1000
 create enemy hex
 	position 370 300
 	velocity 3 -3

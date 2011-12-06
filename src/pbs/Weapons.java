@@ -35,11 +35,29 @@ public class Weapons {
 
 	// base class for all weapons
 	public static abstract class AbstractWeapon implements CustomWeapon {
-		Layer targetLayer;
+	    Layer targetLayer;
+	    
+	    long repeatTimer;
+	    long lastShot;
+	    
+	    public AbstractWeapon(Layer l) {
+		targetLayer = l;
+		repeatTimer = 0;
+		lastShot = repeatTimer;
+	    }
 
-		public AbstractWeapon(Layer l) {
-			targetLayer = l;
+	    //mechanism for timed weapons
+	    //to use it, add:
+	    //if(timerReady(deltaMs)){//firing behavior}
+	    //to your shoot method
+	    public boolean timerReady(long deltaMs){
+		lastShot += deltaMs;
+		if(lastShot >= repeatTimer){
+		    lastShot -= repeatTimer;
+		    return true;
 		}
+		return false;
+	    }
 	}
 
 	// base class for all player's weapons
@@ -52,29 +70,32 @@ public class Weapons {
     public static class FriendlySpread extends FriendlyWeapon {
 	public FriendlySpread() {
 	    super();
+	    repeatTimer = 100;
+	    lastShot = repeatTimer;
 	}
 	
 	public void shoot(Level lvl, Entity e, long deltaMs) {
 	    Entity shot;
-	    
-	    for (int i = 0; i < 4; i++) {
 
-		//this chunk should get moved to factory
+	    if(timerReady(deltaMs)){
+		for (int i = 0; i < 4; i++) {
+		    
+		    //this chunk could get moved to factory
+		    shot = new Entity("resources/pbs-spritesheet.png#green_laser");
+		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8 + (i * 4))));
+		    shot.setVelocity(new Vector2D(50, (i * 2) - 4));
+		    shot.setCustomUpdate(new Strait());
+		    shot.setCustomRender(new Throb(2, 100));
+		    lvl.add(shot, targetLayer);
+		}
 
-		shot = new Entity("resources/pbs-spritesheet.png#green_laser");
-		shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8 + (i * 4))));
-		shot.setVelocity(new Vector2D(50, (i * 2) - 4));
-		shot.setCustomUpdate(new Strait());
-		shot.setCustomRender(new Scale(2));
-		lvl.add(shot, targetLayer);
+		//same here... ideally: lvl.add(SOMEFACTORYMETHOD(), Layer.FX);
+		shot = new Entity("resources/pbs-spritesheet.png#laser_trail");
+		shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8)));
+		shot.setVelocity(new Vector2D(-Math.random()*20, -Math.random()*40+20));
+		shot.setCustomAnimation(new AnimateOnce(64));
+		lvl.add(shot, Layer.FX);
 	    }
-
-	    //same here... ideally: lvl.add(SOMEFACTORYMETHOD(), Layer.FX);
-	    shot = new Entity("resources/pbs-spritesheet.png#laser_trail");
-	    shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8)));
-	    shot.setVelocity(new Vector2D(-Math.random()*20, -Math.random()*40+20));
-	    shot.setCustomAnimation(new AnimateOnce(64));
-	    lvl.add(shot, Layer.FX);
 	}
     }
     
@@ -89,8 +110,7 @@ public class Weapons {
 	int numShots;
 	double increment;
 	double speed;
-	long repeatTimer;
-	long lastShot;
+
 
 	public SurroundShot(int ns, double s, long rt){ 
 	    super();
@@ -108,9 +128,7 @@ public class Weapons {
 	    double yv;
 	    double ang = 0; 
 
-	    lastShot += deltaMs;
-	    if(lastShot >= repeatTimer){
-		lastShot -= repeatTimer;
+	    if(timerReady(deltaMs)){
 		for(int i = 0; i < numShots; i++){
 	    
 		    xv = Math.cos(ang);

@@ -81,7 +81,7 @@ public class Renders {
     
 
     public static class Scale implements CustomRender {
-	private double scalefactor;
+	protected double scalefactor;
 	public Scale(double sf){
 	    scalefactor = sf;
 	}
@@ -94,6 +94,22 @@ public class Renders {
 	    e.getImage().render(rc, at);
 	}
 
+    }
+
+    public static class Throb extends Scale {
+	protected double throbSpeed;
+	protected double scaleMid;
+	public Throb(double sf, double ts){
+	    super(sf);
+	    scaleMid = sf;
+	    throbSpeed = Math.PI/ts;
+	}
+
+	public void render(RenderingContext rc, Entity e){
+	    scalefactor = scaleMid + Math.sin((double)e.age()*(throbSpeed));
+	    super.render(rc, e);
+	}
+	
     }
 
 }
