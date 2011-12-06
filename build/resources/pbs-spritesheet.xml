@@ -20,7 +20,15 @@
     <width>40</width>
     <height>24</height>
   </frameset>
-  
+ 
+  <frameset>
+    <name>defender</name>
+    <top>2</top>
+    <left>80</left>
+    <width>46</width>
+    <height>17</height>
+  </frameset>
+
   <frameset>
     <name>green_laser</name>
     <top>24</top>
@@ -120,5 +128,61 @@
     <width>22</width>
     <height>22</height>
   </frameset>
+ 
+  <frameset>
+    <name>minihex</name>
+    <top>469</top>
+    <left>56</left>
+    <width>10</width>
+    <height>10</height>
+  </frameset>
+
+  <frameset>
+    <name>explo0</name>
+    <top>117</top>
+    <left>0</left>
+    <width>10</width>
+    <height>10</height>
+  </frameset>
+
+  <frameset>
+    <name>explo1</name>
+    <top>117</top>
+    <left>10</left>
+    <width>18</width>
+    <height>18</height>
+  </frameset>
+
+  <frameset>
+    <name>explo2</name>
+    <top>117</top>
+    <left>29</left>
+    <width>34</width>
+    <height>34</height>
+  </frameset>
   
+  <frameset>
+    <name>explo3</name>
+    <top>118</top>
+    <left>66</left>
+    <width>44</width>
+    <height>44</height>
+  </frameset>
+
+  <frameset>
+    <name>explo4</name>
+    <top>117</top>
+    <left>113</left>
+    <width>62</width>
+    <height>62</height>
+  </frameset>
+
+ <frameset>
+    <name>explo5</name>
+    <top>116</top>
+    <left>182</left>
+    <width>64</width>
+    <height>64</height>
+  </frameset>
+
 </spriteset>
