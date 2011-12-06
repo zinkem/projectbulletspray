@@ -58,7 +58,7 @@ public class Weapons {
 	    
 	    for (int i = 0; i < 4; i++) {
 		shot = new Entity("resources/pbs-spritesheet.png#green_laser");
-		shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -16 + (i * 8))));
+		shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8 + (i * 4))));
 		shot.setVelocity(new Vector2D(50, (i * 2) - 4));
 		shot.setCustomUpdate(new Strait());
 		lvl.add(shot, targetLayer);
@@ -85,6 +85,9 @@ public class Weapons {
 	double speed;
 	long repeatTimer;
 	long lastShot;
+
+	double angleoffset;
+
 	public SurroundShot(int ns, double s, long rt){ 
 	    super();
 	    numShots = ns;
@@ -92,13 +95,16 @@ public class Weapons {
 	    speed = s;
 	    repeatTimer = rt;
 	    lastShot = rt;
+	    
+	    angleoffset = 0.0;
 	}
 
 	public void shoot(Level lvl, Entity e, long deltaMs){
 	    Entity shot;
 	    double xv;
 	    double yv;
-	    double ang = 0; 
+	    double ang = angleoffset; 
+	    angleoffset += Math.PI/60.0;
 
 	    lastShot += deltaMs;
 	    if(lastShot >= repeatTimer){
