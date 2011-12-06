@@ -10,6 +10,8 @@ import pbs.Animations.*;
 
 public class Weapons {
 
+    public static long DEFAULT_TTL = 2000;
+
 	public static class TriShot implements CustomWeapon {
 
 		public Entity shoot_bullet(Vector2D pos, Vector2D vel, double arc) {
@@ -86,6 +88,7 @@ public class Weapons {
 		    shot.setVelocity(new Vector2D(50, (i * 2) - 4));
 		    shot.setCustomUpdate(new Strait());
 		    shot.setCustomRender(new Throb(2, 100));
+		    shot.setTimeToLive(1000);
 		    lvl.add(shot, targetLayer);
 		}
 
@@ -138,6 +141,7 @@ public class Weapons {
 		    shot = new Entity("resources/pbs-spritesheet.png#red_bullet");
 		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(xv, yv)));
 		    shot.setVelocity(e.getVelocity().translate(new Vector2D(xv*speed, yv*speed)));
+		    shot.setTimeToLive(DEFAULT_TTL);
 		    lvl.add(shot, targetLayer);
 		    
 		}
@@ -176,6 +180,7 @@ public class Weapons {
 		    shot = new Entity("resources/pbs-spritesheet.png#red_bullet");
 		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(xv, yv)));
 		    shot.setVelocity(new Vector2D(xv*speed, yv*speed));
+		    shot.setTimeToLive(DEFAULT_TTL);
 		    lvl.add(shot, targetLayer);
 		    
 		}

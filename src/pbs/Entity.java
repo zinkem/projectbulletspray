@@ -30,7 +30,7 @@ public class Entity extends Body {
 
     protected long ttl;
     public void setTimeToLive(long t){ ttl = t; }
-    public void ttl(){ return ttl; }
+    public long ttl(){ return ttl; }
 
     protected boolean alive; //is the entity alive? (dead entities get removed)
     public boolean alive() { return this.alive; }
