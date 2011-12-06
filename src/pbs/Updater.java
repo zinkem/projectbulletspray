@@ -190,7 +190,7 @@ public class Updater {
 		public void update(Entity e, long deltaMs) {
 			cooldown -= deltaMs;
 			if (!atking && cooldown < 0.0) {
-				//Time to return to base
+				// Time to return to base
 				e.setVelocity(new Vector2D(35, 0));
 				atking = true;
 				resting = false;
@@ -198,29 +198,32 @@ public class Updater {
 				cooldown = 2000.0;
 				speed -= 1.5;
 				e.setVelocity(new Vector2D(speed, 0));
-				if(Math.abs(e.getCenterPosition().getX() - basePos.getX()) > dist ){
+				if (Math.abs(e.getCenterPosition().getX() - basePos.getX()) > dist) {
 					atking = false;
 					speed = 35;
 					e.setVelocity(new Vector2D(speed, 0));
 				}
-			} else if(!atking && !resting){
+			} else if (!atking && !resting) {
 				cooldown = 2000.0;
 				speed += 0.2;
-				if(Math.abs(e.getCenterPosition().getX() - basePos.getX()) < 50){ resting = true; }
+				if (Math.abs(e.getCenterPosition().getX() - basePos.getX()) < 50) {
+					resting = true;
+				}
 				e.setVelocity(new Vector2D(speed, 0));
-			}else{
-				e.setVelocity(new Vector2D(0,0));
-				//Shoot or shuffle about
+			} else {
+				e.setVelocity(new Vector2D(0, 0));
+				// Shoot or shuffle about
 			}
 			e.setPosition(e.getPosition().translate(
 					e.getVelocity().scale(deltaMs / 100.0)));
 		}
 	}
 
-	public class BossShuffle implements CustomUpdate {
+	public static class TriggerUpdate implements CustomUpdate {
 
 		@Override
 		public void update(Entity e, long deltaMs) {
+			// TODO Auto-generated method stub
 
 		}
 	}
