@@ -5,6 +5,7 @@ import pbs.Entity.*;
 //import pbs.GameRun.*;
 import pbs.Level.Layer;
 import pbs.Updater.*;
+import pbs.Renders.*;
 import pbs.Animations.*;
 
 public class Weapons {
@@ -57,13 +58,18 @@ public class Weapons {
 	    Entity shot;
 	    
 	    for (int i = 0; i < 4; i++) {
+
+		//this chunk should get moved to factory
+
 		shot = new Entity("resources/pbs-spritesheet.png#green_laser");
 		shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8 + (i * 4))));
 		shot.setVelocity(new Vector2D(50, (i * 2) - 4));
 		shot.setCustomUpdate(new Strait());
+		shot.setCustomRender(new Scale(2));
 		lvl.add(shot, targetLayer);
 	    }
 
+	    //same here... ideally: lvl.add(SOMEFACTORYMETHOD(), Layer.FX);
 	    shot = new Entity("resources/pbs-spritesheet.png#laser_trail");
 	    shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8)));
 	    shot.setVelocity(new Vector2D(-Math.random()*20, -Math.random()*40+20));
@@ -113,7 +119,7 @@ public class Weapons {
 		    
 		    shot = new Entity("resources/pbs-spritesheet.png#red_bullet");
 		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(xv, yv)));
-		    shot.setVelocity(new Vector2D(xv*speed, yv*speed));
+		    shot.setVelocity(e.getVelocity().translate(new Vector2D(xv*speed, yv*speed)));
 		    lvl.add(shot, targetLayer);
 		    
 		}
