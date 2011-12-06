@@ -1,19 +1,4 @@
-(template fignewtons onscreen
-end
-
-template blackcoffee collision
-	 create enemy
-	 create enemy
-	 create enemy
-	 template innercoffee static
-	 end
-end
-
-create enemy
-create enemy
-create static
-
-template hobbittoes enemy
-end
-
-create static
+create enemy 
+	position 340 300
+	velocity 0 1
+endspec

@@ -21,6 +21,7 @@ public class Entity extends Body {
 
     //entity members
     protected long age; //age of entity
+    protected void setAge(long a){ age = a; } //set this negative to spawn later
     protected long age() { return age; }
 
     protected boolean alive; //is the entity alive? (dead entities get removed)
@@ -30,7 +31,7 @@ public class Entity extends Body {
     public int hp() { return hp; }
     public boolean modhp(int m) { 
 	hp += m;
-	alive = (hp > 0);
+	alive = (hp > 0); //if hp hits or falls below 0, entity dies
 	return alive;
     }
 
@@ -57,26 +58,31 @@ public class Entity extends Body {
     }
 
     public void render(RenderingContext rc) {
-	if (cr != null) {
-	    cr.render(rc, this);
-	} else {
-	    super.render(rc);
+	if(active){
+	    if (cr != null) {
+		cr.render(rc, this);
+	    } else {
+		super.render(rc);
+	    }
 	}
     }
     
     public ImageResource getImage(){
-		return frames.get(visibleFrame);
+	return frames.get(visibleFrame);
     }
     
     @Override
 	public void update(long deltaMs) {
-	if(cu != null){
-	    cu.update(this, deltaMs);
-	}else{
-	    System.out.println("Custom update for object:"+this.toString()+" Not found");
+	if(active){
+	    if(cu != null){
+		cu.update(this, deltaMs);
+	    }else{
+		position = position.translate(velocity.scale(deltaMs/100.0));
+	    }
 	}
-
+	
 	age += deltaMs;
+	setActivation(age > 0 && alive);
     }
 	
     public void shoot(Level lvl, long deltaMs){
