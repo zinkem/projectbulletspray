@@ -4,5 +4,10 @@
     <imagesrc>pbs-spritesheet.png</imagesrc>
     <framesrc>pbs-spritesheet.xml</framesrc>
   </spritesheet>
+  
+  <spritesheet>
+    <imagesrc>terrain.png</imagesrc>
+    <framesrc>terrain.xml</framesrc>
+  </spritesheet>
 
 </resources>

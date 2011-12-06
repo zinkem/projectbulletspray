@@ -3,7 +3,6 @@ package pbs;
 import java.util.*;
 
 import jig.engine.*;
-import jig.engine.physics.BodyLayer;
 import jig.engine.util.Vector2D;
 
 import pbs.parser.Statements.*;
@@ -82,7 +81,11 @@ public class Level {
 	collisionHandlers = new ArrayList<QuadLayerCollisionHandler>();
 	allTheLayers = new ArrayList<PBSQuadLayer<Entity>>();
 	
-	for(int i = 0; i < NUM_LAYERS; i++){
+	ImageResource bgImage = ResourceFactory.getFactory().getFrames(
+			"resources/terrain.png#bedrock").get(0);
+	allTheLayers.add(new ScrollingBackgroundLayer(bgImage, 
+			1000, 800, new Vector2D(20, 0)));
+	for(int i = 1; i < NUM_LAYERS; i++){
 	    //here we create a new empty layer for 
 	    //each entity category
 	    //enumerated in Layer

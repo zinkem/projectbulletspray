@@ -1,0 +1,48 @@
+<spriteset>
+
+  <author>Team PBS</author>
+  <name>pbs-terrains</name>
+  <width>800</width>
+  <height>120</height>
+
+  <frameset>
+    <name>window</name>
+    <top>0</top>
+    <left>0</left>
+    <width>80</width>
+    <height>120</height>
+  </frameset>
+ 
+ <frameset>
+    <name>mountains</name>
+    <top>0</top>
+    <left>80</left>
+    <width>80</width>
+    <height>120</height>
+  </frameset>
+
+  <frameset>
+    <name>wall</name>
+    <top>0</top>
+    <left>160</left>
+    <width>80</width>
+    <height>120</height>
+  </frameset>
+  
+    <frameset>
+    <name>mountain_wall</name>
+    <top>0</top>
+    <left>240</left>
+    <width>80</width>
+    <height>120</height>
+  </frameset>
+  
+    <frameset>
+    <name>bedrock</name>
+    <top>0</top>
+    <left>320</left>
+    <width>80</width>
+    <height>120</height>
+  </frameset>
+  
+</spriteset>
