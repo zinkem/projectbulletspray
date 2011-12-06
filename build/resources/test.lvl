@@ -1,19 +1,71 @@
-(template fignewtons onscreen
+create enemy 
+	position 340 300
+	velocity 3 3
+	spawnin 0
+	update
+	render
+	weapon
+	
+create enemy 
+	position 360 300
+	velocity 3 -3
+	spawnin 10
+create enemy 
+	position 370 300
+	velocity 3 -3
+	spawnin 12
+create enemy 
+	position 380 300
+	velocity 3 -3
+	spawnin 14
+create enemy 
+	position 390 300
+	velocity 3 -3
+	spawnin 16
+create enemy 
+	position 330 300
+	velocity 3 -3
+	spawnin 18
+create enemy 
+	position 320 300
+	velocity 3 -3
+	spawnin 19
+create enemy 
+	position 310 300
+	velocity 3 -3
+	spawnin 20
+create enemy 
+	position 300 300
+	velocity 3 -3
+	spawnin 10
+create enemy 
+	position 355 300
+	velocity 3 -3
+	spawnin 10
+create enemy 
+	position 345 300
+	velocity 3 -3
+	spawnin 10
+create enemy 
+	position 335 300
+	velocity 3 -3
+	spawnin 10
+create enemy 
+	position 360 300
+	velocity 3 -3
+	spawnin 10
+create enemy 
+	position 350 300
+	velocity 3 -3
+	spawnin 10
+
+create roger	
+	
+template roger enemy
+	position 250 100
+	velocity -3 0
 end
 
-template blackcoffee collision
-	 create enemy
-	 create enemy
-	 create enemy
-	 template innercoffee static
-	 end
-end
+create roger
 
-create enemy
-create enemy
-create static
-
-template hobbittoes enemy
-end
-
-create static
+endspec

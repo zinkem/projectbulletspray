@@ -19,7 +19,16 @@ public class Elements {
 	//public abstract ALAYERTYPE getLayerType();
 	public abstract void mutate(Level l);	
     }
-    
+
+    public static class TemplateDescription extends ObjectDescription {
+	String key;
+	public TemplateDescription(String s){ key = s;	}
+	public void mutate(Level l){
+	    l.addStatement(new AddEntity(l.getTemplate(key)));
+	}
+    }
+
+
     public static class TriggerDescription extends ObjectDescription {
 	//triggers have a list of statements that get added to the
 	//event queue when they are triggered
@@ -162,7 +171,15 @@ public class Elements {
 	    return true;
 	}
     } 
-	
+
+    public static class SpawnTime implements Param {
+	long time;
+	public SpawnTime(long t){ time = t; }
+	public boolean mutate(Entity e){
+	    e.setAge(-time * 1000); //sets age to negative, entity spawns at age > 0
+	    return true;
+	}
+    }
 
     public static class UpdateParam implements Param {
 	CustomUpdate cu;
@@ -190,5 +207,4 @@ public class Elements {
 	    return true;
 	}
     }
-
 }
