@@ -82,7 +82,24 @@ public class ScrollingBackgroundLayer extends PBSQuadLayer<Entity> implements Vi
 		if (!active) {
 			return;
 		}
-		
+	
+		AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
+
+		int startx = (int)((int)tree.min.getX()/imgWidth)*imgWidth;
+		int starty = (int)((int)tree.min.getY()/imgHeight)*imgHeight;
+
+		for( int i = startx; i <= tree.max.getX(); i += imgWidth ){
+		    for( int j = starty; j <= tree.max.getY(); j += imgHeight ){
+			at.setToTranslation(i, j);
+			//at.scale(scalefactor, scalefactor) //need to adjust imgW, imgH to use this
+			image.render(rc, at);
+		    }
+		}
+
+
+
+		/*
+	
 		AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
 		if(velocity.getX() < 0) {
 			if(velocity.getY() < 0) {
@@ -133,6 +150,8 @@ public class ScrollingBackgroundLayer extends PBSQuadLayer<Entity> implements Vi
 				}
 			}
 		} 	
+
+		*/
 	}
 
 	/**
