@@ -141,7 +141,7 @@ public class PBSGame extends ScrollingScreenGame {
 
 		//centerOnPoint(levelData.getCam()); // center on level camera
 		centerOnPoint(this.plr.getCenterPosition());
-		levelData.update(deltaMs, screenToWorld(new Vector2D(0, 0)),
+		levelData.update(16, screenToWorld(new Vector2D(0, 0)),
 				screenToWorld(new Vector2D(SCREEN_WIDTH, SCREEN_HEIGHT)));
 
 	}
