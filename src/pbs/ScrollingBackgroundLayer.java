@@ -78,16 +78,17 @@ public class ScrollingBackgroundLayer extends PBSQuadLayer<Entity> implements Vi
 	}
 	
 	@Override
-	    public void render(RenderingContext rc) {
-	    if (!active) {
-		return;
-	    }
-	    
-	    AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
-	    
-	    int startx = (int)((int)tree.min.getX()/imgWidth)*imgWidth;
-	    int starty = (int)((int)tree.min.getY()/imgHeight)*imgHeight;
-	    
+
+	public void render(RenderingContext rc) {
+		if (!active) {
+			return;
+		}
+	
+		AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
+
+		int startx = (int)((int)tree.min.getX()/imgWidth)*imgWidth - imgWidth;
+		int starty = (int)((int)tree.min.getY()/imgHeight)*imgHeight - imgHeight;
+
 		for( int i = startx; i <= tree.max.getX(); i += imgWidth ){
 		    for( int j = starty; j <= tree.max.getY(); j += imgHeight ){
 			at.setToTranslation(i, j);
