@@ -141,46 +141,46 @@
     <name>explo0</name>
     <top>117</top>
     <left>0</left>
-    <width>10</width>
-    <height>10</height>
+    <width>64</width>
+    <height>64</height>
   </frameset>
 
   <frameset>
     <name>explo1</name>
-    <top>117</top>
-    <left>10</left>
-    <width>18</width>
-    <height>18</height>
+    <top>124</top>
+    <left>64</left>
+    <width>64</width>
+    <height>64</height>
   </frameset>
 
   <frameset>
     <name>explo2</name>
-    <top>117</top>
-    <left>29</left>
-    <width>34</width>
-    <height>34</height>
+    <top>121</top>
+    <left>134</left>
+    <width>64</width>
+    <height>64</height>
   </frameset>
   
   <frameset>
     <name>explo3</name>
-    <top>118</top>
-    <left>66</left>
-    <width>44</width>
-    <height>44</height>
+    <top>120</top>
+    <left>204</left>
+    <width>64</width>
+    <height>64</height>
   </frameset>
 
   <frameset>
     <name>explo4</name>
-    <top>117</top>
-    <left>113</left>
-    <width>62</width>
-    <height>62</height>
+    <top>122</top>
+    <left>275</left>
+    <width>64</width>
+    <height>64</height>
   </frameset>
 
  <frameset>
     <name>explo5</name>
-    <top>116</top>
-    <left>182</left>
+    <top>121</top>
+    <left>345</left>
     <width>64</width>
     <height>64</height>
   </frameset>
