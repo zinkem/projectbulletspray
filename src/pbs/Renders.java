@@ -74,7 +74,6 @@ public class Renders {
 				at.rotate(angle);
 				at.translate(-e.getWidth()/2, -e.getHeight()/2);
 				e.getImage().render(rc, at);
-				set = true;
 
 		}
 		
