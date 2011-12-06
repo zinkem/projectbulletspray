@@ -8,11 +8,11 @@ import pbs.Entity.*;
 import pbs.parser.Statements.*;
 
 public class Trigger extends Entity{
-	private Level lvl;
+        private Level lvl;
 	private ArrayList<Statement> stack;
 	
 	public Trigger(String imgrsc, Level l, ArrayList<Statement> add) {
-		super(imgrsc);
+	    super(imgrsc);
 		lvl = l;
 		stack = add;
 	}

@@ -66,7 +66,7 @@ public class Weapons {
 
 	    shot = new Entity("resources/pbs-spritesheet.png#laser_trail");
 	    shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8)));
-	    shot.setVelocity(new Vector2D(-Math.random()*20, -Math.random()*10));
+	    shot.setVelocity(new Vector2D(-Math.random()*20, -Math.random()*40+20));
 	    shot.setCustomAnimation(new AnimateOnce(64));
 	    lvl.add(shot, Layer.FX);
 	}
@@ -78,5 +78,47 @@ public class Weapons {
 	    super(Layer.HOSTILE);
 	}
     }
+
+    public static class SurroundShot extends HostileWeapon {
+	int numShots;
+	double increment;
+	double speed;
+	long repeatTimer;
+	long lastShot;
+	public SurroundShot(int ns, double s, long rt){ 
+	    super();
+	    numShots = ns;
+	    increment = numShots/(2*Math.PI);
+	    speed = s;
+	    repeatTimer = rt;
+	    lastShot = rt;
+	}
+
+	public void shoot(Level lvl, Entity e, long deltaMs){
+	    Entity shot;
+	    double xv;
+	    double yv;
+	    double ang = 0; 
+
+	    lastShot += deltaMs;
+	    if(lastShot >= repeatTimer){
+		lastShot -= repeatTimer;
+		for(int i = 0; i < numShots; i++){
+	    
+		    xv = Math.cos(ang);
+		    yv = Math.sin(ang);
+		    ang += increment;
+		    
+		    shot = new Entity("resources/pbs-spritesheet.png#red_bullet");
+		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(xv, yv)));
+		    shot.setVelocity(new Vector2D(xv*speed, yv*speed));
+		    lvl.add(shot, targetLayer);
+		    
+		}
+	    }
+
+	}
+    }
+
     
 }

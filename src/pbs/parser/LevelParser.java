@@ -303,7 +303,7 @@ public class LevelParser {
     }
 
     protected WeaponParam getWeapon(){
-	return new WeaponParam(null);
+	return new WeaponParam(new SurroundShot(9, 30, 50));
     }
 
  }

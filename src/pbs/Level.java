@@ -187,6 +187,13 @@ public class Level {
 	
 	//call update on each layer
 	updateLayers(deltaMs, stwMin, stwMax);
+
+	//call "shoot" on all enemy entities in case they have weapons to fire
+	Iterator<Entity> enemylist = getLayer(Layer.ENEMY).iterator();
+	while(enemylist.hasNext()){
+	    Entity e = enemylist.next();
+	    e.shoot(this, deltaMs);
+	}
 	
 	//check for collisions
 	checkForCollisions();	
