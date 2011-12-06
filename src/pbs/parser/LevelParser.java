@@ -222,15 +222,15 @@ public class LevelParser {
     }
     
     protected ObjectDescription fx(){
-	return new fxEntity(SPRITE_SHEET + "#large_burst", paramList());
+	return new fxEntity(SPRITE_SHEET + "#" + symbol(), paramList());
     }
 
     protected ObjectDescription enemy(){
-	return new enemyEntity(SPRITE_SHEET + "#shuttle", paramList());
+	return new enemyEntity(SPRITE_SHEET + "#" + symbol(), paramList());
     }
 
     protected ObjectDescription staticEnt(){
-	return new staticEntity(SPRITE_SHEET + "#hex", paramList());
+	return new staticEntity(SPRITE_SHEET + "#" + symbol(), paramList());
     }
 
     protected ObjectDescription timed(){
@@ -303,7 +303,7 @@ public class LevelParser {
     }
 
     protected WeaponParam getWeapon(){
-	return new WeaponParam(null);
+	return new WeaponParam(new SurroundShot(9, 30, 50));
     }
 
  }

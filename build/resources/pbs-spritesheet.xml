@@ -89,8 +89,8 @@
     <name>laser_trail</name>
     <top>36</top>
     <left>0</left>
-    <width>32</width>
-    <height>8</height>
+    <width>16</width>
+    <height>32</height>
     <columns>4</columns>
   </frameset>
 

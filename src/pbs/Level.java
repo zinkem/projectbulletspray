@@ -2,14 +2,17 @@ package pbs;
 
 import java.util.*;
 
+
 import jig.engine.*;
-import jig.engine.physics.BodyLayer;
 import jig.engine.util.Vector2D;
 
 import pbs.parser.Statements.*;
 import pbs.parser.Elements.*;
+import pbs.Animations.*;
 
 public class Level {
+
+    public static final String SPRITE_SHEET = "resources/pbs-spritesheet.png";
 
     public static enum Layer { 
 	BACKGROUND, 
@@ -86,7 +89,11 @@ public class Level {
 	collisionHandlers = new ArrayList<QuadLayerCollisionHandler>();
 	allTheLayers = new ArrayList<PBSQuadLayer<Entity>>();
 	
-	for(int i = 0; i < NUM_LAYERS; i++){
+	ImageResource bgImage = ResourceFactory.getFactory().getFrames(
+			"resources/terrain.png#bedrock").get(0);
+	allTheLayers.add(new ScrollingBackgroundLayer(bgImage, 
+			1000, 800, new Vector2D(20, 0)));
+	for(int i = 1; i < NUM_LAYERS; i++){
 	    //here we create a new empty layer for 
 	    //each entity category
 	    //enumerated in Layer
@@ -113,19 +120,46 @@ public class Level {
     }
     
     public void setupCollisionHandlers(){
-		collisionHandlers.add(new QuadLayerCollisionHandler(getLayer(Layer.ENEMY), 
-							   getLayer(Layer.PLAYER)){
-			public void collide(Entity body1, Entity body2){
-			    //this is where you define behavior for a collision
-			    //body1 is from enemy layer
-			    //body2 is from player layer
+	collisionHandlers.add(new QuadLayerCollisionHandler(getLayer(Layer.FRIENDLY), 
+							    getLayer(Layer.ENEMY)){
+		public void collide(Entity body1, Entity body2){
+		    //this is where you define behavior for a collision
+		    //body1 is from friendly bullet layer
+		    //body2 is from enemy layer
+		    
+		    if(body1.isActive() && body2.isActive()){
+
+			double rx = 4.0*Math.random()-2;
+			double ry = 4.0*Math.random()-2;
+			
+			Entity e = new Entity(SPRITE_SHEET + "#small_burst");
+			e.setPosition(body1.getCenterPosition().translate(new Vector2D(rx,ry)));
+			e.setCustomAnimation(new AnimateOnce(75));
+			add(e, Layer.FX);
+			body1.kill();
+			body2.modhp(-1);
+
+			if(body2.alive() == false){
+			    score += body2.value();
+			    
+			    for(int i = 0; i < 5; i++){
+				rx = 100.0*Math.random()-50;
+				ry = 100.0*Math.random()-50;
+				e = new Entity(SPRITE_SHEET + "#large_burst");
+				e.setPosition(body1.getCenterPosition().translate(new Vector2D(rx,ry)));
+				e.setCustomAnimation(new AnimateOnce(75));
+				e.setAge( (long)(-rx));
+				add(e, Layer.FX);
+			    }
 			}
-		    });
-		
-		collisionHandlers.add(new ElasticCollisionHandler(getLayer(Layer.ENEMY), 
-								  getLayer(Layer.PLAYER)));
-		
-		//System.out.println("col handlers size " + collisionHandlers.size());
+		    }
+		}
+	    });
+	
+	collisionHandlers.add(new ElasticCollisionHandler(getLayer(Layer.ENEMY), 
+							  getLayer(Layer.PLAYER)));
+	
+	//System.out.println("col handlers size " + collisionHandlers.size());
     }
     
     /* stwMin, stwMax are ScreenToWorld coordinates for QuadTree */
@@ -153,6 +187,13 @@ public class Level {
 	
 	//call update on each layer
 	updateLayers(deltaMs, stwMin, stwMax);
+
+	//call "shoot" on all enemy entities in case they have weapons to fire
+	Iterator<Entity> enemylist = getLayer(Layer.ENEMY).iterator();
+	while(enemylist.hasNext()){
+	    Entity e = enemylist.next();
+	    e.shoot(this, deltaMs);
+	}
 	
 	//check for collisions
 	checkForCollisions();	

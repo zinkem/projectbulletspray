@@ -15,7 +15,7 @@ import jig.engine.util.Vector2D;
  *
  */
 public class QuadNode<T extends Sprite> {
-	private static int maxEntities = 1;
+	private static int maxEntities = 10;
 	private QuadNode<T> parent, nwNode, neNode, swNode, seNode;
 	private Vector2D min, max;
 	private List<T> entities;
