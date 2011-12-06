@@ -19,6 +19,10 @@ public class Entity extends Body {
 	public void shoot(Level lvl, Entity type, long deltaMs);
     }
 
+    public interface CustomAnimation {
+	public void animate(Entity e, long deltaMs);
+    }
+
     //entity members
     protected long age; //age of entity
     public void setAge(long a){ age = a; } //set this negative to spawn later
@@ -26,12 +30,13 @@ public class Entity extends Body {
 
     protected boolean alive; //is the entity alive? (dead entities get removed)
     public boolean alive() { return this.alive; }
+    public void kill(){ alive = false; setActivation(false); }
     
     protected int hp; //hit points left, hitting zero turns alive to false
     public int hp() { return hp; }
     public boolean modhp(int m) { 
 	hp += m;
-	alive = (hp > 0); //if hp hits or falls below 0, entity dies
+	if(hp > 0) kill(); //if hp hits or falls below 0, entity dies
 	return alive;
     }
 
@@ -48,6 +53,9 @@ public class Entity extends Body {
     
     protected CustomWeapon cw;
     public void setCustomWeapon(CustomWeapon w){ cw = w; }    
+
+    protected CustomAnimation ca;
+    public void setCustomAnimation(CustomAnimation a){ ca = a; }
         
     public Entity(String imgrsc) {
 	super(imgrsc);
@@ -83,6 +91,9 @@ public class Entity extends Body {
 	
 	age += deltaMs;
 	setActivation(age > 0 && alive);
+	
+	ca.animate();
+
     }
 	
     public void shoot(Level lvl, long deltaMs){

@@ -49,7 +49,7 @@ public class PBSGame extends ScrollingScreenGame {
 
 	//levelData = new Level();
 
-	plr = new Entity(SPRITE_SHEET + "#hex");
+	plr = new Entity(SPRITE_SHEET + "#shuttle");
 	plr.setPosition(new Vector2D(300, 300));
 	plr.setCustomUpdate(new KeyboardControls(keyboard));
 	plr.setCustomWeapon(new FriendlySpread());
