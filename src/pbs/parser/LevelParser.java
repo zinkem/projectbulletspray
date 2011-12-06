@@ -11,6 +11,10 @@ import pbs.parser.Statements.*;
 import pbs.parser.ExpressionElements.*;
 import pbs.parser.BooleanElements.*;
 import pbs.Level;
+import pbs.Entity.*;
+import pbs.Updater.*;
+import pbs.Weapons.*;
+import pbs.Renders.*;
 
 public class LevelParser {
 
@@ -81,7 +85,7 @@ public class LevelParser {
 		//normally, we would add statements to level event queue
 		thislevel.addStatement(s);
 	    } else {
-		System.out.println("Aborting parse: " + err);
+		System.out.println("Aborting parse at " + ctoken + " : " + err);
 		return null;
 	    }
 
@@ -100,14 +104,16 @@ public class LevelParser {
     }
     
     protected int num(){
-	boolean isnum = ctoken.matches("\\d+");
+	boolean isnum = ctoken.matches("-?\\d+");
 	int n = 0;
+	int modifier = 1;
+
 	if(isnum){
 	    n = Integer.parseInt(ctoken);
 	    ctoken = nextToken();
 	}
-	System.out.println("isnum is " + isnum + ", " + n );
-	return n;
+	//System.out.println("isnum is " + isnum + ", " + n );
+	return n*1;
     }
 
     private boolean match(String s){
@@ -149,38 +155,23 @@ public class LevelParser {
 
     //classes get added to entity template hash
     public Statement addTemplate(){
-	AddTemplate s = new AddTemplate();
 
-	String name = ctoken;
-	if(match(name)){
-	    s.setName(name);
-	} 
-
+	String name = symbol();
+	
 	ObjectDescription od = objdesc();
-	if(od != null){
-	    s.setDescription(od);
-	}
-
+	
 	if(match(END)){
-	    return s;
+	    return new AddTemplate(name, od);
 	}
-
+	
 	err = "template creation failed, no end marker found";
 	return null;
     }
 
     //events get added to level event queue
     public Statement addEntity(){
-	AddEntity s = new AddEntity();
 
-	ObjectDescription od = objdesc();
-	if(od != null){
-	    s.setDescription(od);
-	} else {
-	    System.out.println(err);
-	}
-
-	return s;
+	return new AddEntity(objdesc());
     }
     
 
@@ -225,11 +216,9 @@ public class LevelParser {
 	    return onscreen();
 	} else if(match("collision")) {
 	    return collision();
+	} else {
+	    return new TemplateDescription(symbol());
 	}
-
-	err = "Invalid entity identifier";
-	return null;
-	
     }
     
     protected ObjectDescription fx(){
@@ -289,17 +278,32 @@ public class LevelParser {
 	} else if(match("velocity")){
 	    return new VelocityParam(new Vector2D(num(), num()));
 	} else if(match("update")){
-
+	    return getUpdate();
 	} else if(match("render")){
-
+	    return getRender();
 	} else if(match("weapon")){
-
+	    return getWeapon();
 	} else if(match("spawnin")){
 	    return new SpawnTime(num());
 	}
 
 	return null;
 
+    }
+
+    protected UpdateParam getUpdate(){
+	return new UpdateParam(new YOcil());
+    }
+
+    protected RenderParam getRender(){
+	//FollowVelocity
+	//PointDirection
+	//Spin
+	return new RenderParam(new Spin(0.0, .005));
+    }
+
+    protected WeaponParam getWeapon(){
+	return new WeaponParam(null);
     }
 
  }

@@ -19,7 +19,16 @@ public class Elements {
 	//public abstract ALAYERTYPE getLayerType();
 	public abstract void mutate(Level l);	
     }
-    
+
+    public static class TemplateDescription extends ObjectDescription {
+	String key;
+	public TemplateDescription(String s){ key = s;	}
+	public void mutate(Level l){
+	    l.addStatement(new AddEntity(l.getTemplate(key)));
+	}
+    }
+
+
     public static class TriggerDescription extends ObjectDescription {
 	//triggers have a list of statements that get added to the
 	//event queue when they are triggered
@@ -198,5 +207,4 @@ public class Elements {
 	    return true;
 	}
     }
-
 }

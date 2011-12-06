@@ -46,8 +46,8 @@ public class Statements {
 
 	ObjectDescription theObject;
 	
-	public AddEntity(){
-	    theObject = null;
+	public AddEntity(ObjectDescription od){
+	    theObject = od;
 	}
 	
 	public void setDescription(ObjectDescription od){
@@ -70,19 +70,16 @@ public class Statements {
 	
 	String name;
 
-	public AddTemplate(){
-	    name = "";
-	    theObject = null;
+	public AddTemplate(String s, ObjectDescription od){
+	    super(od);
+	    name = s;
 	}
 
 	public boolean execute(Level l){
 	    //adds new 'class template' to level
 	    System.out.println("[Add template <" + name + 
 			       "> to level template hash] ");
-	    //we would not normally 'mutate' here... this is just for demo
-	    //we want to add 'theObject' to the level template hash
-	    //l.addToTemplateHash(name, theObject);
-	    theObject.mutate(l);
+	    l.addTemplate(name, theObject);
 	    return true;
 	}
 
