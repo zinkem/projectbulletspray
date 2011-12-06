@@ -28,6 +28,10 @@ public class Entity extends Body {
     public void setAge(long a){ age = a; } //set this negative to spawn later
     public long age() { return age; }
 
+    protected long ttl;
+    public void setTimeToLive(long t){ ttl = t; }
+    public void ttl(){ return ttl; }
+
     protected boolean alive; //is the entity alive? (dead entities get removed)
     public boolean alive() { return this.alive; }
     public void kill(){ alive = false; setActivation(false); }
@@ -97,9 +101,10 @@ public class Entity extends Body {
 	}
 	
 	age += deltaMs;
+	if( ttl > 0 && age > ttl){
+	    kill();
+	}
 	setActivation(age > 0 && alive);
-
-
     }
 	
     public void shoot(Level lvl, long deltaMs){
