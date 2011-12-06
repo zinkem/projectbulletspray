@@ -1,3 +1,7 @@
+create fx small_burst
+	position 300 300
+	spawnin 1
+
 create enemy hex
 	position 340 300
 	velocity 3 3

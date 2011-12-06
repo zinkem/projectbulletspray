@@ -7,6 +7,7 @@ import jig.engine.util.Vector2D;
 import pbs.*;
 import pbs.Level.*;
 import pbs.Entity.*;
+import pbs.Animations.*;
 import pbs.parser.Statements.*;
 import pbs.parser.BooleanElements.*;
 import pbs.parser.ExpressionElements.*;
@@ -109,6 +110,7 @@ public class Elements {
 	public void mutate(Level l){
 	    //set layer
 	    targetLayer = Layer.FX;
+	    paramlist.add(new AnimationParam(new AnimateOnce(150)));
 	    System.out.print("Fx ");
 	    super.mutate(l);
 	}
@@ -122,7 +124,6 @@ public class Elements {
 	    targetLayer = Layer.ENEMY;
 	    System.out.print("Enemy ");
 	    super.mutate(l);
-
 	}
     }
 
@@ -134,6 +135,7 @@ public class Elements {
 	    targetLayer = Layer.STATIC;
 	    System.out.print("Static ");
 	    super.mutate(l);
+
 	}
     }
 
@@ -207,4 +209,14 @@ public class Elements {
 	    return true;
 	}
     }
+
+    public static class AnimationParam implements Param {
+	CustomAnimation ca;
+	public AnimationParam(CustomAnimation a){ ca = a; }
+	public boolean mutate(Entity e){
+	    e.setCustomAnimation(ca);
+	    return true;
+	}
+    }
+
 }

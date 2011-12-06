@@ -59,6 +59,10 @@ public class Entity extends Body {
         
     public Entity(String imgrsc) {
 	super(imgrsc);
+	cu = null;
+	cr = null;
+	cw = null;
+	ca = null;
 	age = 0;
 	alive = true;
 	hp = 1;
@@ -92,7 +96,8 @@ public class Entity extends Body {
 	age += deltaMs;
 	setActivation(age > 0 && alive);
 	
-	ca.animate();
+	if(ca != null)
+	    ca.animate(this, deltaMs);
 
     }
 	

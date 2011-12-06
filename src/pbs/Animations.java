@@ -4,7 +4,7 @@ import pbs.Entity.*;
 
 public class Animations {
 
-    public static abstract Animation implements CustomAnimation {
+    public static class Animation implements CustomAnimation {
 	long frameLength;
 	long thisFrame;
 
@@ -22,7 +22,7 @@ public class Animations {
 
     }
 
-    public static abstract AnimateOnce extends Animation {
+    public static class AnimateOnce extends Animation {
 	int framecount;
 
 	public AnimateOnce(long f){
