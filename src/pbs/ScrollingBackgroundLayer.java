@@ -11,7 +11,7 @@ import jig.engine.ViewableLayer;
 import jig.engine.util.Vector2D;
 
 /**
- * @author Skylar Hiebert
+ * @author Skylar Hiebert, Matthew Zinke
  *
  */
 public class ScrollingBackgroundLayer extends PBSQuadLayer<Entity> implements ViewableLayer {
@@ -78,16 +78,16 @@ public class ScrollingBackgroundLayer extends PBSQuadLayer<Entity> implements Vi
 	}
 	
 	@Override
-	public void render(RenderingContext rc) {
-		if (!active) {
-			return;
-		}
-	
-		AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
-
-		int startx = (int)((int)tree.min.getX()/imgWidth)*imgWidth;
-		int starty = (int)((int)tree.min.getY()/imgHeight)*imgHeight;
-
+	    public void render(RenderingContext rc) {
+	    if (!active) {
+		return;
+	    }
+	    
+	    AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
+	    
+	    int startx = (int)((int)tree.min.getX()/imgWidth)*imgWidth;
+	    int starty = (int)((int)tree.min.getY()/imgHeight)*imgHeight;
+	    
 		for( int i = startx; i <= tree.max.getX(); i += imgWidth ){
 		    for( int j = starty; j <= tree.max.getY(); j += imgHeight ){
 			at.setToTranslation(i, j);
@@ -95,65 +95,8 @@ public class ScrollingBackgroundLayer extends PBSQuadLayer<Entity> implements Vi
 			image.render(rc, at);
 		    }
 		}
-
-
-
-		/*
-	
-		AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
-		if(velocity.getX() < 0) {
-			if(velocity.getY() < 0) {
-				for (double x = tree.max.getX() - imgWidth; 
-				x > tree.min.getX() + offset.getX() + imgWidth ; 
-				x -= imgWidth) {
-					for (double y = tree.max.getY() + offset.getY(); 
-					y > -offset.getY() - imgWidth; 
-					y -= imgHeight) {
-						at.setToTranslation(x, y);
-						image.render(rc, at);
-					}
-				}	
-			} else {
-				for (double x = tree.max.getX() - imgWidth; 
-				x > tree.min.getX() + offset.getX() + imgWidth ; 
-				x -= imgWidth)  {
-					for (double y = tree.min.getY() - offset.getY() - imgWidth; 
-					y < tree.max.getY() + imgHeight; 
-					y += imgHeight) {
-						at.setToTranslation(x, y);
-						image.render(rc, at);
-					}
-				}
-			}
-		} else {
-			if(velocity.getY() < 0) {
-				for (double x = tree.min.getX() - offset.getX() - imgWidth; 
-				x < tree.max.getX() + imgWidth; 
-				x += imgWidth) {
-					for (double y = tree.max.getY() + offset.getY(); 
-					y > tree.min.getY() - offset.getY() - imgHeight; 
-					y -= imgHeight) {
-						at.setToTranslation(x, y);
-						image.render(rc, at);
-					}
-				}
-			} else {
-				for (double x = tree.min.getX() - offset.getX() - imgWidth; 
-				x < tree.max.getX() + imgWidth; 
-				x += imgWidth) {
-					for (double y = tree.min.getY() - offset.getY() - imgWidth; 
-					y < tree.max.getY() + imgHeight; 
-					y += imgHeight) {
-						at.setToTranslation(x, y);
-						image.render(rc, at);
-					}
-				}
-			}
-		} 	
-
-		*/
 	}
-
+	
 	/**
 	 * Updates the layer on each iteration of the game loop.
 	 * This method is empty, as this image background layer is static.
