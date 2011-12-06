@@ -62,7 +62,11 @@ public class Level {
     //symbol table with templated entities/triggers
     HashMap<String, ObjectDescription> templates;
     public ObjectDescription getTemplate(String s){
-	return templates.get(s); 
+	System.out.println("get Template");
+	ObjectDescription od = templates.get(s);
+	if(od == null)
+	    System.out.println("No object description named " + s);
+	return od;
     }
     public void addTemplate(String s, ObjectDescription od){
 	templates.put(s, od);

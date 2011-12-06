@@ -21,8 +21,8 @@ public class Entity extends Body {
 
     //entity members
     protected long age; //age of entity
-    protected void setAge(long a){ age = a; } //set this negative to spawn later
-    protected long age() { return age; }
+    public void setAge(long a){ age = a; } //set this negative to spawn later
+    public long age() { return age; }
 
     protected boolean alive; //is the entity alive? (dead entities get removed)
     public boolean alive() { return this.alive; }
