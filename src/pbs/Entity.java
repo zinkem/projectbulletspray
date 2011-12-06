@@ -71,6 +71,7 @@ public class Entity extends Body {
 	alive = true;
 	hp = 10;
 	score = 100;
+	ttl = -1;
     }
 
     public void render(RenderingContext rc) {
