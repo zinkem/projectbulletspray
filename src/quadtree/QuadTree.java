@@ -19,7 +19,7 @@ public class QuadTree<E extends Sprite> implements Iterable<E> {
 	public int maxEntitiesPerNode;
 	
 	public QuadTree() {
-		this(1, new Vector2D(0,0), new Vector2D(1000,1000));
+		this(10, new Vector2D(0,0), new Vector2D(1000,1000));
 	}
 	
 	public QuadTree(int maxEntitiesPerNode, Vector2D min, Vector2D max) {

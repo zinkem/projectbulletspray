@@ -24,17 +24,26 @@ public class Animations {
 
     public static class AnimateOnce extends Animation {
 	int framecount;
+	int lastframe;
 
 	public AnimateOnce(long f){
 	    super(f);
 	    framecount = 0;
+	    lastframe = 0;
 	}
 	
 	public void animate(Entity e, long deltaMs){
 	    super.animate(e, deltaMs);
+
+	    if(e.getFrame() != lastframe){
+		framecount++;
+		lastframe = e.getFrame();
+	    }
+	    
 	    if(framecount >= e.getFrameCount()){
 		e.kill();
 	    }
+
 	}
 	
     }

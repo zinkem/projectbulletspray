@@ -1,6 +1,11 @@
 create fx small_burst
-	position 300 300
+	position 200 200
 	spawnin 1
+
+create fx large_burst
+	position 200 400
+	spawnin 2
+	
 
 create enemy hex
 	position 340 300

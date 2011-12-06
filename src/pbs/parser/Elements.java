@@ -110,7 +110,7 @@ public class Elements {
 	public void mutate(Level l){
 	    //set layer
 	    targetLayer = Layer.FX;
-	    paramlist.add(new AnimationParam(new AnimateOnce(150)));
+	    paramlist.add(new AnimationParam(new AnimateOnce(75)));
 	    System.out.print("Fx ");
 	    super.mutate(l);
 	}

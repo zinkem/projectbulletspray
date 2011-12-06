@@ -36,7 +36,7 @@ public class Entity extends Body {
     public int hp() { return hp; }
     public boolean modhp(int m) { 
 	hp += m;
-	if(hp > 0) kill(); //if hp hits or falls below 0, entity dies
+	if(hp <= 0) kill(); //if hp hits or falls below 0, entity dies
 	return alive;
     }
 
@@ -65,7 +65,7 @@ public class Entity extends Body {
 	ca = null;
 	age = 0;
 	alive = true;
-	hp = 1;
+	hp = 10;
 	score = 100;
     }
 
@@ -91,13 +91,14 @@ public class Entity extends Body {
 	    }else{
 		position = position.translate(velocity.scale(deltaMs/100.0));
 	    }
+	    	
+	    if(ca != null)
+		ca.animate(this, deltaMs);
 	}
 	
 	age += deltaMs;
 	setActivation(age > 0 && alive);
-	
-	if(ca != null)
-	    ca.animate(this, deltaMs);
+
 
     }
 	
