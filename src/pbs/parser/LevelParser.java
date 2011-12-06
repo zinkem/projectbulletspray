@@ -303,7 +303,14 @@ public class LevelParser {
     }
 
     protected WeaponParam getWeapon(){
-	return new WeaponParam(new SurroundShot(9, 30, 50));
+	if(match("outward")){
+	    return new WeaponParam(new SurroundShot(num(), num(), num()));
+	} else if(match("spinning")){
+	    return new WeaponParam(new SpinningSurroundShot(num(), num(), num(), num()));
+	}
+
+	err = "No weapon parameter found";
+	return null;
     }
 
  }

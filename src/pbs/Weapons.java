@@ -86,25 +86,21 @@ public class Weapons {
 	long repeatTimer;
 	long lastShot;
 
-	double angleoffset;
-
 	public SurroundShot(int ns, double s, long rt){ 
 	    super();
 	    numShots = ns;
-	    increment = numShots/(2*Math.PI);
+	    increment = (2*Math.PI)/numShots;
 	    speed = s;
 	    repeatTimer = rt;
 	    lastShot = rt;
 	    
-	    angleoffset = 0.0;
 	}
 
 	public void shoot(Level lvl, Entity e, long deltaMs){
 	    Entity shot;
 	    double xv;
 	    double yv;
-	    double ang = angleoffset; 
-	    angleoffset += Math.PI/60.0;
+	    double ang = 0; 
 
 	    lastShot += deltaMs;
 	    if(lastShot >= repeatTimer){
@@ -125,6 +121,45 @@ public class Weapons {
 
 	}
     }
+    
+    public static class SpinningSurroundShot extends SurroundShot {
+
+	double angleoffset;
+	double dtheta; //how much the angle moves after eveery shot
+
+	public SpinningSurroundShot(int ns, double s, double degrees, long rt){ 
+	    super(ns, s, rt);
+	    angleoffset = 0;
+	    dtheta = degrees*Math.PI/180;
+	}
+	
+	public void shoot(Level lvl, Entity e, long deltaMs){
+	    Entity shot;
+	    double xv;
+	    double yv;
+	    double ang = angleoffset; 
+	    angleoffset += dtheta;
+
+	    lastShot += deltaMs;
+	    if(lastShot >= repeatTimer){
+		lastShot -= repeatTimer;
+		for(int i = 0; i < numShots; i++){
+	    
+		    xv = Math.cos(ang);
+		    yv = Math.sin(ang);
+		    ang += increment;
+		    
+		    shot = new Entity("resources/pbs-spritesheet.png#red_bullet");
+		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(xv, yv)));
+		    shot.setVelocity(new Vector2D(xv*speed, yv*speed));
+		    lvl.add(shot, targetLayer);
+		    
+		}
+	    }
+
+	}
+    }
+
 
     
 }

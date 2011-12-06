@@ -12,12 +12,13 @@ create enemy hex
 	velocity 3 3
 	spawnin 0
 	render
-	weapon
+	weapon spinning 4 10 1 100
 	
 create enemy hex
 	position 360 300
 	velocity 3 -3
 	spawnin 10
+	weapon outward 6 10 250
 create enemy hex
 	position 370 300
 	velocity 3 -3

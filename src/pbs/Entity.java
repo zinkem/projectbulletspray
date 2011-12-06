@@ -103,12 +103,13 @@ public class Entity extends Body {
     }
 	
     public void shoot(Level lvl, long deltaMs){
-	if(cw != null){
-	    cw.shoot(lvl, this, deltaMs);
-	}else{
-	    //System.out.println("Custom Weapon class not found for:"+this.toString());
+	if(active){
+	    if(cw != null){
+		cw.shoot(lvl, this, deltaMs);
+	    }else{
+		//System.out.println("Custom Weapon class not found for:"+this.toString());
+	    }
 	}
-	
     }
 
 }
