@@ -29,6 +29,14 @@
     <height>17</height>
   </frameset>
 
+  <framese>
+    <name>defender2</name>
+    <top>19</top>
+    <left>80</left>
+    <width>40</width>
+    <height>17</height>
+  </frameset>
+
   <frameset>
     <name>green_laser</name>
     <top>24</top>

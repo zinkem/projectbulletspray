@@ -30,7 +30,7 @@ public class PBSGame extends ScrollingScreenGame {
 
 	EntityFactory ef;
 
-	Entity e, plr;
+	Entity plr;
 
 	// hud variables
 	protected FontResource hudFont;
@@ -49,7 +49,7 @@ public class PBSGame extends ScrollingScreenGame {
 
 	//levelData = new Level();
 
-	plr = new Entity(SPRITE_SHEET + "#shuttle");
+	plr = new Entity(SPRITE_SHEET + "#defender2");
 	plr.setPosition(new Vector2D(300, 300));
 	plr.setCustomUpdate(new KeyboardControls(keyboard));
 	plr.setCustomWeapon(new FriendlySpread());
@@ -57,7 +57,7 @@ public class PBSGame extends ScrollingScreenGame {
 
 	//e = ef.get_bullet_arc(new Vector2D(200, 200), new Vector2D(10, 0), -0.01);
 	//e = ef.get_yocil(new Vector2D(400, 100), new Vector2D(0, 5));
-	e = ef.Boss(new Vector2D(400, 200));
+	Entity e = ef.Boss(new Vector2D(400, 200));
 	e.setCustomRender(new SetStatic(50.0));
 	//e = ef.get_directed(new Vector2D(400, 0), new Vector2D(-5,5), plr,  );
 	
