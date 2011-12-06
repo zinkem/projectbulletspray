@@ -8,19 +8,20 @@ import java.awt.geom.AffineTransform;
 import jig.engine.ImageResource;
 import jig.engine.RenderingContext;
 import jig.engine.ViewableLayer;
+import jig.engine.util.Vector2D;
 
 /**
  * @author Skylar Hiebert
  *
  */
-public class ScrollingBackgroundLayer implements ViewableLayer {
+public class ScrollingBackgroundLayer extends PBSQuadLayer<Entity> implements ViewableLayer {
 	private int layerWidth;
 	private int layerHeight;
 	
 	ImageResource image;
 	
-	private double offset;
-	private int scrollingSpeed;
+	private Vector2D offset;
+	private Vector2D velocity;
 	private int imgHeight;
 	private int imgWidth;
 	boolean active;
@@ -38,6 +39,7 @@ public class ScrollingBackgroundLayer implements ViewableLayer {
 	 * @see #setBackground(ImageResource, boolean)
 	 */
 	public ScrollingBackgroundLayer(final int layerWidth, final int layerHeight) {
+		super(new Vector2D(0,0), new Vector2D(layerWidth, layerHeight));
 		active = false;
 		this.layerHeight = layerHeight;
 		this.layerWidth = layerWidth;
@@ -63,14 +65,15 @@ public class ScrollingBackgroundLayer implements ViewableLayer {
 	 * @see #setBackground(ImageResource, boolean)
 	 */
 	public ScrollingBackgroundLayer(final ImageResource img,
-			final int layerWidth, final int layerHeight, int scrollingSpeed) {
-		
+			final int layerWidth, final int layerHeight, Vector2D velocity) {
+		super(new Vector2D(0,0), new Vector2D(layerWidth, layerHeight));
 		image = img;
 		imgHeight = img.getHeight();
 		imgWidth = img.getWidth();
 		this.layerHeight = layerHeight;
 		this.layerWidth = layerWidth;
-		this.scrollingSpeed = scrollingSpeed;
+		this.velocity = velocity;
+		offset = new Vector2D(0,0);
 		active = true;
 	}
 	
@@ -81,15 +84,55 @@ public class ScrollingBackgroundLayer implements ViewableLayer {
 		}
 		
 		AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
-		
-		for (int x = 0; x < layerWidth; x += imgWidth) {
-			for (double y = layerHeight + offset; y > -(offset + imgHeight); y -= imgHeight) {
-				at.setToTranslation(x, y);
-				image.render(rc, at);
+		if(velocity.getX() < 0) {
+			if(velocity.getY() < 0) {
+				for (double x = tree.max.getX() - imgWidth; 
+				x > tree.min.getX() + offset.getX() + imgWidth ; 
+				x -= imgWidth) {
+					for (double y = tree.max.getY() + offset.getY(); 
+					y > -offset.getY() - imgWidth; 
+					y -= imgHeight) {
+						at.setToTranslation(x, y);
+						image.render(rc, at);
+					}
+				}	
+			} else {
+				for (double x = tree.max.getX() - imgWidth; 
+				x > tree.min.getX() + offset.getX() + imgWidth ; 
+				x -= imgWidth)  {
+					for (double y = tree.min.getY() - offset.getY() - imgWidth; 
+					y < tree.max.getY() + imgHeight; 
+					y += imgHeight) {
+						at.setToTranslation(x, y);
+						image.render(rc, at);
+					}
+				}
 			}
-		}
-
-		
+		} else {
+			if(velocity.getY() < 0) {
+				for (double x = tree.min.getX() - offset.getX() - imgWidth; 
+				x < tree.max.getX() + imgWidth; 
+				x += imgWidth) {
+					for (double y = tree.max.getY() + offset.getY(); 
+					y > tree.min.getY() - offset.getY() - imgHeight; 
+					y -= imgHeight) {
+						at.setToTranslation(x, y);
+						image.render(rc, at);
+					}
+				}
+			} else {
+				for (double x = tree.min.getX() - offset.getX() - imgWidth; 
+				x < tree.max.getX() + imgWidth; 
+				x += imgWidth) {
+					for (double y = tree.min.getY() - offset.getY() - imgWidth; 
+					y < tree.max.getY() + imgHeight; 
+					y += imgHeight) {
+						at.setToTranslation(x, y);
+						image.render(rc, at);
+					}
+				}
+			}
+		} 	
 	}
 
 	/**
@@ -99,10 +142,8 @@ public class ScrollingBackgroundLayer implements ViewableLayer {
 	 * @param deltaMs
 	 *               ignored
 	 */
-	public void update(final long deltaMs) {
-		offset += scrollingSpeed * (deltaMs / 100.0);
-		if(offset > imgHeight)
-			offset = 0;
+	public void update(final long deltaMs) {		
+		offset = offset.translate(velocity.scale(deltaMs / 100.0));
 	}
 
 	/**
@@ -122,8 +163,8 @@ public class ScrollingBackgroundLayer implements ViewableLayer {
 		active = a;
 	}
 	
-	public void setVelocity(int scrollingSpeed) {
-		this.scrollingSpeed = scrollingSpeed;
+	public void setVelocity(Vector2D velocity) {
+		this.velocity = velocity;
 	}
 
 	public void setImageTile(ImageResource img) {
