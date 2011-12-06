@@ -61,5 +61,23 @@ public class Renders {
 		}
 	}
 	
+	public static class SetStatic implements CustomRender{
+		private double angle;
+		public SetStatic(double a){
+			this.angle = a;
+		}
+
+		@Override
+		public void render(RenderingContext rc, Entity e) {
+				AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
+				at.translate(e.getCenterPosition().getX(), e.getCenterPosition().getY());
+				at.rotate(angle);
+				at.translate(-e.getWidth()/2, -e.getHeight()/2);
+				e.getImage().render(rc, at);
+				set = true;
+
+		}
+		
+	}
 
 }
