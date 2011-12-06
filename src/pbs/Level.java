@@ -81,7 +81,7 @@ public class Level {
 	gametime = 0;
 	
 	camera = new Vector2D(120,240);
-	scrollspeed = new Vector2D(10, 0);
+	scrollspeed = new Vector2D(1, 0);
 	
 	events = new Stack<Statement>();
 	templates = new HashMap<String, ObjectDescription>();

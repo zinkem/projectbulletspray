@@ -87,7 +87,7 @@ public class Weapons {
 		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8 + (i * 4))));
 		    shot.setVelocity(new Vector2D(50, (i * 2) - 4));
 		    shot.setCustomUpdate(new Strait());
-		    shot.setCustomRender(new Throb(2, 100));
+		    shot.setCustomRender(new Scale(2));
 		    shot.setTimeToLive(1000);
 		    lvl.add(shot, targetLayer);
 		}
