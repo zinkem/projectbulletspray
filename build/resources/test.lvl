@@ -1,4 +1,4 @@
-create enemy 
+create enemy hex
 	position 340 300
 	velocity 3 3
 	spawnin 0
@@ -6,66 +6,64 @@ create enemy
 	render
 	weapon
 	
-create enemy 
+create enemy hex
 	position 360 300
 	velocity 3 -3
 	spawnin 10
-create enemy 
+create enemy hex
 	position 370 300
 	velocity 3 -3
 	spawnin 12
-create enemy 
+create enemy hex
 	position 380 300
 	velocity 3 -3
 	spawnin 14
-create enemy 
+create enemy hex
 	position 390 300
 	velocity 3 -3
 	spawnin 16
-create enemy 
+create enemy hex
 	position 330 300
 	velocity 3 -3
 	spawnin 18
-create enemy 
+create enemy hex
 	position 320 300
 	velocity 3 -3
 	spawnin 19
-create enemy 
+create enemy hex
 	position 310 300
 	velocity 3 -3
 	spawnin 20
-create enemy 
+create enemy hex
 	position 300 300
 	velocity 3 -3
 	spawnin 10
-create enemy 
+create enemy hex
 	position 355 300
 	velocity 3 -3
 	spawnin 10
-create enemy 
+create enemy hex
 	position 345 300
 	velocity 3 -3
 	spawnin 10
-create enemy 
+create enemy hex
 	position 335 300
 	velocity 3 -3
 	spawnin 10
-create enemy 
+create enemy hex
 	position 360 300
 	velocity 3 -3
 	spawnin 10
-create enemy 
+create enemy hex
 	position 350 300
 	velocity 3 -3
 	spawnin 10
 
 create roger	
 	
-template roger enemy
+template roger enemy shuttle
 	position 250 100
 	velocity -3 0
 end
-
-create roger
 
 endspec
