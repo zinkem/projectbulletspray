@@ -30,7 +30,7 @@ public class Entity extends Body {
     public int hp() { return hp; }
     public boolean modhp(int m) { 
 	hp += m;
-	alive = (hp > 0);
+	alive = (hp > 0); //if hp hits or falls below 0, entity dies
 	return alive;
     }
 
@@ -73,7 +73,7 @@ public class Entity extends Body {
 	if(cu != null){
 	    cu.update(this, deltaMs);
 	}else{
-	    System.out.println("Custom update for object:"+this.toString()+" Not found");
+	    //System.out.println("Custom update for object:"+this.toString()+" Not found");
 	}
 
 	age += deltaMs;

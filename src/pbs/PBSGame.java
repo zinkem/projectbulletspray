@@ -45,9 +45,9 @@ public class PBSGame extends ScrollingScreenGame {
 	hudFont = rf.getFontResource(new Font("Sans Serif", Font.PLAIN, 24), Color.white, null);
 
 	LevelParser lp = new LevelParser("resources/test.lvl");
-	lp.createLevel();
+	levelData = lp.createLevel();
 
-	levelData = new Level();
+	//levelData = new Level();
 
 	plr = new Entity(SPRITE_SHEET + "#hex");
 	plr.setPosition(new Vector2D(300, 300));

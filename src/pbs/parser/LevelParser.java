@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import jig.engine.util.Vector2D;
+
 import pbs.parser.Elements.*;
 import pbs.parser.Statements.*;
 import pbs.parser.ExpressionElements.*;
@@ -12,6 +14,7 @@ import pbs.Level;
 
 public class LevelParser {
 
+    public static String SPRITE_SHEET = "resources/pbs-spritesheet.png";
 
     //static strings, define 'reserved words'
     public static String TEMPLATE = "template";
@@ -74,29 +77,58 @@ public class LevelParser {
 	while(source.hasNext()){
 	    s = nextStatement();
 	    if(s != null){
-		s.execute(thislevel);
+		//s.execute(thislevel);
 		//normally, we would add statements to level event queue
+		thislevel.addStatement(s);
 	    } else {
 		System.out.println("Aborting parse: " + err);
 		return null;
 	    }
+
+	    if(match("endspec"))
+	       break;
 	}
 
 	return thislevel;
 
     }
 
+    protected String symbol(){
+	String r = ctoken;
+	ctoken = nextToken();
+	return r;
+    }
+    
+    protected int num(){
+	boolean isnum = ctoken.matches("\\d+");
+	int n = 0;
+	if(isnum){
+	    n = Integer.parseInt(ctoken);
+	    ctoken = nextToken();
+	}
+	System.out.println("isnum is " + isnum + ", " + n );
+	return n;
+    }
+
     private boolean match(String s){
 	boolean matches = ctoken.equalsIgnoreCase(s);
 	if(matches){
-	    try{
-		ctoken = source.next();
-	    } catch (Exception e) {
-		System.out.println("Scanner halted unexpectedly");
-	    }
-	}
-
+	    if(source.hasNext())
+		ctoken = nextToken();
+	    else
+		System.out.println("EOF");
+	}	
 	return matches;
+    }
+    
+    private String nextToken(){
+	String s = null;
+	try{
+	    s = source.next();
+	} catch (Exception e) {
+	    System.out.println("Scanner halted unexpectedly");
+	}
+	return s;
     }
 
     public Statement nextStatement(){
@@ -201,15 +233,15 @@ public class LevelParser {
     }
     
     protected ObjectDescription fx(){
-	return new fxEntity(null, paramList());
+	return new fxEntity(SPRITE_SHEET + "#large_burst", paramList());
     }
 
     protected ObjectDescription enemy(){
-	return new enemyEntity(null, paramList());
+	return new enemyEntity(SPRITE_SHEET + "#shuttle", paramList());
     }
 
     protected ObjectDescription staticEnt(){
-	return new staticEntity(null, paramList());
+	return new staticEntity(SPRITE_SHEET + "#hex", paramList());
     }
 
     protected ObjectDescription timed(){
@@ -253,9 +285,9 @@ public class LevelParser {
     protected Param nextParam(){
 	//here we define list of parameters and return the proper parameter
 	if(match("position")){
-
+	    return new PositionParam(new Vector2D(num(), num()));
 	} else if(match("velocity")){
-
+	    return new VelocityParam(new Vector2D(num(), num()));
 	} else if(match("update")){
 
 	} else if(match("render")){
