@@ -318,6 +318,8 @@ public class LevelParser {
 	    return getWeapon();
 	} else if(match("spawnin")){
 	    return new SpawnTime(num());
+	} else if(match("scoreval")){
+	    return new ScoreValueParam(num());
 	}
 
 	return null;
