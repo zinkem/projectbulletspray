@@ -3,6 +3,7 @@ package pbs;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.io.IOException;
 
 import jig.engine.*;
 import jig.engine.hli.*;
@@ -43,7 +44,19 @@ public class PBSGame extends ScrollingScreenGame {
 	
 	rf = ResourceFactory.getFactory();
 	rf.loadResources("resources/", "pbs-resources.xml");
-	hudFont = rf.getFontResource(new Font("Sans Serif", Font.PLAIN, 24), Color.white, null);
+	Font sFont = new Font("Sans Serif", Font.PLAIN, 24);
+	try {
+		sFont = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("resources/PrStart.ttf"));
+		sFont = sFont.deriveFont(24f);
+	} catch (FontFormatException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+//	hudFont = rf.getFontResource(new Font("Sans Serif", Font.PLAIN, 24), Color.white, null);
+	hudFont = rf.getFontResource(sFont, Color.white, null);
 	
 	LevelParser lp = new LevelParser("resources/test.lvl");
 	levelData = lp.createLevel();
