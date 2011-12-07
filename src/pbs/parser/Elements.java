@@ -10,6 +10,7 @@ import pbs.Entity.*;
 import pbs.Animations.*;
 import pbs.parser.Statements.*;
 import pbs.Trigger.*;
+import pbs.Triggers.*;
 import pbs.parser.BooleanElements.*;
 import pbs.parser.ExpressionElements.*;
 
