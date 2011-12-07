@@ -54,13 +54,14 @@ public class PBSGame extends ScrollingScreenGame {
 	player.setCustomWeapon(new FriendlySpread());
 	levelData.add(player, Layer.PLAYER);
 
-	/*
+	
 	//e = ef.get_bullet_arc(new Vector2D(200, 200), new Vector2D(10, 0), -0.01);
 	//e = ef.get_yocil(new Vector2D(400, 100), new Vector2D(0, 5));
 	Entity e = ef.Boss(new Vector2D(400, 200));
 	e.setCustomRender(new SetStatic(50.0));
+	levelData.add(e, Layer.STATIC);
 	//e = ef.get_directed(new Vector2D(400, 0), new Vector2D(-5,5), plr,  );
-	
+	/*
 	levelData.add(e, Layer.ENEMY);
 
 	e = ef.get_chaser(new Vector2D(400,100), new Vector2D(-5, 5), plr);
