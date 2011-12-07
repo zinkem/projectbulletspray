@@ -1,67 +1,59 @@
 set scrollspeed 10
 set scoreincrease 15
-set nextlevel resources/test.lvl
+set nextlevel resources/splash.lvl
 set message welcome to hell!
 
+set message winter is coming
+	create timed 3000
+		position 0 0
+		set message blank
+	end
+	
+
 create badasses
+
+create timed 60000
+       set levelcomplete
+end
 
 template badasses timed 5000
 	position 600 240
 	create roger
 		position 100 -50
 		velocity 14 -2
-		weapon spinning 5 5 10 200
+		weapon spinning 3 15 10 400
 	create roger
 		position 101 50
 		velocity 14 2
-		weapon spinning 5 5 10 200
+		weapon spinning 3 15 10 400
 	create badasses
-		position 1000 0
-	set message win one for the gipper!
-	create timed 3000
-		position 0 0
-		set message blank
-		end
+		position 500 0
 	end
 end
 
 create enemy hex
 	position 600 240
-	velocity 9 3
-	render veldir
-
-create roger
-	position 300 240
-	velocity 10 10
-	spawnin 10
-	
-create roger
-	position 600 240
-	weapon spinning 4 10 1 100
-	render throb 1
-	
-create enemy hex
-	position 340 300
-	velocity 5 0
-	spawnin 0
-	render spin 1
-	update target 440 200
-	weapon spinning 3 10 1 100
+	velocity -15 0
+	update yoscil
+	render spin 2
 
 create recurse
-	position 320 240
-	
-template roger enemy defender
+       position 300 240
+
+
+template roger enemy shuttle
 	position 250 100
 	velocity -3 0
 end
 
-template recurse timed 1000
-	position 10 0
+template recurse timed 3000
+	position 640 0
 	create roger
 		position 0 0
+		velocity 15 0
 	create recurse
-		position 10 0
+	       render spin 15
+	       position 300 0
 	end
 end
 
