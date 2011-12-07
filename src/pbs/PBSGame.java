@@ -29,7 +29,7 @@ public class PBSGame extends ScrollingScreenGame {
     public static long FRAME_SIZE = 16;
     public static String SPRITE_SHEET = "resources/pbs-spritesheet.png";
     
-    public static int PLAYER_MAX_HP = 3;
+    public static int PLAYER_MAX_HP = 10;
     
     ResourceFactory rf;
     
@@ -41,6 +41,7 @@ public class PBSGame extends ScrollingScreenGame {
 
     String currentLevel;
     int highScore;
+    int lives;
     
     protected boolean waitForReset;
 
@@ -104,19 +105,17 @@ public class PBSGame extends ScrollingScreenGame {
 		y = SCREEN_HEIGHT - (hudFont.getHeight() / 2) - (image.getHeight() / 2) - 10;
 		image.render(rc, AffineTransform.getTranslateInstance(x, y));
 		
-		message = "x 3";
+		message = " x" + lives;
 		x = 10 + image.getWidth();
 		y = SCREEN_HEIGHT - hudFont.getHeight() - 10;
 		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
 		
+		image = rf.getFrames(SPRITE_SHEET + "#fullhp").get(0);
 		message = "Health:"; // + player.hp + " / " + PLAYER_MAX_HP;
-		x = X_MID - ((hudFont.getStringWidth(message) + image.getWidth() * PLAYER_MAX_HP) / 2);
+		x = X_MID - ((hudFont.getStringWidth(message) + (image.getWidth() * PLAYER_MAX_HP)) / 2);
 		y = SCREEN_HEIGHT - hudFont.getHeight() - 10;
 		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
-		
-		image = rf.getFrames(SPRITE_SHEET + "#fullhp").get(0);
 		x += hudFont.getStringWidth(message);
-//		y = SCREEN_HEIGHT - image.getHeight() - 5;
 		y = SCREEN_HEIGHT - (hudFont.getHeight() / 2) - (image.getHeight() / 2) - 10;
 		for(int i = 0; i < PLAYER_MAX_HP; i++) {
 			if(i == player.hp)
@@ -156,6 +155,7 @@ public class PBSGame extends ScrollingScreenGame {
 	//if player dead, reset current level
 	if(player.alive() == false){
 	    levelData.setMessage("Better luck next time!");
+	    lives--;
 	    waitForReset = true;
 	}
 	//reset when we hit hte space bar
@@ -255,7 +255,7 @@ public class PBSGame extends ScrollingScreenGame {
 		File file = null;
 		Scanner input = null;
 		PrintWriter writer = null;
-		int highScore = 10000;
+		int highScore = 1000;
 		
 		try {
 			file = new File("highscores.dat");
