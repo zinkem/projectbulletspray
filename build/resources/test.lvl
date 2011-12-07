@@ -1,4 +1,4 @@
-create timed 3000
+create timed 10000
 	position 300 240
 	create roger
 		position 100 0
