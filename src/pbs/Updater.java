@@ -96,7 +96,7 @@ public class Updater {
 		public void update(Entity e, long deltaMs) {
 			double dx;
 			e.age += deltaMs;
-			dx = -50 * Math.cos(e.age / 128.0 * Math.PI);
+			dx = -50 * Math.cos(e.age / 700.0 * Math.PI);
 			e.setVelocity(new Vector2D(dx, e.getVelocity().getY()));
 			e.setPosition(e.getPosition().translate(
 					e.getVelocity().scale(deltaMs / 100.0)));
