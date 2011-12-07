@@ -69,7 +69,7 @@ public class Elements {
 
 	public void mutate(Level l){
 	    //this method SHOULD add a trigger with the specified stmtlist to the event layer
-	    System.out.println("Trigger Description");
+	    //System.out.println("Trigger Description");
 	    
 	    Entity e = triggerType;
 	    	  
@@ -99,7 +99,7 @@ public class Elements {
 	}
 
 	public void mutate(Level l){
-	    System.out.print("Timed ");
+	    //System.out.print("Timed ");
 	    triggerType = new TimedTrigger(TRIGGER_IMAGE, timer);
 	    triggerParam = new Trigger(stmtlist);
 	    super.mutate(l);
@@ -112,7 +112,7 @@ public class Elements {
 	}
 
 	public void mutate(Level l){
-	    System.out.print("Collision ");
+	    //System.out.print("Collision ");
 	    triggerType = new CollisionTrigger(TRIGGER_IMAGE);
 	    triggerParam = new Trigger(stmtlist);
 	    super.mutate(l);
@@ -125,7 +125,7 @@ public class Elements {
 	}
 
 	public void mutate(Level l){
-	    System.out.print("Onscreen ");
+	    //System.out.print("Onscreen ");
 	    triggerType = new OnscreenTrigger(TRIGGER_IMAGE);
 	    triggerParam = new Trigger(stmtlist);
 	    super.mutate(l);
@@ -152,18 +152,14 @@ public class Elements {
 
 	    if(paramtemp != null){
 		for(int i = 0; i < paramtemp.size(); i++){
-		    System.out.print(" [" + e.getPosition().getX() +", "+
-				     e.getPosition().getY() +"] ");
 		    paramtemp.get(i).mutate(e);
-		    System.out.print(" [" + e.getPosition().getX() +", "+
-				     e.getPosition().getY() +"] ");
 		}
 		paramtemp = null;
 	    }
 	    
 	    l.add(e, targetLayer);
 
-	    System.out.println("Entity Description");
+	    //System.out.println("Entity Description");
 	}
     }
 
@@ -174,7 +170,7 @@ public class Elements {
 	    //set layer
 	    targetLayer = Layer.FX;
 	    paramlist.add(new AnimationParam(new AnimateOnce(75)));
-	    System.out.print("Fx ");
+	    //System.out.print("Fx ");
 	    super.mutate(l);
 	}
     }
@@ -185,7 +181,7 @@ public class Elements {
 	public void mutate(Level l){
 	    //set layer
 	    targetLayer = Layer.ENEMY;
-	    System.out.print("Enemy ");
+	    //System.out.print("Enemy ");
 	    super.mutate(l);
 	}
     }
@@ -196,7 +192,7 @@ public class Elements {
 	public void mutate(Level l){
 	    //set layer
 	    targetLayer = Layer.STATIC;
-	    System.out.print("Static ");
+	    //System.out.print("Static ");
 	    super.mutate(l);
 
 	}
@@ -231,9 +227,7 @@ public class Elements {
     public static class TranslatePositionParam extends VectorParam {
 	public TranslatePositionParam(Vector2D p){ super(p); }
 	public boolean mutate(Entity e){
-	    System.out.println("tpp: " + e.getPosition().getX());
 	    e.setPosition(e.getPosition().translate(vec));
-	    System.out.println("tpp: " + e.getPosition().getX());
 	    return true;
 	}
     }

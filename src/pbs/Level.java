@@ -66,7 +66,6 @@ public class Level {
     //symbol table with templated entities/triggers
     HashMap<String, ObjectDescription> templates;
     public ObjectDescription getTemplate(String s){
-	System.out.println("get Template");
 	ObjectDescription od = templates.get(s);
 	if(od == null)
 	    System.out.println("No object description named " + s);
@@ -162,6 +161,7 @@ public class Level {
 		    }
 		}
 	    });
+
 	collisionHandlers.add(new QuadLayerCollisionHandler(getLayer(Layer.PLAYER), getLayer(Layer.STATIC)){
 
 		@Override
@@ -200,7 +200,7 @@ public class Level {
 			e.setPosition(body2.getCenterPosition().translate(new Vector2D(ry, rx)));
 			e.setCustomAnimation(new AnimateOnce(75));
 			add(e, Layer.FX);
-				
+			
 			body2.kill();
 			body1.modhp(-1);
 		    }
@@ -237,7 +237,7 @@ public class Level {
 	// call update on each layer
 	updateLayers(deltaMs, stwMin, stwMax);
 	    
-	//behavior custom to each level goes here
+	//behavior custom to each layer goes here
 	    
 	//check to see which triggers need to be fired...
 	Iterator<Entity> elist = getLayer(Layer.TRIGGERS).iterator();

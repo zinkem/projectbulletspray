@@ -70,7 +70,7 @@ public class Statements {
 
 	//does the work of adding events to levels
 	public boolean execute(Level l){
-	    System.out.println("Creation event!");
+	    //System.out.println("Creation event!");
 	    if(theObject != null)
 		theObject.mutate(l);
 

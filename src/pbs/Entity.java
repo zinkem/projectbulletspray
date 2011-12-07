@@ -130,7 +130,6 @@ public class Entity extends Body {
     }
 
     public void fireTrigger(Level l, long deltaMs){
-	System.out.println("firing! " + position.getX());
 	if(ct != null && active){
 	    ct.fire(l, position);
 	}

@@ -75,8 +75,6 @@ public class LevelParser {
 	ctoken = source.next();
 	Statement s;
 
-	System.out.print(ctoken + " ");
-
 	//from the start statement, parse out statements and execute them
 	while(source.hasNext()){
 	    s = nextStatement();
@@ -133,7 +131,7 @@ public class LevelParser {
 	String s = null;
 	try{
 	    s = source.next();
-	    System.out.print(ctoken + " ");
+	    //System.out.print(ctoken + " ");
 	} catch (Exception e) {
 	    System.out.println("Scanner halted unexpectedly");
 	}

@@ -25,15 +25,12 @@ public class Trigger implements CustomTrigger {
     public void fire(Level l, Vector2D p){
 	ArrayList<Param> plist = new ArrayList<Param>();
 	plist.add(new TranslatePositionParam(p));
-	
-	System.out.println(p.getX() + " " + p.getY());
 
 	Iterator<Statement> itr = stack.iterator();
 	if(itr != null)
 	    while(itr.hasNext()){
 		Statement s = itr.next();
 		s.finalParams(plist);
-		System.out.println("fire: " + plist.size());
 		l.addStatement(s);
 	    }
     }
