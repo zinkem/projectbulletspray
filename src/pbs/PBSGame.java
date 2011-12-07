@@ -28,6 +28,8 @@ public class PBSGame extends ScrollingScreenGame {
     public static int P_STARTY = Y_MID;
     public static long FRAME_SIZE = 16;
     public static String SPRITE_SHEET = "resources/pbs-spritesheet.png";
+    private static final String START_LEVEL = "resources/skyhawk.lvl";
+    private static final int START_LIVES = 3;
 	int s;
     public static int PLAYER_MAX_HP = 10;
     
@@ -74,7 +76,8 @@ public class PBSGame extends ScrollingScreenGame {
 //	hudFont = rf.getFontResource(new Font("Sans Serif", Font.PLAIN, 24), Color.white, null);
 	hudFont = rf.getFontResource(sFont, Color.white, null);
 
-	currentLevel = "resources/skyhawk.lvl";
+	currentLevel = START_LEVEL;
+	lives = START_LIVES;
 	resetLevel();
 
 	GameClock.TimeManager tm = new GameClock.SleepIfNeededTimeManager(60.0);
@@ -99,7 +102,6 @@ public class PBSGame extends ScrollingScreenGame {
 		message = "" + getHighScore();
 		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
 		
-		message = "3";
 		image = rf.getFrames(SPRITE_SHEET + "#shipico").get(0);
 		x = 10;
 		y = SCREEN_HEIGHT - (hudFont.getHeight() / 2) - (image.getHeight() / 2) - 10;
@@ -155,12 +157,19 @@ public class PBSGame extends ScrollingScreenGame {
 	    waitForReset = true;
 	}
 	//if player dead, reset current level
-	if(player.alive() == false){
-	    levelData.setMessage("Better luck next time!");
-	    lives--;
-	    levelData.score = 0;
-	    waitForReset = true;
+	if(player.alive() == false && !waitForReset){
+		lives--;
+		waitForReset = true;
+		levelData.score = 0;
+		if(lives < 0) { //if player dead, and out of lives, reset game
+			levelData.setMessage("Game Over! Press Spacebar to start a new game");
+			currentLevel = START_LEVEL;
+			lives = START_LIVES;
+		} else {
+			levelData.setMessage("Better luck next time!");
+		}	    
 	}
+
 	//reset when we hit hte space bar
 	if(waitForReset && keyboard.isPressed(KeyEvent.VK_SPACE)){
 	    player = null;
