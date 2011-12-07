@@ -118,9 +118,11 @@ public class LevelParser {
 
     private boolean match(String s){
 	boolean matches = ctoken.equalsIgnoreCase(s);
+
 	if(matches){
-	    if(source.hasNext())
+	    if(source.hasNext()){
 		ctoken = nextToken();
+	    }
 	    else
 		System.out.println("EOF");
 	}	
@@ -131,6 +133,7 @@ public class LevelParser {
 	String s = null;
 	try{
 	    s = source.next();
+	    System.out.print(ctoken + " ");
 	} catch (Exception e) {
 	    System.out.println("Scanner halted unexpectedly");
 	}
@@ -159,11 +162,13 @@ public class LevelParser {
     public Statement addTemplate(){
 
 	String name = symbol();
-	
+
 	ObjectDescription od = objdesc();
 	
 	if(match(END)){
-	    return new AddTemplate(name, od);
+	    AddTemplate ae = new AddTemplate(name, od);
+	    ae.finalParams(pl);
+	    return ae;
 	}
 	
 	err = "template creation failed, no end marker found";
@@ -261,6 +266,8 @@ public class LevelParser {
 	    s = nextStatement();
 	}
 	
+	match(END);
+
 	return stmtlist;
     }
 
