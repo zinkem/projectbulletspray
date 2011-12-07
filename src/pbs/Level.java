@@ -3,7 +3,8 @@ package pbs;
 import java.util.*;
 
 import jig.engine.*;
-import jig.engine.util.Vector2D;
+import jig.engine.util.*;
+import jig.engine.audio.jsound.*;
 
 import pbs.parser.Statements.*;
 import pbs.parser.Elements.*;
@@ -27,6 +28,16 @@ public class Level {
 	    HUD }
     
     public static int NUM_LAYERS = Layer.values().length;
+
+    //audio stuffs
+    AudioClip enemydeath;
+    AudioClip playerdeath;
+    AudioClip laserfire;
+    AudioClip laserhit;
+
+    protected long lastaudio;
+    protected long audiopause;
+
     
     //important level info
     protected int score;
@@ -94,6 +105,17 @@ public class Level {
 
 
     public Level(){
+
+	ResourceFactory rf = ResourceFactory.getFactory();
+	
+	enemydeath = rf.getAudioClip("resources/explosion3.wav");
+	playerdeath = rf.getAudioClip("resources/explosion2.wav");
+	laserfire = rf.getAudioClip("resources/lasershot1.wav");
+	laserhit = rf.getAudioClip("resources/laserhit1.wav");
+
+	audiopause = 50;
+	lastaudio = 50;
+
 	score = 0;
 	gametime = 0;
 	message = "";
@@ -161,6 +183,12 @@ public class Level {
 			body2.modhp(-1);
 
 			if (body2.alive() == false) {
+			    if(lastaudio >= audiopause){
+				enemydeath.play();
+				lastaudio = 0;
+			    }
+
+
 			    score += body2.value();
 
 			    for (int i = 0; i < 5; i++) {
@@ -173,6 +201,11 @@ public class Level {
 				e.setAge((long) (-rx));
 				add(e, Layer.FX);
 			    }
+			}
+			
+			if(lastaudio >= audiopause){
+			    laserhit.play();
+			    lastaudio = 0;
 			}
 		    }
 		}
@@ -193,6 +226,12 @@ public class Level {
 				
 			//Kill the player, do any sort of updates to the game necessary
 			body1.kill();
+
+			if(lastaudio >= audiopause){
+			    playerdeath.play();
+			    lastaudio = 0;
+			}
+
 		    }
 		}
 	    });
@@ -217,10 +256,22 @@ public class Level {
 			
 			body2.kill();
 			body1.modhp(-1);
+
+			if(body1.alive()){
+			    if(lastaudio >= audiopause){
+				laserhit.play();
+				lastaudio = 0;
+			    }
+			} else{
+			    if(lastaudio >= audiopause){
+				playerdeath.play();
+				lastaudio = 0;
+			    }
+			}
 		    }
 		}
 	    });
-
+	
 	collisionHandlers.add(new QuadLayerCollisionHandler(getLayer(Layer.PLAYER), getLayer(Layer.HOSTILE)){
 		
 		@Override
@@ -236,6 +287,17 @@ public class Level {
 			
 			body2.kill();
 			body1.modhp(-1);
+			if(body1.alive()){
+			    if(lastaudio >= audiopause){
+				laserhit.play();
+				lastaudio = 0;
+			    }
+			} else {
+			    if(lastaudio >= audiopause){
+				playerdeath.play();
+				lastaudio = 0;
+			    }
+			}
 		    }
 		}
 	    });
@@ -263,7 +325,8 @@ public class Level {
     public void update(long deltaMs, Vector2D stwMin, Vector2D stwMax) {
 
 	camera = camera.translate(scrollspeed.scale(deltaMs / 100.0));
-	    
+	lastaudio += deltaMs;
+	
 	// execute all statements on queue
 	execute();
 	    
