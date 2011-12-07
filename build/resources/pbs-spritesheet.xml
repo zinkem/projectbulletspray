@@ -193,7 +193,7 @@
     <height>64</height>
   </frameset>
 
-  <fameset>
+  <frameset>
     <name>alum</name>
     <top>325</top>
     <left>0</left>
@@ -201,7 +201,7 @@
     <width>252</width>
   </frameset>
 
-  <fameset>
+  <frameset>
     <name>ice</name>
     <top>407</top>
     <left>0</left>
@@ -209,7 +209,7 @@
     <width>252</width>
   </frameset>
 
-   <fameset>
+  <frameset>
     <name>land</name>
     <top>366</top>
     <left>0</left>

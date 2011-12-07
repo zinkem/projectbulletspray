@@ -86,6 +86,24 @@ public class Level {
 	
 	events = new Stack<Statement>();
 	templates = new HashMap<String, ObjectDescription>();
+	
+	collisionHandlers = new ArrayList<QuadLayerCollisionHandler>();
+	allTheLayers = new ArrayList<PBSQuadLayer<Entity>>();
+	
+	ImageResource bgImage = ResourceFactory.getFactory().getFrames("resources/terrain.png#bedrock").get(0);
+	allTheLayers.add(new ScrollingBackgroundLayer(bgImage, 
+			1000, 800, new Vector2D(20, 0)));
+	for(int i = 1; i < NUM_LAYERS; i++){
+	    //here we create a new empty layer for 
+	    //each entity category
+	    //enumerated in Layer
+	    allTheLayers.add(new PBSQuadLayer<Entity>(new Vector2D(0,0), camera.scale(2.0)));
+	}
+	
+	//after all layers are added, we can add collision handlers
+	setupCollisionHandlers();
+
+
     }
 
 
