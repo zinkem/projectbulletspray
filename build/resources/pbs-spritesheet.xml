@@ -240,4 +240,15 @@
     <height>15</height>
     <width>35</width>
   </frameset>
+
+  <frameset>
+    <name>title</name>
+    <top>355</top>
+    <left>415</left>
+    <height>125</height>
+    <width>225</width>
+  </frameset>
+
+
+
 </spriteset>
