@@ -147,6 +147,8 @@ public class LevelParser {
 	    return ifStmt();
 	} else if(match(SET)){
 	    return setStmt();
+	} if(match(END)){
+	    return null;
 	}
 
 	return null;
