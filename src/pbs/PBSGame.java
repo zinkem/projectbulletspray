@@ -170,7 +170,7 @@ public class PBSGame extends ScrollingScreenGame {
 		waitForReset = true;
 		
 		if(lives < 0) { //if player dead, and out of lives, reset game
-		    levelData.setMessage("Game Over! Press Spacebar to start a new game");
+		    levelData.setMessage("Game Over! Score:" + levelData.score +". Spacebar to continue.");
 		    if(highScore > getHighScore())
 		    	saveHighScore(highScore);
 		    currentLevel = START_LEVEL;
