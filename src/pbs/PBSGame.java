@@ -46,9 +46,9 @@ public class PBSGame extends ScrollingScreenGame {
 	
 	rf = ResourceFactory.getFactory();
 	rf.loadResources("resources/", "pbs-resources.xml");
-	Font sFont = new Font("Sans Serif", Font.BOLD, 24);
+	Font sFont = new Font("Sans Serif", Font.BOLD, 18);
 	try {
-		sFont = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("./build/resources/prstartk.ttf"));
+		sFont = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("./buld/resources/prstartk.ttf"));
 		sFont = sFont.deriveFont(12f);
 	} catch (FontFormatException e) {
 		e.printStackTrace();
@@ -96,7 +96,7 @@ public class PBSGame extends ScrollingScreenGame {
     public void render(RenderingContext rc) {
 		super.render(rc);
 	
-		ImageResource image = rf.getFrames(SPRITE_SHEET + "#fullhp").get(0);
+		ImageResource image;
 		String message = "Score: " + levelData.getScore();
 		int x = 10;
 		int y = 10; //SCREEN_HEIGHT - hudFont.getHeight() - 10;
@@ -110,8 +110,14 @@ public class PBSGame extends ScrollingScreenGame {
 		message = "" + levelData.getScore();
 		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
 		
-		message = "Lives: 3";
+		message = "3";
+		image = rf.getFrames(SPRITE_SHEET + "#shipico").get(0);
 		x = 10;
+		y = SCREEN_HEIGHT - (hudFont.getHeight() / 2) - (image.getHeight() / 2) - 10;
+		image.render(rc, AffineTransform.getTranslateInstance(x, y));
+		
+		message = "x 3";
+		x = 10 + image.getWidth();
 		y = SCREEN_HEIGHT - hudFont.getHeight() - 10;
 		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
 		
@@ -122,7 +128,8 @@ public class PBSGame extends ScrollingScreenGame {
 		
 		image = rf.getFrames(SPRITE_SHEET + "#fullhp").get(0);
 		x += hudFont.getStringWidth(message);
-		y = SCREEN_HEIGHT - image.getHeight() - 5;
+//		y = SCREEN_HEIGHT - image.getHeight() - 5;
+		y = SCREEN_HEIGHT - (hudFont.getHeight() / 2) - (image.getHeight() / 2) - 10;
 		for(int i = 0; i < PLAYER_MAX_HP; i++) {
 			if(i == player.hp)
 				image = rf.getFrames(SPRITE_SHEET + "#deadhp").get(0);
