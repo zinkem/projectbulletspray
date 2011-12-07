@@ -10,6 +10,7 @@ import jig.engine.*;
 import jig.engine.hli.*;
 import jig.engine.physics.*;
 import jig.engine.util.*;
+import jig.engine.audio.jsound.*;
 
 import pbs.Level.Layer;
 import pbs.Entity.*;
@@ -28,9 +29,9 @@ public class PBSGame extends ScrollingScreenGame {
     public static int P_STARTY = Y_MID;
     public static long FRAME_SIZE = 16;
     public static String SPRITE_SHEET = "resources/pbs-spritesheet.png";
-    private static final String START_LEVEL = "resources/skyhawk.lvl";
+    private static final String START_LEVEL = "resources/splash.lvl";
     private static final int START_LIVES = 3;
-	int s;
+    int s;
     public static int PLAYER_MAX_HP = 10;
     
     ResourceFactory rf;
@@ -44,6 +45,8 @@ public class PBSGame extends ScrollingScreenGame {
     String currentLevel;
     int highScore;
     int lives;
+
+
     
     protected boolean waitForReset;
 
@@ -59,6 +62,7 @@ public class PBSGame extends ScrollingScreenGame {
 	
 	rf = ResourceFactory.getFactory();
 	rf.loadResources("resources/", "pbs-resources.xml");
+
 	Font sFont = new Font("Sans Serif", Font.BOLD, 18);
 	try {
 		sFont = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("./build/resources/prstartk.ttf"));
@@ -151,7 +155,7 @@ public class PBSGame extends ScrollingScreenGame {
 	//if level complete, get next level
 	if(levelData.levelComplete() || keyboard.isPressed(KeyEvent.VK_C)){
 		s = levelData.score;
-	    levelData.setMessage("Congratulations! Level Complete!");
+		//levelData.setMessage("Congratulations! Level Complete!");
 	    currentLevel = levelData.getNextLevel();
 	    
 	    waitForReset = true;
