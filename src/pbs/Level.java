@@ -108,11 +108,11 @@ public class Level {
 
 	ResourceFactory rf = ResourceFactory.getFactory();
 	
-	enemydeath = rf.getAudioClip("resources/explosion3.wav");
+	/*enemydeath = rf.getAudioClip("resources/explosion3.wav");
 	playerdeath = rf.getAudioClip("resources/explosion2.wav");
 	laserfire = rf.getAudioClip("resources/lasershot1.wav");
 	laserhit = rf.getAudioClip("resources/laserhit1.wav");
-
+*/
 	audiopause = 50;
 	lastaudio = 50;
 
@@ -184,7 +184,7 @@ public class Level {
 
 			if (body2.alive() == false) {
 			    if(lastaudio >= audiopause){
-				enemydeath.play();
+				//enemydeath.play();
 				lastaudio = 0;
 			    }
 
@@ -204,7 +204,7 @@ public class Level {
 			}
 			
 			if(lastaudio >= audiopause){
-			    laserhit.play();
+			    //laserhit.play();
 			    lastaudio = 0;
 			}
 		    }
@@ -228,7 +228,7 @@ public class Level {
 			body1.kill();
 
 			if(lastaudio >= audiopause){
-			    playerdeath.play();
+			    //playerdeath.play();
 			    lastaudio = 0;
 			}
 
@@ -259,12 +259,12 @@ public class Level {
 
 			if(body1.alive()){
 			    if(lastaudio >= audiopause){
-				laserhit.play();
+				//laserhit.play();
 				lastaudio = 0;
 			    }
 			} else{
 			    if(lastaudio >= audiopause){
-				playerdeath.play();
+				//playerdeath.play();
 				lastaudio = 0;
 			    }
 			}
@@ -289,12 +289,12 @@ public class Level {
 			body1.modhp(-1);
 			if(body1.alive()){
 			    if(lastaudio >= audiopause){
-				laserhit.play();
+				//laserhit.play();
 				lastaudio = 0;
 			    }
 			} else {
 			    if(lastaudio >= audiopause){
-				playerdeath.play();
+				//playerdeath.play();
 				lastaudio = 0;
 			    }
 			}

@@ -1,6 +1,6 @@
 set scrollspeed 10
 set scoreincrease 15
-set nextlevel resources/splash.lvl
+set nextlevel resources/ropes.lvl
 set message welcome to hell!
 
 set message winter is coming
