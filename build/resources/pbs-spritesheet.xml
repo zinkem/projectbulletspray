@@ -221,16 +221,23 @@
     <name>fullhp</name>
     <top>200</top>
     <left>0</left>
-    <height>16</height>
-    <width>24</width>
+    <height>24</height>
+    <width>16</width>
   </frameset>
 
   <frameset>
     <name>deadhp</name>
     <top>200</top>
-    <left>24</left>
-    <height>16</height>
-    <width>24</width>
+    <left>16</left>
+    <height>24</height>
+    <width>16</width>
   </frameset>
-
+  
+  <frameset>
+    <name>shipico</name>
+    <top>37</top>
+    <left>78</left>
+    <height>15</height>
+    <width>35</width>
+  </frameset>
 </spriteset>
