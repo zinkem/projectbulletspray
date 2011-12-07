@@ -64,6 +64,7 @@ public class PBSGame extends ScrollingScreenGame {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		for(String s : ge.getAvailableFontFamilyNames())
 			System.out.println("Font:" + s);
+		System.out.println(ResourceFactory.findResource("/resources/prstartk.ttf").getPath());
 		System.out.println("Canonical Path:" + new java.io.File(".").getAbsolutePath());
 		e.printStackTrace();
 	}
