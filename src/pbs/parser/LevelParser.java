@@ -118,9 +118,11 @@ public class LevelParser {
 
     private boolean match(String s){
 	boolean matches = ctoken.equalsIgnoreCase(s);
+
 	if(matches){
-	    if(source.hasNext())
+	    if(source.hasNext()){
 		ctoken = nextToken();
+	    }
 	    else
 		System.out.println("EOF");
 	}	
@@ -131,6 +133,7 @@ public class LevelParser {
 	String s = null;
 	try{
 	    s = source.next();
+	    System.out.print(ctoken + " ");
 	} catch (Exception e) {
 	    System.out.println("Scanner halted unexpectedly");
 	}
@@ -147,6 +150,8 @@ public class LevelParser {
 	    return ifStmt();
 	} else if(match(SET)){
 	    return setStmt();
+	} if(match(END)){
+	    return null;
 	}
 
 	return null;
@@ -157,11 +162,13 @@ public class LevelParser {
     public Statement addTemplate(){
 
 	String name = symbol();
-	
+
 	ObjectDescription od = objdesc();
 	
 	if(match(END)){
-	    return new AddTemplate(name, od);
+	    AddTemplate ae = new AddTemplate(name, od);
+	    //ae.finalParams(pl);
+	    return ae;
 	}
 	
 	err = "template creation failed, no end marker found";
@@ -217,32 +224,36 @@ public class LevelParser {
 	} else if(match("collision")) {
 	    return collision();
 	} else {
-	    return new TemplateDescription(symbol());
+	    return new TemplateDescription(symbol(), paramList());
 	}
     }
     
+    protected String imgRscName(){
+	return SPRITE_SHEET + "#" + symbol();
+    }
+
     protected ObjectDescription fx(){
-	return new fxEntity(SPRITE_SHEET + "#" + symbol(), paramList());
+	return new fxEntity(imgRscName(), paramList());
     }
 
     protected ObjectDescription enemy(){
-	return new enemyEntity(SPRITE_SHEET + "#" + symbol(), paramList());
+	return new enemyEntity(imgRscName(), paramList());
     }
 
     protected ObjectDescription staticEnt(){
-	return new staticEntity(SPRITE_SHEET + "#" + symbol(), paramList());
+	return new staticEntity(imgRscName(), paramList());
     }
 
     protected ObjectDescription timed(){
-	return new timedTrigger(stmtList());
+	return new timedTrigger(num(), paramList(), stmtList());
     }
 
     protected ObjectDescription onscreen(){
-	return new onscreenTrigger(stmtList());
+	return new onscreenTrigger(paramList(), stmtList());
     }
 
     protected ObjectDescription collision(){
-	return new collisionTrigger(stmtList());
+	return new collisionTrigger(paramList(), stmtList());
     }
 
     protected ArrayList<Statement> stmtList(){
@@ -255,6 +266,8 @@ public class LevelParser {
 	    s = nextStatement();
 	}
 	
+	match(END);
+
 	return stmtlist;
     }
 

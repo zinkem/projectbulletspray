@@ -11,117 +11,83 @@ import pbs.Animations.*;
 
 public class Level {
 
-	public static final String SPRITE_SHEET = "resources/pbs-spritesheet.png";
 
-	public static enum Layer {
-		BACKGROUND, STATIC, FX, HOSTILE, ENEMY, FRIENDLY, PLAYER, FOREGROUND, HUD
+    public static final String SPRITE_SHEET = "resources/pbs-spritesheet.png";
+
+    public static enum Layer { 
+	BACKGROUND, 
+	    TRIGGERS,
+	    STATIC, 
+	    FX,
+	    HOSTILE, 
+	    ENEMY, 
+	    FRIENDLY, 
+	    PLAYER, 
+	    FOREGROUND,
+	    HUD }
+    
+    public static int NUM_LAYERS = Layer.values().length;
+    
+    //important level info
+    protected int score;
+    public int modScore(int m){ return score += m; }
+    public int getScore(){ return score; }
+    
+    protected int gametime;
+    public int getTime(){ return gametime/1000; }
+    
+    //center position of screen
+    protected Vector2D camera;
+    public void setCam(Vector2D cam){ camera = cam; }
+    public Vector2D getCam(){ return camera; }
+
+    //scroll vector
+    protected Vector2D scrollspeed;
+    public void setScrollSpeed(Vector2D ss){ scrollspeed = ss; }
+    public Vector2D getScrollSpeed(){ return scrollspeed; }
+
+    //list of layers
+    private List<PBSQuadLayer<Entity>> allTheLayers;
+
+    //list of collision handlers 
+    private List<QuadLayerCollisionHandler> collisionHandlers;
+
+    //statement list
+    private Stack<Statement> events;
+    public void addStatement(Statement s){ events.push(s); }
+    public void execute(){
+	Statement s;
+	while(!events.empty()){
+	    s = events.pop();
+	    s.execute(this);
 	}
+    }
 
-	public static int NUM_LAYERS = Layer.values().length;
+    //symbol table with templated entities/triggers
+    HashMap<String, ObjectDescription> templates;
+    public ObjectDescription getTemplate(String s){
+	System.out.println("get Template");
+	ObjectDescription od = templates.get(s);
+	if(od == null)
+	    System.out.println("No object description named " + s);
+	return od;
+    }
+    public void addTemplate(String s, ObjectDescription od){
+	templates.put(s, od);
+    }
 
-	// important level info
-	protected int score;
 
-	public int modScore(int m) {
-		return score += m;
-	}
+    public Level(){
+	score = 0;
+	gametime = 0;
+	
+	camera = new Vector2D(320,240);
+	scrollspeed = new Vector2D(1, 0);
+	
+	events = new Stack<Statement>();
+	templates = new HashMap<String, ObjectDescription>();
+    }
 
-	public int getScore() {
-		return score;
-	}
-
-	protected int gametime;
-
-	public int getTime() {
-		return gametime / 1000;
-	}
-
-	// center position of screen
-	protected Vector2D camera;
-
-	public void setCam(Vector2D cam) {
-		camera = cam;
-	}
-
-	public Vector2D getCam() {
-		return camera;
-	}
-
-	// scroll vector
-	protected Vector2D scrollspeed;
-
-	public void setScrollSpeed(Vector2D ss) {
-		scrollspeed = ss;
-	}
-
-	public Vector2D getScrollSpeed() {
-		return scrollspeed;
-	}
-
-	// list of layers
-	private List<PBSQuadLayer<Entity>> allTheLayers;
-
-	// list of collision handlers
-	private List<QuadLayerCollisionHandler> collisionHandlers;
-
-	// statement list
-	private Stack<Statement> events;
-
-	public void addStatement(Statement s) {
-		events.push(s);
-	}
-
-	public void execute() {
-		Statement s;
-		while (!events.empty()) {
-			s = events.pop();
-			s.execute(this);
-		}
-	}
-
-	// symbol table with templated entities/triggers
-	HashMap<String, ObjectDescription> templates;
-
-	public ObjectDescription getTemplate(String s) {
-		System.out.println("get Template");
-		ObjectDescription od = templates.get(s);
-		if (od == null)
-			System.out.println("No object description named " + s);
-		return od;
-	}
-
-	public void addTemplate(String s, ObjectDescription od) {
-		templates.put(s, od);
-	}
-
-	public Level() {
-		score = 0;
-		gametime = 0;
-
-		camera = new Vector2D(120, 240);
-		scrollspeed = new Vector2D(1, 0);
-
-		events = new Stack<Statement>();
-		templates = new HashMap<String, ObjectDescription>();
-
-		collisionHandlers = new ArrayList<QuadLayerCollisionHandler>();
-		allTheLayers = new ArrayList<PBSQuadLayer<Entity>>();
-
-		ImageResource bgImage = ResourceFactory.getFactory()
-				.getFrames("resources/terrain.png#bedrock").get(0);
-		allTheLayers.add(new ScrollingBackgroundLayer(bgImage, 1000, 800,
-				new Vector2D(20, 0)));
-		for (int i = 1; i < NUM_LAYERS; i++) {
-			// here we create a new empty layer for
-			// each entity category
-			// enumerated in Layer
-			allTheLayers.add(new PBSQuadLayer<Entity>(new Vector2D(0, 0),
-					camera.scale(2.0)));
-		}
-
-		// after all layers are added, we can add collision handlers
-		setupCollisionHandlers();
-	}
 
 	// setters
 	public void add(Entity e, Layer l) {
@@ -266,6 +232,27 @@ public class Level {
 		// check for collisions
 		checkForCollisions();
 
-	}
+	//behavior custom to each level goes here
+
+	//check to see which triggers need to be fired...
+	Iterator<Entity> elist = getLayer(Layer.TRIGGERS).iterator();
+	if(elist != null)
+	    while(elist.hasNext()){
+		Entity t = elist.next();
+		t.fireTrigger(this, deltaMs);
+	    }
+	
+	//call "shoot" on all enemy entities in case they have weapons to fire
+	elist = getLayer(Layer.ENEMY).iterator();
+	if(elist != null)
+	    while(elist.hasNext()){
+		Entity e = elist.next();
+		e.shoot(this, deltaMs);
+	    }
+
+	//check for collisions
+	checkForCollisions();	
+	
+    }
 
 }

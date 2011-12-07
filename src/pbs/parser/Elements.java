@@ -9,72 +9,124 @@ import pbs.Level.*;
 import pbs.Entity.*;
 import pbs.Animations.*;
 import pbs.parser.Statements.*;
+import pbs.Trigger.*;
 import pbs.parser.BooleanElements.*;
 import pbs.parser.ExpressionElements.*;
 
 public class Elements {
+
+    public static String TRIGGER_IMAGE = "resources/pbs-spritesheet.png#blue_bullet";
     
     //entity descriptions... 
     public abstract static class ObjectDescription {
 	//returns an entity matching this description
 	//public abstract ALAYERTYPE getLayerType();
-	public abstract void mutate(Level l);	
+	protected ArrayList<Param> paramlist;
+	protected ArrayList<Param> paramtemp;
+	public void addParam(Param p){
+	    if(p == null)
+		return;
+	    
+	    if(paramtemp == null)
+		paramtemp = new ArrayList<Param>();
+	    paramtemp.add(p);
+	}
+       	public abstract void mutate(Level l);	
     }
 
     public static class TemplateDescription extends ObjectDescription {
+
 	String key;
-	public TemplateDescription(String s){ key = s;	}
+	public TemplateDescription(String s, ArrayList<Param> pl){ 
+	    key = s;
+	    paramlist = pl;
+	}
 	public void mutate(Level l){
-	    l.addStatement(new AddEntity(l.getTemplate(key)));
+	    ObjectDescription od = l.getTemplate(key);
+	    for(Param p : paramlist){
+		od.addParam(p);
+	    }
+	    AddEntity ae = new AddEntity(od);
+	    ae.finalParams(paramtemp);
+	    paramtemp = null;
+	    l.addStatement(ae);
 	}
     }
-
 
     public static class TriggerDescription extends ObjectDescription {
 	//triggers have a list of statements that get added to the
 	//event queue when they are triggered
 	ArrayList<Statement> stmtlist;
+	Entity triggerType;
+	CustomTrigger triggerParam;
 
-	public TriggerDescription(ArrayList<Statement> sl){
+	public TriggerDescription(ArrayList<Param> pl, ArrayList<Statement> sl){
+	    paramlist = pl;
 	    stmtlist = sl;
+	    triggerParam = null;
 	}
 
 	public void mutate(Level l){
 	    //this method SHOULD add a trigger with the specified stmtlist to the event layer
 	    System.out.println("Trigger Description");
-
-	    if(stmtlist != null){
-		for(Statement s : stmtlist){
-		    System.out.print("Not executed yet: ");
-		    s.execute(l);
+	    
+	    Entity e = triggerType;
+	    	  
+	    if(paramlist != null)
+		for(int i = 0; i < paramlist.size(); i++){
+		    paramlist.get(i).mutate(e);
 		}
+
+	    if(paramtemp != null){
+		for(int i = 0; i < paramtemp.size(); i++){
+		    paramtemp.get(i).mutate(e);
+		}
+		paramtemp = null;
 	    }
+	    
+	    e.setCustomTrigger(triggerParam);
+
+	    l.add(e, Layer.TRIGGERS);
 	}
     }
 
     public static class timedTrigger extends TriggerDescription {
-	public timedTrigger(ArrayList<Statement> sl){ super(sl); }
+	protected long timer;
+	public timedTrigger(long t, ArrayList<Param> pl, ArrayList<Statement> sl){ 
+	    super(pl, sl); 
+	    timer = t;
+	}
 
 	public void mutate(Level l){
 	    System.out.print("Timed ");
+	    triggerType = new TimedTrigger(TRIGGER_IMAGE, timer);
+	    triggerParam = new Trigger(stmtlist);
 	    super.mutate(l);
 	}
     }
 
     public static class collisionTrigger extends TriggerDescription {
-	public collisionTrigger(ArrayList<Statement> sl){ super(sl); }
+	public collisionTrigger(ArrayList<Param> pl, ArrayList<Statement> sl){ 
+	    super(pl, sl);
+	}
 
 	public void mutate(Level l){
 	    System.out.print("Collision ");
+	    triggerType = new CollisionTrigger(TRIGGER_IMAGE);
+	    triggerParam = new Trigger(stmtlist);
 	    super.mutate(l);
 	}
     }
 
     public static class onscreenTrigger extends TriggerDescription {
-	public onscreenTrigger(ArrayList<Statement> sl){ super(sl); }
+	public onscreenTrigger(ArrayList<Param> pl, ArrayList<Statement> sl){ 
+	    super(pl, sl);
+	}
 
 	public void mutate(Level l){
 	    System.out.print("Onscreen ");
+	    triggerType = new OnscreenTrigger(TRIGGER_IMAGE);
+	    triggerParam = new Trigger(stmtlist);
 	    super.mutate(l);
 	}
     }
@@ -82,7 +134,6 @@ public class Elements {
 
     public static class EntityDescription extends ObjectDescription {
 
-	ArrayList<Param> paramlist;
 	String imgsrc;
 	Layer targetLayer;
 
@@ -96,6 +147,17 @@ public class Elements {
 	    
 	    for(int i = 0; i < paramlist.size(); i++){
 		paramlist.get(i).mutate(e);
+	    }
+
+	    if(paramtemp != null){
+		for(int i = 0; i < paramtemp.size(); i++){
+		    System.out.print(" [" + e.getPosition().getX() +", "+
+				     e.getPosition().getY() +"] ");
+		    paramtemp.get(i).mutate(e);
+		    System.out.print(" [" + e.getPosition().getX() +", "+
+				     e.getPosition().getY() +"] ");
+		}
+		paramtemp = null;
 	    }
 	    
 	    l.add(e, targetLayer);
@@ -164,6 +226,16 @@ public class Elements {
 	    return true;
 	}
     }
+
+    public static class TranslatePositionParam extends VectorParam {
+	public TranslatePositionParam(Vector2D p){ super(p); }
+	public boolean mutate(Entity e){
+	    System.out.println("tpp: " + e.getPosition().getX());
+	    e.setPosition(e.getPosition().translate(vec));
+	    System.out.println("tpp: " + e.getPosition().getX());
+	    return true;
+	}
+    }
     
     public static class ScoreValueParam implements Param {
 	int score;
@@ -218,5 +290,7 @@ public class Elements {
 	    return true;
 	}
     }
+
+
 
 }

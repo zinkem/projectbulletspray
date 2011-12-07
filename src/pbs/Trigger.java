@@ -3,39 +3,39 @@ package pbs;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import jig.engine.util.Vector2D;
+
 import pbs.Level.Layer;
 import pbs.Entity.*;
 import pbs.parser.Statements.*;
+import pbs.parser.Elements.*;
 
-public class Trigger extends Entity{
-        private Level lvl;
-	private ArrayList<Statement> stack;
-	
-	public Trigger(String imgrsc, Level l, ArrayList<Statement> add) {
-	    super(imgrsc);
-		lvl = l;
-		stack = add;
-	}
-	
-	public Trigger(String imgrsc, Level l){
-		super(imgrsc);
-		lvl = l;
-	}
-	
-	public void setStatements(ArrayList<Statement> s){
-		stack = s;
-	}
-	
-	public void setLevel(Level l){
-		lvl = l;
-	}
-	
-	public void addToLevel(){
-		Iterator<Statement> itr = stack.iterator();
-		while(itr.hasNext()){
-			lvl.addStatement(itr.next());
-		}
-	}
+public class Trigger implements CustomTrigger {
 
+    private ArrayList<Statement> stack;
+    
+    public Trigger(ArrayList<Statement> add) {
+	stack = add;
+    }
+    
+    public void setStatements(ArrayList<Statement> s){
+	stack = s;
+    }
+    
+    public void fire(Level l, Vector2D p){
+	ArrayList<Param> plist = new ArrayList<Param>();
+	plist.add(new TranslatePositionParam(p));
+	
+	System.out.println(p.getX() + " " + p.getY());
+
+	Iterator<Statement> itr = stack.iterator();
+	if(itr != null)
+	    while(itr.hasNext()){
+		Statement s = itr.next();
+		s.finalParams(plist);
+		System.out.println("fire: " + plist.size());
+		l.addStatement(s);
+	    }
+    }
 	
 }

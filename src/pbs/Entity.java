@@ -23,6 +23,10 @@ public class Entity extends Body {
 	public void animate(Entity e, long deltaMs);
     }
 
+    public interface CustomTrigger {
+	public void fire(Level l, Vector2D v);   
+    }
+
     //entity members
     protected long age; //age of entity
     public void setAge(long a){ age = a; } //set this negative to spawn later
@@ -34,10 +38,10 @@ public class Entity extends Body {
 
     protected boolean alive; //is the entity alive? (dead entities get removed)
     public boolean alive() { return this.alive; }
-    
+
     public void kill(){ 
-    	alive = false; 
-    	setActivation(false); 
+	alive = false; 
+	setActivation(false);
     }
     
     protected int hp; //hit points left, hitting zero turns alive to false
@@ -64,7 +68,10 @@ public class Entity extends Body {
 
     protected CustomAnimation ca;
     public void setCustomAnimation(CustomAnimation a){ ca = a; }
-        
+      
+    protected CustomTrigger ct;
+    public void setCustomTrigger(CustomTrigger t) {ct = t; }
+  
     public Entity(String imgrsc) {
 	super(imgrsc);
 	cu = null;
@@ -100,7 +107,7 @@ public class Entity extends Body {
 	    }else{
 		position = position.translate(velocity.scale(deltaMs/100.0));
 	    }
-	    	
+	    
 	    if(ca != null)
 		ca.animate(this, deltaMs);
 	}
@@ -111,7 +118,7 @@ public class Entity extends Body {
 	}
 	setActivation(age > 0 && alive);
     }
-	
+
     public void shoot(Level lvl, long deltaMs){
 	if(active){
 	    if(cw != null){
@@ -122,4 +129,10 @@ public class Entity extends Body {
 	}
     }
 
+    public void fireTrigger(Level l, long deltaMs){
+	System.out.println("firing! " + position.getX());
+	if(ct != null && active){
+	    ct.fire(l, position);
+	}
+    }
 }
