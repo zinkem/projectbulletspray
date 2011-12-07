@@ -236,19 +236,19 @@ public class PBSGame extends ScrollingScreenGame {
 	    }
 
 	    if (left && !right) {
-		e.setVelocity(e.getVelocity().translate(new Vector2D(-30, 0)));
+		e.setVelocity(new Vector2D(-30, 0));
 	    }
 
 	    if (right && !left) {
-		e.setVelocity(e.getVelocity().translate(new Vector2D(30, 0)));
+		e.setVelocity(new Vector2D(30, 0));
 	    }
 
 	    if (up && !down) {
-		e.setVelocity(e.getVelocity().translate(new Vector2D(0, -30)));
+		e.setVelocity(new Vector2D(0, -30));
 	    }
 
 	    if (down && !up) {
-		e.setVelocity(e.getVelocity().translate(new Vector2D(0, 30)));
+		e.setVelocity(new Vector2D(0, 30));
 	    }
 
 	    e.setPosition(pos.translate(e.getVelocity().scale(deltaMs / 100.0)));

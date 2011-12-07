@@ -17,6 +17,11 @@ template badasses timed 5000
 		weapon spinning 5 5 10 200
 	create badasses
 		position 1000 0
+	set message win one for the gipper!
+	create timed 3000
+		position 0 0
+		set message blank
+		end
 	end
 end
 
