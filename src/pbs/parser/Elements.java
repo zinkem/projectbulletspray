@@ -48,6 +48,7 @@ public class Elements {
 	    }
 	    AddEntity ae = new AddEntity(od);
 	    ae.finalParams(paramtemp);
+	    paramtemp = null;
 	    l.addStatement(ae);
 	}
     }

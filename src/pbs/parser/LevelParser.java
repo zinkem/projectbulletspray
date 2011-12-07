@@ -167,7 +167,7 @@ public class LevelParser {
 	
 	if(match(END)){
 	    AddTemplate ae = new AddTemplate(name, od);
-	    ae.finalParams(pl);
+	    //ae.finalParams(pl);
 	    return ae;
 	}
 	
