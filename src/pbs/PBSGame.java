@@ -151,7 +151,7 @@ public class PBSGame extends ScrollingScreenGame {
 	//if level complete, get next level
 	if(levelData.levelComplete() || keyboard.isPressed(KeyEvent.VK_C)){
 		s = levelData.score;
-	    levelData.setMessage("Congratulations! Level Complete!");
+		//levelData.setMessage("Congratulations! Level Complete!");
 	    currentLevel = levelData.getNextLevel();
 	    
 	    waitForReset = true;

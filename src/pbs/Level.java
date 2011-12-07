@@ -49,7 +49,9 @@ public class Level {
     //indicate if level has been completed
     protected boolean levelComplete;
     public boolean levelComplete(){ return levelComplete; }
-    public void setLevelComplete(boolean b){ levelComplete = b; }
+    public void setLevelComplete(boolean b){ 
+	message = "Congratulations, Level Complete!";
+	levelComplete = b; }
     
     //next level stuffs
     protected String nextLevel; //filename of next level
