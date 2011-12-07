@@ -21,15 +21,15 @@ create timed 50000
        create enemy hex
        	      position 0 0
 	      weapon outward 3 15 400
+	      scoreval 500
        create enemy hex
-       	      position 0 100
+       	      position 0 120
 	      weapon outward 3 15 400
+	      scoreval 500
        create enemy hex 
-       	      position 0 200
+       	      position 0 240
 	      weapon outward 3 15 400
-       create enemy hex
-       	      position 0 300	      
-	      weapon outward 3 15 400	
+	      scoreval 500
 end
 
 create timed 25000
@@ -49,7 +49,7 @@ template badasses timed 5000
 		velocity 14 -2
 		weapon spinning 3 15 10 400
 	create roger
-		position 101 50
+		position 100 50
 		velocity 14 2
 		weapon spinning 3 15 10 400
 	create badasses
@@ -58,10 +58,32 @@ template badasses timed 5000
 end
 
 create enemy hex
-	position 600 240
+	position 600 360
 	velocity -15 0
 	update yoscil
 	render spin 2
+	scoreval 750	
+
+create enemy hex
+	position 2600 240
+	velocity -15 0
+	update yoscil
+	render spin 2
+	scoreval 750	
+
+create enemy hex
+	position 4600 120
+	velocity -15 0
+	update yoscil
+	render spin 2
+	scoreval 750	
+
+create enemy hex
+	position 6600 240
+	velocity -15 0
+	update yoscil
+	render spin 2
+	scoreval 750	
 
 create recurse
        position 300 240
