@@ -46,6 +46,18 @@ public class Level {
     public void setScrollSpeed(Vector2D ss){ scrollspeed = ss; }
     public Vector2D getScrollSpeed(){ return scrollspeed; }
 
+    //indicate if level has been completed
+    protected boolean levelComplete;
+    public boolean levelComplete(){ return levelComplete; }
+    public void setLevelComplate(boolean b){ levelComplete = b; }
+    
+    //next level stuffs
+    protected String nextLevel; //filename of next level
+    public String getNextLevel(){ return nextLevel; };
+    public void setNextLevel(String n){ nextLevel = n; }
+
+
+
     //list of layers
     private List<PBSQuadLayer<Entity>> allTheLayers;
 

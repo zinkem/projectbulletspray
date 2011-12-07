@@ -3,7 +3,7 @@ package pbs;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.io.IOException;
+import java.io.*;
 
 import jig.engine.*;
 import jig.engine.hli.*;
@@ -33,6 +33,8 @@ public class PBSGame extends ScrollingScreenGame {
     EntityFactory ef;
     
     Entity player;
+
+    String currentLevel;
     
     // hud variables
     protected FontResource hudFont;
@@ -46,7 +48,8 @@ public class PBSGame extends ScrollingScreenGame {
 	rf.loadResources("resources/", "pbs-resources.xml");
 	Font sFont = new Font("Sans Serif", Font.PLAIN, 24);
 	try {
-		sFont = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("resources/PrStart.ttf"));
+	    sFont = Font.createFont(Font.TRUETYPE_FONT, 
+				    new File("resources/PrStart.ttf"));
 		sFont = sFont.deriveFont(24f);
 	} catch (FontFormatException e) {
 		// TODO Auto-generated catch block
@@ -57,16 +60,9 @@ public class PBSGame extends ScrollingScreenGame {
 	}
 //	hudFont = rf.getFontResource(new Font("Sans Serif", Font.PLAIN, 24), Color.white, null);
 	hudFont = rf.getFontResource(sFont, Color.white, null);
-	
-	LevelParser lp = new LevelParser("resources/test.lvl");
-	levelData = lp.createLevel();
-	
-	player = new Entity(SPRITE_SHEET + "#defender2");
-	player.setPosition(new Vector2D(300, 300));
-	player.setCustomUpdate(new KeyboardControls(keyboard));
-	player.setCustomWeapon(new FriendlySpread());
-	levelData.add(player, Layer.PLAYER);
 
+	currentLevel = "resources/test.lvl";
+	resetLevel();
 	
 	//e = ef.get_bullet_arc(new Vector2D(200, 200), new Vector2D(10, 0), -0.01);
 	//e = ef.get_yocil(new Vector2D(400, 100), new Vector2D(0, 5));
@@ -82,7 +78,7 @@ public class PBSGame extends ScrollingScreenGame {
 	levelData.add(e, Layer.ENEMY);
 	*/
 
-	gameObjectLayers = levelData.getLayers();
+
 
 	GameClock.TimeManager tm = new GameClock.SleepIfNeededTimeManager(60.0);
 	theClock.setTimeManager(tm);
@@ -119,7 +115,32 @@ public class PBSGame extends ScrollingScreenGame {
 	player.setPosition(player.getPosition().translate(levelData.getScrollSpeed()
 							  .scale(deltaMs/100.0)));
 	levelData.update(FRAME_SIZE, topleft, botright);
+
+	//if level complete, get next level
+	if(levelData.levelComplete()){
+	    currentLevel = levelData.getNextLevel();
+	    resetLevel();
+	}
+
+	//if player dead, reset current level
+	if(player.alive() == false){
+	    resetLevel();
+	}
 	    
+    }
+
+    public void resetLevel(){
+	LevelParser lp = new LevelParser(currentLevel);
+	levelData = lp.createLevel();
+	
+	player = new Entity(SPRITE_SHEET + "#defender2");
+	player.setPosition(new Vector2D(300, 300));
+	player.setCustomUpdate(new KeyboardControls(keyboard));
+	player.setCustomWeapon(new FriendlySpread());
+	levelData.add(player, Layer.PLAYER);
+
+	gameObjectLayers.clear();
+	gameObjectLayers = levelData.getLayers();
     }
 
     public void pushPlayerToBounds(Vector2D tl, Vector2D br){
