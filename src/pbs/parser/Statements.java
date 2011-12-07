@@ -149,7 +149,22 @@ public class Statements {
 	//perhaps we should have a successor file to 
 	//specify a successor level
 	public LevelEnder() {}
-	public boolean execute(Level l) { return true; }
+	public boolean execute(Level l) { 
+	    l.setLevelComplete(true);
+	    return true;
+	}
+    }
+
+    public static class SetNextLevel extends Setter {
+	protected String nextLevel;
+	public SetNextLevel(String n){
+	    nextLevel = n;
+	}
+
+	public boolean execute(Level l){
+	    l.setNextLevel(nextLevel);
+	    return true;
+	}
     }
 
 }

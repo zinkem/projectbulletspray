@@ -1,13 +1,21 @@
-create timed 10000
-	position 300 240
+set scrollspeed 5
+set scoreincrease 15
+set nextlevel resources/test.lvl
+
+create badasses
+
+template badasses timed 10000
+	position 1000 240
 	create roger
-		position 100 0
+		position 100 -50
 		velocity 2 -2
 		weapon spinning 8 10 10 1007
 	create roger
-		position 101 1
+		position 101 50
 		velocity 2 2
 		weapon spinning 8 15 10 100
+
+	end
 end
 
 create roger
@@ -105,7 +113,6 @@ template recurse timed 1000
 		position 0 0
 	create recurse
 		position 10 0
-	end
 	end
 end
 

@@ -68,6 +68,7 @@ public class LevelParser {
 	}
 
 	thislevel = new Level();
+	thislevel.setNextLevel(filename);
 
 	Pattern p = source.delimiter();
 	System.out.println(p.pattern());
@@ -200,7 +201,17 @@ public class LevelParser {
     }
 
     protected Statement setStmt(){
-	err = "no set stmts yet";
+	if(match("nextlevel")){
+	    return new SetNextLevel(symbol());
+	} else if(match("levelcomplete")){
+	    return new LevelEnder();
+	} else if(match("scoreincrease")){
+	    return new ScoreModifier(num());
+	} else if(match("scrollspeed")){
+	    return new ScrollSetter(new Vector2D(num(), 0));
+	}
+
+	err = "set " + ctoken + " not a valid set statement";
 	return null;
     }
 
@@ -265,8 +276,6 @@ public class LevelParser {
 	    stmtlist.add(s);
 	    s = nextStatement();
 	}
-	
-	match(END);
 
 	return stmtlist;
     }
