@@ -73,22 +73,6 @@ public class PBSGame extends ScrollingScreenGame {
 
 	currentLevel = "resources/test.lvl";
 	resetLevel();
-	
-	//e = ef.get_bullet_arc(new Vector2D(200, 200), new Vector2D(10, 0), -0.01);
-	//e = ef.get_yocil(new Vector2D(400, 100), new Vector2D(0, 5));
-	Entity e = ef.Boss(new Vector2D(400, 200));
-	e.setCustomRender(new SetStatic(50.0));
-	levelData.add(e, Layer.STATIC);
-	//e = ef.get_directed(new Vector2D(400, 0), new Vector2D(-5,5), plr,  );
-	/*
-	levelData.add(e, Layer.ENEMY);
-
-	e = ef.get_chaser(new Vector2D(400,100), new Vector2D(-5, 5), plr);
-	// e = ef.target_point(new Vector2D(400,100), new Vector2D(1,1), 
-	levelData.add(e, Layer.ENEMY);
-	*/
-
-
 
 	GameClock.TimeManager tm = new GameClock.SleepIfNeededTimeManager(60.0);
 	theClock.setTimeManager(tm);
@@ -162,7 +146,7 @@ public class PBSGame extends ScrollingScreenGame {
 	levelData.update(FRAME_SIZE, topleft, botright);
 
 	//if level complete, get next level
-	if(levelData.levelComplete()){
+	if(levelData.levelComplete() || keyboard.isPressed(KeyEvent.VK_C)){
 	    levelData.setMessage("Congratulations! Level Complete!");
 	    currentLevel = levelData.getNextLevel();
 	    waitForReset = true;
@@ -177,6 +161,7 @@ public class PBSGame extends ScrollingScreenGame {
 	    player = null;
 	    resetLevel();
 	}
+
     }
 
     public void resetLevel(){
