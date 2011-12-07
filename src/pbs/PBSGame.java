@@ -144,7 +144,6 @@ public class PBSGame extends ScrollingScreenGame {
 	//centerOnPoint(levelData.getCam()); // center on level camera
 	centerOnPoint(levelData.getCam());
 	if(levelData.getScore() > highScore) {
-		System.out.println("score > highScore: " + levelData.getScore() + " : " + getHighScore());
 		setHighScore(levelData.getScore());
 	} 
 	
