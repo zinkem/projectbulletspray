@@ -183,7 +183,8 @@ public class LevelParser {
     
 
     protected Statement ifStmt(){
-	
+
+	err = "no if statements yet";
 	return null;
 
 	/*
@@ -201,6 +202,7 @@ public class LevelParser {
     }
 
     protected Statement setStmt(){
+	err = "no set stmts yet";
 	return null;
     }
 
