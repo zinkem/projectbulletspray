@@ -55,7 +55,7 @@ public class PBSGame extends ScrollingScreenGame {
     
     public PBSGame() {
 	super(SCREEN_WIDTH, SCREEN_HEIGHT, false);
-	s = 0;
+//	s = 0;
 	waitForReset = false;
 
 	ef = new EntityFactory();
@@ -82,6 +82,7 @@ public class PBSGame extends ScrollingScreenGame {
 
 	currentLevel = START_LEVEL;
 	lives = START_LIVES;
+	highScore = getHighScore();
 	resetLevel();
 
 	GameClock.TimeManager tm = new GameClock.SleepIfNeededTimeManager(60.0);
@@ -103,7 +104,7 @@ public class PBSGame extends ScrollingScreenGame {
 		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
 		
 		x = SCREEN_WIDTH - 75;
-		message = "" + getHighScore();
+		message = "" + highScore;
 		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
 		
 		image = rf.getFrames(SPRITE_SHEET + "#shipico").get(0);
@@ -142,7 +143,11 @@ public class PBSGame extends ScrollingScreenGame {
     
 	//centerOnPoint(levelData.getCam()); // center on level camera
 	centerOnPoint(levelData.getCam());
-
+	if(levelData.getScore() > highScore) {
+		System.out.println("score > highScore: " + levelData.getScore() + " : " + getHighScore());
+		setHighScore(levelData.getScore());
+	} 
+	
 	Vector2D topleft = screenToWorld(new Vector2D(0, 0));
 	Vector2D botright = screenToWorld(new Vector2D(SCREEN_WIDTH, SCREEN_HEIGHT));
 
@@ -152,21 +157,23 @@ public class PBSGame extends ScrollingScreenGame {
 							  .scale(deltaMs/100.0)));
 	levelData.update(FRAME_SIZE, topleft, botright);
 
+
 	//if level complete, get next level
 	if(levelData.levelComplete() || keyboard.isPressed(KeyEvent.VK_C)){
-		s = levelData.score;
+//		s = levelData.score;
 		//levelData.setMessage("Congratulations! Level Complete!");
 	    currentLevel = levelData.getNextLevel();
-	    
 	    waitForReset = true;
 	}
 	//if player dead, reset current level
 	if(player.alive() == false && !waitForReset){
 		lives--;
 		waitForReset = true;
-		levelData.score = 0;
+//		levelData.score = 0;
 		if(lives < 0) { //if player dead, and out of lives, reset game
 			levelData.setMessage("Game Over! Press Spacebar to start a new game");
+		    if(highScore > getHighScore())
+		    	saveHighScore(highScore);
 			currentLevel = START_LEVEL;
 			lives = START_LIVES;
 		} else {
@@ -176,9 +183,10 @@ public class PBSGame extends ScrollingScreenGame {
 
 	//reset when we hit hte space bar
 	if(waitForReset && keyboard.isPressed(KeyEvent.VK_SPACE)){
-	    player = null;
+	    int scr = levelData.score;
+		player = null;
 	    resetLevel();
-	    levelData.score = s;
+	    levelData.score = scr;
 	}
 
     }
@@ -304,7 +312,7 @@ public class PBSGame extends ScrollingScreenGame {
 			file = new File("highscores.dat");
 			if(!file.exists()) {
 				file.createNewFile();
-				highScore = 10000;
+				highScore = 1000;
 			} 
 			
 			this.highScore = highScore;
