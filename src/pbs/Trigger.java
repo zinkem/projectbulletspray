@@ -27,11 +27,12 @@ public class Trigger implements CustomTrigger {
 	plist.add(new TranslatePositionParam(p));
 	
 	Iterator<Statement> itr = stack.iterator();
-	while(itr.hasNext()){
-	    Statement s = itr.next();
-	    s.finalParams(plist);
-	    l.addStatement(itr.next());
-	}
+	if(itr != null)
+	    while(itr.hasNext()){
+		Statement s = itr.next();
+		s.finalParams(plist);
+		l.addStatement(s);
+	    }
     }
 	
 }

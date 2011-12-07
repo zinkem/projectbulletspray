@@ -221,20 +221,24 @@ public class LevelParser {
 	}
     }
     
+    protected String imgRscName(){
+	return SPRITE_SHEET + "#" + symbol();
+    }
+
     protected ObjectDescription fx(){
-	return new fxEntity(SPRITE_SHEET + "#" + symbol(), paramList());
+	return new fxEntity(imgRscName(), paramList());
     }
 
     protected ObjectDescription enemy(){
-	return new enemyEntity(SPRITE_SHEET + "#" + symbol(), paramList());
+	return new enemyEntity(imgRscName(), paramList());
     }
 
     protected ObjectDescription staticEnt(){
-	return new staticEntity(SPRITE_SHEET + "#" + symbol(), paramList());
+	return new staticEntity(imgRscName(), paramList());
     }
 
     protected ObjectDescription timed(){
-	return new timedTrigger(paramList(), stmtList());
+	return new timedTrigger(num(), paramList(), stmtList());
     }
 
     protected ObjectDescription onscreen(){

@@ -7,12 +7,15 @@ import jig.engine.util.Vector2D;
 import pbs.*;
 import pbs.Level.*;
 import pbs.Entity.*;
+import pbs.Triggers.*;
 import pbs.Animations.*;
 import pbs.parser.Statements.*;
 import pbs.parser.BooleanElements.*;
 import pbs.parser.ExpressionElements.*;
 
 public class Elements {
+
+    public static String TRIGGER_IMAGE = "resources/pbs-spritesheet.png#blue_bullet";
     
     //entity descriptions... 
     public abstract static class ObjectDescription {
@@ -49,33 +52,50 @@ public class Elements {
 	//triggers have a list of statements that get added to the
 	//event queue when they are triggered
 	ArrayList<Statement> stmtlist;
-
+	Entity triggerType;
+	CustomTrigger triggerParam;
 
 	public TriggerDescription(ArrayList<Param> pl, ArrayList<Statement> sl){
 	    paramlist = pl;
 	    stmtlist = sl;
+	    triggerParam = null;
 	}
 
 	public void mutate(Level l){
 	    //this method SHOULD add a trigger with the specified stmtlist to the event layer
 	    System.out.println("Trigger Description");
-
-	    if(stmtlist != null){
-		for(Statement s : stmtlist){
-		    System.out.print("Not executed yet: ");
-		    s.execute(l);
+	    
+	    Entity e = triggerType;
+	    	  
+	    if(paramlist != null)
+		for(int i = 0; i < paramlist.size(); i++){
+		    paramlist.get(i).mutate(e);
 		}
+
+	    if(paramtemp != null){
+		for(int i = 0; i < paramtemp.size(); i++){
+		    paramtemp.get(i).mutate(e);
+		}
+		paramtemp = null;
 	    }
+	    
+	    e.setCustomTrigger(triggerParam);
+
+	    l.add(e, Layer.TRIGGERS);
 	}
     }
 
     public static class timedTrigger extends TriggerDescription {
-	public timedTrigger(ArrayList<Param> pl, ArrayList<Statement> sl){ 
+	protected long timer;
+	public timedTrigger(long t, ArrayList<Param> pl, ArrayList<Statement> sl){ 
 	    super(pl, sl); 
+	    timer = t;
 	}
 
 	public void mutate(Level l){
 	    System.out.print("Timed ");
+	    triggerType = new TimedTrigger(TRIGGER_IMAGE, timer);
+	    triggerParam = new Trigger(stmtlist);
 	    super.mutate(l);
 	}
     }
@@ -87,6 +107,8 @@ public class Elements {
 
 	public void mutate(Level l){
 	    System.out.print("Collision ");
+	    triggerType = new CollisionTrigger(TRIGGER_IMAGE);
+	    triggerParam = new Trigger(stmtlist);
 	    super.mutate(l);
 	}
     }
@@ -98,6 +120,8 @@ public class Elements {
 
 	public void mutate(Level l){
 	    System.out.print("Onscreen ");
+	    triggerType = new OnscreenTrigger(TRIGGER_IMAGE);
+	    triggerParam = new Trigger(stmtlist);
 	    super.mutate(l);
 	}
     }

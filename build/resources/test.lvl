@@ -1,8 +1,14 @@
+create timed 0
+	position 300 240
+	create roger
+		position 100 0
+		velocity -2 -2
+		weapon spinning 8 10 10 100
+
 create roger
 	position 300 240
 	velocity 10 10
 	spawnin 10
-	
 	
 create roger
 	position 600 240
