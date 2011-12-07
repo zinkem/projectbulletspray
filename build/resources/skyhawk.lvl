@@ -2,40 +2,73 @@ set scrollspeed 10
 set nextlevel resources/test.lvl
 set message Level Skyhawk
 
-create steve
-	velocity 10 0
-	position 500 60
-	render veldir
+create timed 60000
+	set message Congratulations, Level Complete
+    set levelcomplete
+end
+
+set message Let it begin
+	create timed 3000
+		position 0 0
+		set message blank
+	end
+
+create recur_shuttle
+
+create wave1
+	position 2000 200
+	spawnin 7
 	
-create steve
-	velocity 10 0
-	position 500 120
-	render veldir
+create wave1 
+	position 4500 400
+	spawnin 20
+
+create wave1
+
+create last_wave
+
+create recur_cross
+	spawnin 3
 	
-create steve
-	velocity 10 0
-	position 500 180
-	render veldir
+create enemy generic_ship
+	position 300 100
+	velocity 25 0
+	scoreval 1000
+	weapon outward 3 15 400
+	spawnin 13
+
+create enemy generic_ship
+	position 300 200
+	velocity 25 0
+	scoreval 1000
+	weapon outward 3 15 400
+	spawnin 20
+
+create enemy generic_ship
+	position 300 400
+	velocity 25 0
+	scoreval 1000
+	weapon outward 3 15 400
+	spawnin 27
+
+create enemy generic_ship
+	position 300 350
+	velocity 25 0
+	scoreval 1000
+	weapon outward 3 15 400
+	spawnin 39
 	
-create steve
-	velocity 10 0
-	position 500 240
-	render veldir
-	
-create steve
-	velocity 10 0
-	position 500 300
-	render veldir
-	
-create steve
-	velocity 10 0
-	position 500 360
-	render veldir
-	
-create steve
-	velocity 10 0
-	position 500 420
-	render veldir
+template last_wave timed 50000
+	position 6000 0
+	create steve
+		velocity 0 0
+		position 0 60
+		
+	create steve
+		velocity 0 0
+		position 0 420
+	end
+end
 	
 template wave timed 3000
 	position 600 240
@@ -60,6 +93,70 @@ template wave timed 3000
 	end
 end
 
+template wave1 timed 6000
+	position 1200 360
+	create jerry
+		position 0 0
+		
+	create jerry 
+		position 100 0
+		spawnin 1
+	
+	create jerry
+		position 200 0
+		spawnin 2
+		
+		create jerry 
+		position 300 0
+		spawnin 3
+	
+	create jerry
+		position 400 0
+		spawnin 4
+		
+	create jerry
+		position 500 0
+		spawnin 5
+	end
+end
+
+template recur_cross timed 6000
+	position 1500 240
+	create enemy hex
+		position 0 -240
+		velocity -5 10
+		render spin 2
+		weapon spinning 3 15 10 400
+		scoreval 500
+		
+	create enemy hex
+		position 0 240
+		velocity -5 -10
+		render spin 2
+		weapon spinning 3 15 10 400
+		scoreval 500
+		
+	create recur_cross 
+		position 600 0
+	end
+end
+
+template recur_shuttle timed 4000
+	position 400 120
+	create bob
+		position 0 0
+	create recur_shuttle
+		position 400 0
+	end
+end
+
+template jerry enemy hex
+	update yoscil
+	render spin 3
+	scoreval 150
+	velocity -10 0
+	position 300 200
+end
 template roger enemy hex
 	scoreval 15
 	velocity 10 0
@@ -74,12 +171,11 @@ template steve enemy hex
 	render spin 2
 	update target 440 200
 	weapon spinning 4 10 1 100
+	scoreval 100
 end
 
 template bob enemy shuttle
-	velocity 10 0
-	spawnin 0
-	weapon outward 8 10 400
+	velocity 15 0
 end
 
 endspec
