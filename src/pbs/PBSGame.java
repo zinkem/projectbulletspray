@@ -102,7 +102,7 @@ public class PBSGame extends ScrollingScreenGame {
 		int x = 10;
 		int y = 10; //SCREEN_HEIGHT - hudFont.getHeight() - 10;
 		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
-		
+
 		message = "High Score: ";
 		x = SCREEN_WIDTH - hudFont.getStringWidth(message) - 75;
 		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
@@ -137,6 +137,13 @@ public class PBSGame extends ScrollingScreenGame {
 			x += image.getWidth();
 			image.render(rc, AffineTransform.getTranslateInstance(x, y));
 		}
+
+		message = levelData.getMessage();
+		x = X_MID  - hudFont.getStringWidth(message)/2;
+		y = SCREEN_HEIGHT - 50;
+		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
+		
+		
     }
 
     public void update(long deltaMs) {
@@ -156,12 +163,11 @@ public class PBSGame extends ScrollingScreenGame {
 	    currentLevel = levelData.getNextLevel();
 	    waitForReset = true;
 	}
-
 	//if player dead, reset current level
 	if(player.alive() == false){
 	    waitForReset = true;
 	}
-
+	//reset when we hit hte space bar
 	if(waitForReset && keyboard.isPressed(KeyEvent.VK_SPACE)){
 	    resetLevel();
 	}
