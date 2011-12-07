@@ -89,8 +89,8 @@ public class Renders {
 	public void render(RenderingContext rc, Entity e){
 	    Vector2D center = e.getCenterPosition();
 	    AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
-	    at.translate(e.getPosition().getX()-e.getWidth()*scalefactor/2, 
-			 e.getPosition().getY()-e.getHeight()*scalefactor/2);
+	    at.translate(e.getPosition().getX()-(scalefactor-1)*e.getWidth()/2,
+			 e.getPosition().getY()-(scalefactor-1)*e.getHeight()/2);
 	    at.scale(scalefactor, scalefactor);
 	    e.getImage().render(rc, at);
 	}

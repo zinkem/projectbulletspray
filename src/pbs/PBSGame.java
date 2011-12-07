@@ -28,7 +28,7 @@ public class PBSGame extends ScrollingScreenGame {
     public static int P_STARTY = Y_MID;
     public static long FRAME_SIZE = 16;
     public static String SPRITE_SHEET = "resources/pbs-spritesheet.png";
-    private static final String START_LEVEL = "resources/skyhawk.lvl";
+    private static final String START_LEVEL = "resources/splash.lvl";
     private static final int START_LIVES = 3;
 	int s;
     public static int PLAYER_MAX_HP = 10;
