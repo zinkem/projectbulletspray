@@ -141,8 +141,6 @@ public class Level {
 			add(e, Layer.FX);
 			body1.kill();
 			body2.modhp(-1);
-					
-					
 
 			if (body2.alive() == false) {
 			    score += body2.value();
@@ -177,14 +175,12 @@ public class Level {
 				
 			//Kill the player, do any sort of updates to the game necessary
 			body1.kill();
-				
-				
 		    }
 		}
 	    });
 	
 	collisionHandlers.add(new QuadLayerCollisionHandler(getLayer(Layer.PLAYER), getLayer(Layer.ENEMY)){
-
+		
 		@Override
 		    public void collide(Entity body1, Entity body2) {
 		    if(body1.isActive() && body2.isActive()){
@@ -197,6 +193,25 @@ public class Level {
 			add(e, Layer.FX);
 				
 			e = new Entity(SPRITE_SHEET + "#small_burst");
+			e.setPosition(body2.getCenterPosition().translate(new Vector2D(ry, rx)));
+			e.setCustomAnimation(new AnimateOnce(75));
+			add(e, Layer.FX);
+			
+			body2.kill();
+			body1.modhp(-1);
+		    }
+		}
+	    });
+
+	collisionHandlers.add(new QuadLayerCollisionHandler(getLayer(Layer.PLAYER), getLayer(Layer.HOSTILE)){
+		
+		@Override
+		    public void collide(Entity body1, Entity body2) {
+		    if(body1.isActive() && body2.isActive()){
+			double rx = 8.0*Math.random() -4.0;
+			double ry = 8.0*Math.random() -4.0;
+				
+			Entity e = new Entity(SPRITE_SHEET + "#small_burst");
 			e.setPosition(body2.getCenterPosition().translate(new Vector2D(ry, rx)));
 			e.setCustomAnimation(new AnimateOnce(75));
 			add(e, Layer.FX);
