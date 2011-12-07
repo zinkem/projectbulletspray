@@ -101,6 +101,8 @@ end
 
 template recurse timed 1000
 	position 10 0
+	create roger
+		position 0 0
 	create recurse
 		position 10 0
 	end
