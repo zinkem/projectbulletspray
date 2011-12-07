@@ -62,9 +62,10 @@ public class Statements {
 	}
 
 	public void finalParams(ArrayList<Param> plist){
-	    for(Param p : plist){
-		theObject.addParam(p);
-	    }
+	    if(plist != null)
+		for(Param p : plist){
+		    theObject.addParam(p);
+		}
 	}
 
 	//does the work of adding events to levels

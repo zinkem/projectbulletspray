@@ -24,6 +24,9 @@ public class Elements {
 	protected ArrayList<Param> paramlist;
 	protected ArrayList<Param> paramtemp;
 	public void addParam(Param p){
+	    if(p == null)
+		return;
+	    
 	    if(paramtemp == null)
 		paramtemp = new ArrayList<Param>();
 	    paramtemp.add(p);
@@ -44,6 +47,7 @@ public class Elements {
 		od.addParam(p);
 	    }
 	    AddEntity ae = new AddEntity(od);
+	    ae.finalParams(paramtemp);
 	    l.addStatement(ae);
 	}
     }
@@ -146,7 +150,11 @@ public class Elements {
 
 	    if(paramtemp != null){
 		for(int i = 0; i < paramtemp.size(); i++){
+		    System.out.print(" [" + e.getPosition().getX() +", "+
+				     e.getPosition().getY() +"] ");
 		    paramtemp.get(i).mutate(e);
+		    System.out.print(" [" + e.getPosition().getX() +", "+
+				     e.getPosition().getY() +"] ");
 		}
 		paramtemp = null;
 	    }
@@ -221,7 +229,9 @@ public class Elements {
     public static class TranslatePositionParam extends VectorParam {
 	public TranslatePositionParam(Vector2D p){ super(p); }
 	public boolean mutate(Entity e){
+	    System.out.println("tpp: " + e.getPosition().getX());
 	    e.setPosition(e.getPosition().translate(vec));
+	    System.out.println("tpp: " + e.getPosition().getX());
 	    return true;
 	}
     }
