@@ -2,63 +2,83 @@ set scrollspeed 10
 set nextlevel resources/test.lvl
 set message Level Skyhawk
 
-create wave
-
-template wave timed 5000
-	position 800 240
+create steve
+	velocity 10 0
+	position 500 60
+	render veldir
+	
+create steve
+	velocity 10 0
+	position 500 120
+	render veldir
+	
+create steve
+	velocity 10 0
+	position 500 180
+	render veldir
+	
+create steve
+	velocity 10 0
+	position 500 240
+	render veldir
+	
+create steve
+	velocity 10 0
+	position 500 300
+	render veldir
+	
+create steve
+	velocity 10 0
+	position 500 360
+	render veldir
+	
+create steve
+	velocity 10 0
+	position 500 420
+	render veldir
+	
+template wave timed 3000
+	position 600 240
 	set message blank
 	create roger
-		scoreval 50
-		position 100 -50
-		velocity 9 3
-		weapon spinning 5 5 25 300
+		position 100 -75
+		velocity 10 5
 		
 	create roger
-		scoreval 100
-		position 100 50
-		velocity 9 -3
-		weapon spinning 5 5 25 300
-		
-	create fx small_burst
-		position 75 -75
-		spawnin 0
+		position 100 75
+		velocity 10 -5
 		
 	create roger 
-		position 75 -75
-		velocity -3 4
-		spawnin 1
-		
-	create fx small_burst
-		position 75 75
-		spawnin 0
-		
+		position 375 -75
+		velocity 5 5
+		spawnin 2
+			
 	create roger
-		position 75 75
-		velocity -3 4
-		spawnin 1
-		
-	create wave
-		position 1000 0
+		position 375 75
+		velocity 5 -5
+		spawnin 2
 	end
 end
 
-create bob
-	position 300 240
-	scoreval 25
-	velocity 25 10
-	
-create bob
-	position 340 300
-	velocity 10 25
-	scoreval 50
-	
 template roger enemy hex
-	velocity -2 3
-	weapon spinning 4 4 45 400
+	scoreval 15
+	velocity 10 0
+	spawnin 0
+	render spin 1
+	weapon spinning 4 8 4 200
 end
-	
-template bob enemy defender
-	velocity -3 0
+
+template steve enemy hex
+	velocity 10 0
+	spawnin 0
+	render spin 2
+	update target 440 200
+	weapon spinning 4 10 1 100
+end
+
+template bob enemy shuttle
+	velocity 10 0
+	spawnin 0
 	weapon outward 8 10 400
 end
 
