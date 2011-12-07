@@ -1,6 +1,6 @@
 set scrollspeed 10
 set scoreincrease 15
-set nextlevel resources/test.lvl
+set nextlevel resources/skyhawk.lvl
 set message So long and thanks for all the fish
 
 create timed 50000
@@ -90,8 +90,8 @@ template pushx timed 5000
 end
 
 template ships timed 10000
-	set message blank
 	position 0 0
+	set message blank
 	create enemy shuttle
 		position -100 100
 		velocity 15 1
