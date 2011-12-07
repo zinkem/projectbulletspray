@@ -107,6 +107,19 @@ template ships timed 10000
 	end
 end
 
+template dive timed 7000
+      position 0 0
+      create enemy minihex
+	      position 640 -50
+	      velocity -10 -10
+	      scoreval 100
+
+      create dive
+	      position 200 0
+      end
+end
+
+
 create enemy hex
 	position 640 300
 	velocity 3 0 
