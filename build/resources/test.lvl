@@ -74,7 +74,8 @@ create enemy hex
 	velocity 3 -3
 	spawnin 10
 
-create roger 250 250
+create roger 
+	position 250 250
 	
 template roger enemy shuttle
 	position 250 100
