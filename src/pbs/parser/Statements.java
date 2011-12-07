@@ -16,6 +16,9 @@ public class Statements {
     //upon execution, set level parameters, and add entities
     //the event queue in the level is a series of statements
     public interface Statement {
+	//allows a list of final params to be set, specific to this statement
+	public abstract void finalParams(ArrayList<Param> plist);
+	//behavior of this statement when executing...
 	public abstract boolean execute(Level l);
     }
 
@@ -28,6 +31,10 @@ public class Statements {
 	public Conditional(BooleanOperation b, Statement s){
 	    boolop = b;
 	    stmt = s;
+	}
+
+	public void finalParams(ArrayList<Param> plist){
+	    stmt.finalParams(plist);
 	}
 
 	public boolean execute(Level l){
@@ -52,6 +59,12 @@ public class Statements {
 	
 	public void setDescription(ObjectDescription od){
 	    theObject = od;
+	}
+
+	public void finalParams(ArrayList<Param> plist){
+	    for(Param p : plist){
+		theObject.addParam(p);
+	    }
 	}
 
 	//does the work of adding events to levels
@@ -91,13 +104,9 @@ public class Statements {
 
 
     //setter statements, these all set some parameter of the level
-    public static class Setter implements Statement {
-	public Setter(){
-	}
-
-	public boolean execute(Level l){
-	    return true;
-	}
+    public abstract static class Setter implements Statement {
+	public Setter(){}
+	public void finalParams(ArrayList<Param> plist){}
     }
 
     /*
@@ -108,7 +117,7 @@ public class Statements {
       They may also be used by themselves to initialize the level. 
      */
 
-    public static abstract class VectorSetter implements Statement {
+    public static abstract class VectorSetter extends Setter {
 	Vector2D vec;
 	public VectorSetter(Vector2D v) { vec = v; }
 	public abstract boolean execute(Level l);
@@ -128,13 +137,13 @@ public class Statements {
     }
 
     //modifies the score
-    public static class ScoreModifier implements Statement {
+    public static class ScoreModifier extends Setter {
 	int mod;
 	public ScoreModifier(int m) { mod = m; }
 	public boolean execute(Level l) { l.modScore(mod); return true; }
     }
 
-    public static class LevelEnder implements Statement {
+    public static class LevelEnder extends Setter {
 	//way of signalling the level is over
 	//perhaps we should have a successor file to 
 	//specify a successor level

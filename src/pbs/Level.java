@@ -192,18 +192,20 @@ public class Level {
 	//behavior custom to each level goes here
 
 	//check to see which triggers need to be fired...
-	Iterator<Entity> enemylist = getLayer(Layer.TRIGGERS).iterator();
-	while(enemylist.hasNext()){
-	    Entity t = enemylist.next();
-	    t.fireTrigger(this, deltaMs);
-	}
-
+	Iterator<Entity> elist = getLayer(Layer.TRIGGERS).iterator();
+	if(elist != null)
+	    while(elist.hasNext()){
+		Entity t = elist.next();
+		t.fireTrigger(this, deltaMs);
+	    }
+	
 	//call "shoot" on all enemy entities in case they have weapons to fire
-	Iterator<Entity> elist = getLayer(Layer.ENEMY).iterator();
-	while(elist.hasNext()){
-	    Entity e = enemylist.next();
-	    e.shoot(this, deltaMs);
-	}
+	elist = getLayer(Layer.ENEMY).iterator();
+	if(elist != null)
+	    while(elist.hasNext()){
+		Entity e = elist.next();
+		e.shoot(this, deltaMs);
+	    }
 
 	//check for collisions
 	checkForCollisions();	

@@ -19,8 +19,11 @@ public class Elements {
 	//returns an entity matching this description
 	//public abstract ALAYERTYPE getLayerType();
 	protected ArrayList<Param> paramlist;
+	protected ArrayList<Param> paramtemp;
 	public void addParam(Param p){
-	    paramlist.add(p);
+	    if(paramtemp == null)
+		paramtemp = new ArrayList<Param>();
+	    paramtemp.add(p);
 	}
        	public abstract void mutate(Level l);	
     }
@@ -37,7 +40,7 @@ public class Elements {
 	    for(Param p : paramlist){
 		od.addParam(p);
 	    }
-	    AddEntity ae = new AddEntity(l.getTemplate(key));
+	    AddEntity ae = new AddEntity(od);
 	    l.addStatement(ae);
 	}
     }
@@ -116,6 +119,13 @@ public class Elements {
 	    for(int i = 0; i < paramlist.size(); i++){
 		paramlist.get(i).mutate(e);
 	    }
+
+	    if(paramtemp != null){
+		for(int i = 0; i < paramtemp.size(); i++){
+		    paramtemp.get(i).mutate(e);
+		}
+		paramtemp = null;
+	    }
 	    
 	    l.add(e, targetLayer);
 
@@ -183,6 +193,14 @@ public class Elements {
 	    return true;
 	}
     }
+
+    public static class TranslatePositionParam extends VectorParam {
+	public TranslatePositionParam(Vector2D p){ super(p); }
+	public boolean mutate(Entity e){
+	    e.setPosition(e.getPosition().translate(vec));
+	    return true;
+	}
+    }
     
     public static class ScoreValueParam implements Param {
 	int score;
@@ -237,5 +255,7 @@ public class Elements {
 	    return true;
 	}
     }
+
+
 
 }
