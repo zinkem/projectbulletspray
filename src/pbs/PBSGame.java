@@ -149,11 +149,13 @@ public class PBSGame extends ScrollingScreenGame {
     public void update(long deltaMs) {
 
 	//centerOnPoint(levelData.getCam()); // center on level camera
+	centerOnPoint(levelData.getCam());
+
 	Vector2D topleft = screenToWorld(new Vector2D(0, 0));
 	Vector2D botright = screenToWorld(new Vector2D(SCREEN_WIDTH, SCREEN_HEIGHT));
 
-	centerOnPoint(levelData.getCam());
 	pushPlayerToBounds(topleft, botright);
+	
 	player.setPosition(player.getPosition().translate(levelData.getScrollSpeed()
 							  .scale(deltaMs/100.0)));
 	levelData.update(FRAME_SIZE, topleft, botright);
@@ -171,6 +173,7 @@ public class PBSGame extends ScrollingScreenGame {
 	}
 	//reset when we hit hte space bar
 	if(waitForReset && keyboard.isPressed(KeyEvent.VK_SPACE)){
+	    player = null;
 	    resetLevel();
 	}
     }
@@ -192,6 +195,9 @@ public class PBSGame extends ScrollingScreenGame {
     }
 
     public void pushPlayerToBounds(Vector2D tl, Vector2D br){
+
+	if(waitForReset)
+	    return;
 
 	Vector2D p = player.getPosition();
 	double newx = p.getX();
