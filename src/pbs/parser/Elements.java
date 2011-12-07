@@ -7,9 +7,10 @@ import jig.engine.util.Vector2D;
 import pbs.*;
 import pbs.Level.*;
 import pbs.Entity.*;
-import pbs.Triggers.*;
 import pbs.Animations.*;
 import pbs.parser.Statements.*;
+import pbs.Trigger.*;
+import pbs.Triggers.*;
 import pbs.parser.BooleanElements.*;
 import pbs.parser.ExpressionElements.*;
 

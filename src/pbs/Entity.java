@@ -38,6 +38,7 @@ public class Entity extends Body {
 
     protected boolean alive; //is the entity alive? (dead entities get removed)
     public boolean alive() { return this.alive; }
+
     public void kill(){ 
 	alive = false; 
 	setActivation(false);

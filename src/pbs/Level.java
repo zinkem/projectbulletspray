@@ -2,7 +2,6 @@ package pbs;
 
 import java.util.*;
 
-
 import jig.engine.*;
 import jig.engine.util.Vector2D;
 
@@ -11,6 +10,7 @@ import pbs.parser.Elements.*;
 import pbs.Animations.*;
 
 public class Level {
+
 
     public static final String SPRITE_SHEET = "resources/pbs-spritesheet.png";
 
@@ -86,12 +86,11 @@ public class Level {
 	
 	events = new Stack<Statement>();
 	templates = new HashMap<String, ObjectDescription>();
-
+	
 	collisionHandlers = new ArrayList<QuadLayerCollisionHandler>();
 	allTheLayers = new ArrayList<PBSQuadLayer<Entity>>();
 	
-	ImageResource bgImage = ResourceFactory.getFactory().getFrames(
-			"resources/terrain.png#bedrock").get(0);
+	ImageResource bgImage = ResourceFactory.getFactory().getFrames("resources/terrain.png#bedrock").get(0);
 	allTheLayers.add(new ScrollingBackgroundLayer(bgImage, 
 			1000, 800, new Vector2D(20, 0)));
 	for(int i = 1; i < NUM_LAYERS; i++){
@@ -103,94 +102,143 @@ public class Level {
 	
 	//after all layers are added, we can add collision handlers
 	setupCollisionHandlers();
-    }
-    
-    //setters
-    public void add(Entity e, Layer l){	getLayer(l).add(e); }
-    
-    
-    //getters
-    public List<ViewableLayer> getLayers(){
-    	List<ViewableLayer> layerList = new ArrayList<ViewableLayer>();
-    	layerList.addAll(allTheLayers);
-    	return layerList;
-    }
-    
-    public PBSQuadLayer<Entity> getLayer(Layer l){
-    	return allTheLayers.get(l.ordinal());
-    }
-    
-    public void setupCollisionHandlers(){
-	collisionHandlers.add(new QuadLayerCollisionHandler(getLayer(Layer.FRIENDLY), 
-							    getLayer(Layer.ENEMY)){
-		public void collide(Entity body1, Entity body2){
-		    //this is where you define behavior for a collision
-		    //body1 is from friendly bullet layer
-		    //body2 is from enemy layer
-		    
-		    if(body1.isActive() && body2.isActive()){
 
-			double rx = 4.0*Math.random()-2;
-			double ry = 4.0*Math.random()-2;
-			
+
+    }
+
+
+    // setters
+    public void add(Entity e, Layer l) {
+	getLayer(l).add(e);
+    }
+
+    // getters
+    public List<ViewableLayer> getLayers() {
+	List<ViewableLayer> layerList = new ArrayList<ViewableLayer>();
+	layerList.addAll(allTheLayers);
+	return layerList;
+    }
+
+    public PBSQuadLayer<Entity> getLayer(Layer l) {
+	return allTheLayers.get(l.ordinal());
+    }
+
+    public void setupCollisionHandlers() {
+	collisionHandlers.add(new QuadLayerCollisionHandler(getLayer(Layer.FRIENDLY), getLayer(Layer.ENEMY)) {
+		public void collide(Entity body1, Entity body2) {
+		    // this is where you define behavior for a collision
+		    // body1 is from friendly bullet layer
+		    // body2 is from enemy layer
+
+		    if (body1.isActive() && body2.isActive()) {
+
+			double rx = 4.0 * Math.random() - 2;
+			double ry = 4.0 * Math.random() - 2;
+
 			Entity e = new Entity(SPRITE_SHEET + "#small_burst");
-			e.setPosition(body1.getCenterPosition().translate(new Vector2D(rx,ry)));
+			e.setPosition(body1.getCenterPosition().translate(
+									  new Vector2D(rx, ry)));
 			e.setCustomAnimation(new AnimateOnce(75));
 			add(e, Layer.FX);
 			body1.kill();
 			body2.modhp(-1);
+					
+					
 
-			if(body2.alive() == false){
+			if (body2.alive() == false) {
 			    score += body2.value();
-			    
-			    for(int i = 0; i < 5; i++){
-				rx = 100.0*Math.random()-50;
-				ry = 100.0*Math.random()-50;
+
+			    for (int i = 0; i < 5; i++) {
+				rx = 100.0 * Math.random() - 50;
+				ry = 100.0 * Math.random() - 50;
 				e = new Entity(SPRITE_SHEET + "#large_burst");
-				e.setPosition(body1.getCenterPosition().translate(new Vector2D(rx,ry)));
+				e.setPosition(body1.getCenterPosition().translate(
+										  new Vector2D(rx, ry)));
 				e.setCustomAnimation(new AnimateOnce(75));
-				e.setAge( (long)(-rx));
+				e.setAge((long) (-rx));
 				add(e, Layer.FX);
 			    }
 			}
 		    }
 		}
 	    });
+	collisionHandlers.add(new QuadLayerCollisionHandler(getLayer(Layer.PLAYER), getLayer(Layer.STATIC)){
+
+		@Override
+		    public void collide(Entity body1, Entity body2) {
+		    if(body1.isActive() && body2.isActive()){
+			double rx = 4.0*Math.random() -2.0;
+			double ry = 4.0*Math.random() -2.0;
+				
+			Entity e = new Entity(SPRITE_SHEET + "#large_burst");
+			e.setPosition(body1.getCenterPosition().translate(new Vector2D(rx, ry)));
+			e.setCustomAnimation(new AnimateOnce(75));
+			add(e, Layer.FX);
+				
+			//Kill the player, do any sort of updates to the game necessary
+			body1.kill();
+				
+				
+		    }
+		}
+	    });
 	
-	collisionHandlers.add(new ElasticCollisionHandler(getLayer(Layer.ENEMY), 
-							  getLayer(Layer.PLAYER)));
-	
-	//System.out.println("col handlers size " + collisionHandlers.size());
+	collisionHandlers.add(new QuadLayerCollisionHandler(getLayer(Layer.PLAYER), getLayer(Layer.ENEMY)){
+
+		@Override
+		    public void collide(Entity body1, Entity body2) {
+		    if(body1.isActive() && body2.isActive()){
+			double rx = 8.0*Math.random() -4.0;
+			double ry = 8.0*Math.random() -4.0;
+				
+			Entity e = new Entity(SPRITE_SHEET + "#large_burst");
+			e.setPosition(body1.getCenterPosition().translate(new Vector2D(rx, ry)));
+			e.setCustomAnimation(new AnimateOnce(75));
+			add(e, Layer.FX);
+				
+			e = new Entity(SPRITE_SHEET + "#small_burst");
+			e.setPosition(body2.getCenterPosition().translate(new Vector2D(ry, rx)));
+			e.setCustomAnimation(new AnimateOnce(75));
+			add(e, Layer.FX);
+				
+			body2.kill();
+			body1.modhp(-1);
+		    }
+		}
+	    });
+
+
+	// System.out.println("col handlers size " + collisionHandlers.size());
     }
-    
+
     /* stwMin, stwMax are ScreenToWorld coordinates for QuadTree */
     protected void updateLayers(long deltaMs, Vector2D stwMin, Vector2D stwMax) {
-		//pass the task of updating individual entities to the layer
-		for(PBSQuadLayer<Entity> v : allTheLayers){
-		    gametime += deltaMs;
-		    v.updateTreeBounds(stwMin, stwMax);
-		    v.update(deltaMs);
-		}
+	// pass the task of updating individual entities to the layer
+	for (PBSQuadLayer<Entity> v : allTheLayers) {
+	    gametime += deltaMs;
+	    v.updateTreeBounds(stwMin, stwMax);
+	    v.update(deltaMs);
+	}
     }
-    
-    protected void checkForCollisions(){
-	for(QuadLayerCollisionHandler c : collisionHandlers){
+
+    protected void checkForCollisions() {
+	for (QuadLayerCollisionHandler c : collisionHandlers) {
 	    c.findAndReconcileCollisions();
 	}
     }
-    
-    public void update(long deltaMs, Vector2D stwMin, Vector2D stwMax){
-	
-	camera = camera.translate(scrollspeed.scale(deltaMs/100.0));
-	
-	//execute all statements on queue
+
+    public void update(long deltaMs, Vector2D stwMin, Vector2D stwMax) {
+
+	camera = camera.translate(scrollspeed.scale(deltaMs / 100.0));
+	    
+	// execute all statements on queue
 	execute();
-	
-	//call update on each layer
+	    
+	// call update on each layer
 	updateLayers(deltaMs, stwMin, stwMax);
-
+	    
 	//behavior custom to each level goes here
-
+	    
 	//check to see which triggers need to be fired...
 	Iterator<Entity> elist = getLayer(Layer.TRIGGERS).iterator();
 	if(elist != null)
