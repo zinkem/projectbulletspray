@@ -327,7 +327,20 @@ public class LevelParser {
     }
 
     protected UpdateParam getUpdate(){
-	return new UpdateParam(new YOcil());
+	if(match("target")){
+	    return new UpdateParam(new TargetPoint(new Vector2D(num(), num())));
+	} else if (match("xoscil")){
+	    return new UpdateParam(new XOcil());
+	} else if (match("yoscil")){
+	    return new UpdateParam(new YOcil());
+	} else if (match("cw")){
+	    return new UpdateParam(new CWrotate());
+	} else if (match("ccw")){
+	    return new UpdateParam(new CCWrotate());
+	}
+
+	err = "Error parsing update";
+	return null;
     }
 
     protected RenderParam getRender(){

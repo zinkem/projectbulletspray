@@ -45,7 +45,7 @@ create enemy hex
 	velocity 5 0
 	spawnin 0
 	render spin 1
-	update
+	update target 440 200
 	weapon spinning 3 10 1 100
 
 create recurse
