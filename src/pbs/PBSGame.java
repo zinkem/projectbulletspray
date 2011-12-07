@@ -26,6 +26,8 @@ public class PBSGame extends ScrollingScreenGame {
     public static long FRAME_SIZE = 16;
     public static String SPRITE_SHEET = "resources/pbs-spritesheet.png";
     
+    public static int PLAYER_MAX_HP = 3;
+    
     ResourceFactory rf;
     
     Level levelData;
@@ -44,15 +46,17 @@ public class PBSGame extends ScrollingScreenGame {
 	
 	rf = ResourceFactory.getFactory();
 	rf.loadResources("resources/", "pbs-resources.xml");
-	Font sFont = new Font("Sans Serif", Font.PLAIN, 24);
+	Font sFont = new Font("Sans Serif", Font.BOLD, 24);
 	try {
-		sFont = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("resources/PrStart.ttf"));
-		sFont = sFont.deriveFont(24f);
+		sFont = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("./build/resources/prstartk.ttf"));
+		sFont = sFont.deriveFont(12f);
 	} catch (FontFormatException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	} catch (IOException e) {
-		// TODO Auto-generated catch block
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		for(String s : ge.getAvailableFontFamilyNames())
+			System.out.println("Font:" + s);
+		System.out.println("Canonical Path:" + new java.io.File(".").getAbsolutePath());
 		e.printStackTrace();
 	}
 //	hudFont = rf.getFontResource(new Font("Sans Serif", Font.PLAIN, 24), Color.white, null);
@@ -90,22 +94,41 @@ public class PBSGame extends ScrollingScreenGame {
 
     // this method renders the hud
     public void render(RenderingContext rc) {
-	super.render(rc);
-
-	String message = "High Score: " + levelData.getScore();
-	int x = X_MID - hudFont.getStringWidth(message) / 2;
-	int y = 10;
-	hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
-
-	message = "Score: ";
-	x = X_MID - hudFont.getStringWidth(message);
-	y = SCREEN_HEIGHT - hudFont.getHeight() - 10;
-	hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
-
-	message = "" + levelData.getScore();
-	x = X_MID;
-	hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
-
+		super.render(rc);
+	
+		ImageResource image = rf.getFrames(SPRITE_SHEET + "#fullhp").get(0);
+		String message = "Score: " + levelData.getScore();
+		int x = 10;
+		int y = 10; //SCREEN_HEIGHT - hudFont.getHeight() - 10;
+		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
+		
+		message = "High Score: ";
+		x = SCREEN_WIDTH - hudFont.getStringWidth(message) - 75;
+		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
+		
+		x = SCREEN_WIDTH - 75;
+		message = "" + levelData.getScore();
+		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
+		
+		message = "Lives: 3";
+		x = 10;
+		y = SCREEN_HEIGHT - hudFont.getHeight() - 10;
+		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
+		
+		message = "Health:"; // + player.hp + " / " + PLAYER_MAX_HP;
+		x = X_MID - ((hudFont.getStringWidth(message) + image.getWidth() * PLAYER_MAX_HP) / 2);
+		y = SCREEN_HEIGHT - hudFont.getHeight() - 10;
+		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
+		
+		image = rf.getFrames(SPRITE_SHEET + "#fullhp").get(0);
+		x += hudFont.getStringWidth(message);
+		y = SCREEN_HEIGHT - image.getHeight() - 5;
+		for(int i = 0; i < PLAYER_MAX_HP; i++) {
+			if(i == player.hp)
+				image = rf.getFrames(SPRITE_SHEET + "#deadhp").get(0);
+			x += image.getWidth();
+			image.render(rc, AffineTransform.getTranslateInstance(x, y));
+		}
     }
 
     public void update(long deltaMs) {
