@@ -28,7 +28,7 @@ public class PBSGame extends ScrollingScreenGame {
     public static int P_STARTY = Y_MID;
     public static long FRAME_SIZE = 16;
     public static String SPRITE_SHEET = "resources/pbs-spritesheet.png";
-    
+	int s;
     public static int PLAYER_MAX_HP = 10;
     
     ResourceFactory rf;
@@ -50,7 +50,7 @@ public class PBSGame extends ScrollingScreenGame {
     
     public PBSGame() {
 	super(SCREEN_WIDTH, SCREEN_HEIGHT, false);
-	
+	s = 0;
 	waitForReset = false;
 
 	ef = new EntityFactory();
@@ -133,7 +133,7 @@ public class PBSGame extends ScrollingScreenGame {
     }
 
     public void update(long deltaMs) {
-
+    
 	//centerOnPoint(levelData.getCam()); // center on level camera
 	centerOnPoint(levelData.getCam());
 
@@ -148,20 +148,24 @@ public class PBSGame extends ScrollingScreenGame {
 
 	//if level complete, get next level
 	if(levelData.levelComplete() || keyboard.isPressed(KeyEvent.VK_C)){
+		s = levelData.score;
 	    levelData.setMessage("Congratulations! Level Complete!");
 	    currentLevel = levelData.getNextLevel();
+	    
 	    waitForReset = true;
 	}
 	//if player dead, reset current level
 	if(player.alive() == false){
 	    levelData.setMessage("Better luck next time!");
 	    lives--;
+	    levelData.score = 0;
 	    waitForReset = true;
 	}
 	//reset when we hit hte space bar
 	if(waitForReset && keyboard.isPressed(KeyEvent.VK_SPACE)){
 	    player = null;
 	    resetLevel();
+	    levelData.score = s;
 	}
 
     }
