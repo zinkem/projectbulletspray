@@ -89,7 +89,8 @@ public class Renders {
 	public void render(RenderingContext rc, Entity e){
 	    Vector2D center = e.getCenterPosition();
 	    AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
-	    at.translate(center.getX(), center.getY());
+	    at.translate(e.getPosition().getX()-e.getWidth()*scalefactor/2, 
+			 e.getPosition().getY()-e.getHeight()*scalefactor/2);
 	    at.scale(scalefactor, scalefactor);
 	    e.getImage().render(rc, at);
 	}
@@ -106,7 +107,7 @@ public class Renders {
 	}
 
 	public void render(RenderingContext rc, Entity e){
-	    scalefactor = scaleMid + Math.sin((double)e.age()*(throbSpeed));
+	    scalefactor = scaleMid + .2*Math.sin((double)(e.age()/1000.0)*(throbSpeed));
 	    super.render(rc, e);
 	}
 	

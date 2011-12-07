@@ -25,6 +25,11 @@ template badasses timed 5000
 	end
 end
 
+create enemy hex
+	position 600 240
+	velocity 9 3
+	render veldir
+
 create roger
 	position 300 240
 	velocity 10 10
@@ -33,12 +38,13 @@ create roger
 create roger
 	position 600 240
 	weapon spinning 4 10 1 100
+	render throb 1
 	
 create enemy hex
 	position 340 300
 	velocity 5 0
 	spawnin 0
-	render
+	render spin 1
 	update
 	weapon spinning 3 10 1 100
 
