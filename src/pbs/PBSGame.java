@@ -150,26 +150,31 @@ public class PBSGame extends ScrollingScreenGame {
     public void update(long deltaMs) {
 
 	//centerOnPoint(levelData.getCam()); // center on level camera
+	centerOnPoint(levelData.getCam());
+
 	Vector2D topleft = screenToWorld(new Vector2D(0, 0));
 	Vector2D botright = screenToWorld(new Vector2D(SCREEN_WIDTH, SCREEN_HEIGHT));
 
-	centerOnPoint(levelData.getCam());
 	pushPlayerToBounds(topleft, botright);
+	
 	player.setPosition(player.getPosition().translate(levelData.getScrollSpeed()
 							  .scale(deltaMs/100.0)));
 	levelData.update(FRAME_SIZE, topleft, botright);
 
 	//if level complete, get next level
 	if(levelData.levelComplete()){
+	    levelData.setMessage("Congratulations! Level Complete!");
 	    currentLevel = levelData.getNextLevel();
 	    waitForReset = true;
 	}
 	//if player dead, reset current level
 	if(player.alive() == false){
+	    levelData.setMessage("Better luck next time!");
 	    waitForReset = true;
 	}
 	//reset when we hit hte space bar
 	if(waitForReset && keyboard.isPressed(KeyEvent.VK_SPACE)){
+	    player = null;
 	    resetLevel();
 	}
     }
@@ -191,6 +196,9 @@ public class PBSGame extends ScrollingScreenGame {
     }
 
     public void pushPlayerToBounds(Vector2D tl, Vector2D br){
+
+	if(waitForReset)
+	    return;
 
 	Vector2D p = player.getPosition();
 	double newx = p.getX();
@@ -237,19 +245,19 @@ public class PBSGame extends ScrollingScreenGame {
 	    }
 
 	    if (left && !right) {
-		e.setVelocity(e.getVelocity().translate(new Vector2D(-30, 0)));
+		e.setVelocity(new Vector2D(-30, 0));
 	    }
 
 	    if (right && !left) {
-		e.setVelocity(e.getVelocity().translate(new Vector2D(30, 0)));
+		e.setVelocity(new Vector2D(30, 0));
 	    }
 
 	    if (up && !down) {
-		e.setVelocity(e.getVelocity().translate(new Vector2D(0, -30)));
+		e.setVelocity(new Vector2D(0, -30));
 	    }
 
 	    if (down && !up) {
-		e.setVelocity(e.getVelocity().translate(new Vector2D(0, 30)));
+		e.setVelocity(new Vector2D(0, 30));
 	    }
 
 	    e.setPosition(pos.translate(e.getVelocity().scale(deltaMs / 100.0)));

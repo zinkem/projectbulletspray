@@ -70,9 +70,6 @@ public class LevelParser {
 	thislevel = new Level();
 	thislevel.setNextLevel(filename);
 
-	Pattern p = source.delimiter();
-	System.out.println(p.pattern());
-
 	ctoken = source.next();
 	Statement s;
 
@@ -105,19 +102,23 @@ public class LevelParser {
     protected int num(){
 	boolean isnum = ctoken.matches("-?\\d+");
 	int n = 0;
-	int modifier = 1;
 
 	if(isnum){
 	    n = Integer.parseInt(ctoken);
 	    ctoken = nextToken();
 	}
 	//System.out.println("isnum is " + isnum + ", " + n );
-	return n*1;
+	return n;
     }
 
     private String getLine(){
-	String s = ctoken + " " + source.nextLine();
-	ctoken = nextToken();
+	String s;
+	if(match("blank")){
+	    s = "";
+	} else {
+	    s = ctoken + " " + source.nextLine();
+	    ctoken = nextToken();
+	}
 	return s;
     }
 
@@ -127,8 +128,7 @@ public class LevelParser {
 	if(matches){
 	    if(source.hasNext()){
 		ctoken = nextToken();
-	    }
-	    else
+	    } else
 		System.out.println("EOF");
 	}	
 	return matches;

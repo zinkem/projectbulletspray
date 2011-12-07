@@ -83,6 +83,7 @@ public class Entity extends Body {
 	hp = 10;
 	score = 100;
 	ttl = -1;
+	position = new Vector2D(0, 0);
     }
 
     public void render(RenderingContext rc) {
