@@ -3,16 +3,19 @@ set scoreincrease 15
 set nextlevel resources/skyhawk.lvl
 set message So long and thanks for all the fish
 
-create timed 50000
+create timed 45000
 	set levelcomplete
 end
 
 create pushy
 create pushx
 create ships
+create timed 1000
+    set message blank
+end
 
 template pushy timed 5000
-	position 800 -100
+	position 1500 -100
 	create enemy hex
 		position 0 100
 		velocity -15 0
@@ -50,8 +53,8 @@ template pushy timed 5000
 end
 
 
-template pushx timed 5000
-	position 700 -100
+template pushx timed 2000
+	position 1500 -100
 	create enemy hex
 		position 400 100
 		velocity -25 0
@@ -89,9 +92,9 @@ template pushx timed 5000
 	end
 end
 
+
 template ships timed 10000
 	position 0 0
-	set message blank
 	create enemy shuttle
 		position -100 100
 		velocity 15 1
@@ -107,20 +110,8 @@ template ships timed 10000
 	end
 end
 
-template dive timed 7000
-      position 0 0
-      create enemy minihex
-	      position 640 -50
-	      velocity -10 -10
-	      scoreval 100
 
-      create dive
-	      position 200 0
-      end
-end
-
-
-create enemy hex
+create enemy hex 
 	position 640 300
 	velocity 3 0 
 	spawnin 0
@@ -130,6 +121,6 @@ create enemy hex
 	position 640 100
 	velocity 3 0 
 	spawnin 0
-	weapon spinning 3 10 1 100
+	weapon spinning 3 10 1 300
 
 endspec
