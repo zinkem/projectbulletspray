@@ -4,7 +4,11 @@ create timed 0
 		position 100 0
 		velocity -2 -2
 		weapon spinning 8 10 10 100
-
+	create roger
+		position 101 1
+		velocity -2 2
+		weapon spinning 8 15 10 100
+	
 create roger
 	position 300 240
 	velocity 10 10
