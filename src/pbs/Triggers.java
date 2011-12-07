@@ -1,14 +1,23 @@
 package pbs;
 
+import jig.engine.RenderingContext;
+
 import pbs.Entity.*;
 
 public class Triggers {
+
+    public static boolean DEBUG = false;
 
     public static class TimedTrigger extends Entity {
 	protected long firetime;
 	public TimedTrigger(String imgrsc, long t){
 	    super(imgrsc);
 	    firetime = t;
+	}
+
+	@Override public void render(RenderingContext rc){
+	    if(DEBUG)
+		super.render(rc);
 	}
 
 	@Override public void fireTrigger(Level l, long deltaMs){

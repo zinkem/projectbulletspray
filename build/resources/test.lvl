@@ -1,20 +1,21 @@
-set scrollspeed 5
+set scrollspeed 10
 set scoreincrease 15
 set nextlevel resources/test.lvl
 
 create badasses
 
-template badasses timed 10000
-	position 1000 240
+template badasses timed 5000
+	position 600 240
 	create roger
 		position 100 -50
 		velocity 2 -2
-		weapon spinning 8 10 10 1007
+		weapon spinning 5 5 10 200
 	create roger
 		position 101 50
 		velocity 2 2
-		weapon spinning 8 15 10 100
-
+		weapon spinning 5 5 10 200
+	create badasses
+		position 1000 0
 	end
 end
 
@@ -27,78 +28,14 @@ create roger
 	position 600 240
 	weapon spinning 4 10 1 100
 	
-create fx small_burst
-	position 200 200
-	spawnin 1
-
-create fx large_burst
-	position 200 400
-	spawnin 2
-	
-
 create enemy hex
 	position 340 300
-	velocity 3 3
+	velocity 5 0
 	spawnin 0
 	render
-	weapon spinning 4 10 1 100
-	
-create enemy hex
-	position 360 300
-	velocity 3 -3
-	spawnin 10
-	weapon outward 6 10 1000
-create enemy hex
-	position 370 300
-	velocity 3 -3
-	spawnin 12
-create enemy hex
-	position 380 300
-	velocity 3 -3
-	spawnin 14
-create enemy hex
-	position 390 300
-	velocity 3 -3
-	spawnin 16
-create enemy hex
-	position 330 300
-	velocity 3 -3
-	spawnin 18
-create enemy hex
-	position 320 300
-	velocity 3 -3
-	spawnin 19
-create enemy hex
-	position 310 300
-	velocity 3 -3
-	spawnin 20
-create enemy hex
-	position 300 300
-	velocity 3 -3
-	spawnin 10
-create enemy hex
-	position 355 300
-	velocity 3 -3
-	spawnin 10
-create enemy hex
-	position 345 300
-	velocity 3 -3
-	spawnin 10
-create enemy hex
-	position 335 300
-	velocity 3 -3
-	spawnin 10
-create enemy hex
-	position 360 300
-	velocity 3 -3
-	spawnin 10
-create enemy hex
-	position 350 300
-	velocity 3 -3
-	spawnin 10
-create roger 
-	position 250 250
-	
+	update
+	weapon spinning 3 10 1 100
+
 create recurse
 	position 320 240
 	

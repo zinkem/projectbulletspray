@@ -23,6 +23,8 @@ public class PBSGame extends ScrollingScreenGame {
     public static int SCREEN_HEIGHT = 480;
     public static int X_MID = SCREEN_WIDTH / 2;
     public static int Y_MID = SCREEN_HEIGHT / 2;
+    public static int P_STARTX = 20;
+    public static int P_STARTY = Y_MID;
     public static long FRAME_SIZE = 16;
     public static String SPRITE_SHEET = "resources/pbs-spritesheet.png";
     
@@ -38,19 +40,23 @@ public class PBSGame extends ScrollingScreenGame {
 
     String currentLevel;
     
+    protected boolean waitForReset;
+
     // hud variables
     protected FontResource hudFont;
     
     public PBSGame() {
 	super(SCREEN_WIDTH, SCREEN_HEIGHT, false);
 	
+	waitForReset = false;
+
 	ef = new EntityFactory();
 	
 	rf = ResourceFactory.getFactory();
 	rf.loadResources("resources/", "pbs-resources.xml");
 	Font sFont = new Font("Sans Serif", Font.BOLD, 18);
 	try {
-		sFont = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("./buld/resources/prstartk.ttf"));
+		sFont = Font.createFont(Font.TRUETYPE_FONT, new java.io.File("./build/resources/prstartk.ttf"));
 		sFont = sFont.deriveFont(12f);
 	} catch (FontFormatException e) {
 		e.printStackTrace();
@@ -148,22 +154,27 @@ public class PBSGame extends ScrollingScreenGame {
 	//if level complete, get next level
 	if(levelData.levelComplete()){
 	    currentLevel = levelData.getNextLevel();
-	    resetLevel();
+	    waitForReset = true;
 	}
 
 	//if player dead, reset current level
 	if(player.alive() == false){
+	    waitForReset = true;
+	}
+
+	if(waitForReset && keyboard.isPressed(KeyEvent.VK_SPACE)){
 	    resetLevel();
 	}
-	    
     }
 
     public void resetLevel(){
 	LevelParser lp = new LevelParser(currentLevel);
 	levelData = lp.createLevel();
+
+	waitForReset = false;
 	
 	player = new Entity(SPRITE_SHEET + "#defender2");
-	player.setPosition(new Vector2D(300, 300));
+	player.setPosition(new Vector2D(P_STARTX, P_STARTY));
 	player.setCustomUpdate(new KeyboardControls(keyboard));
 	player.setCustomWeapon(new FriendlySpread());
 	levelData.add(player, Layer.PLAYER);
