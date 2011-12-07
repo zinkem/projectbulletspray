@@ -334,7 +334,21 @@ public class LevelParser {
 	//FollowVelocity
 	//PointDirection
 	//Spin
-	return new RenderParam(new Spin(0.0, .005));
+
+	if(match("spin")){
+	    return new RenderParam(new Spin(0.0, num()/180.0));
+	} else if(match("veldir")){
+	    return new RenderParam(new FollowVelocity());
+	} else if(match("stare")){
+	    return new RenderParam(new FollowVelocity());
+	} else if(match("throb")){
+	    return new RenderParam(new Throb(num(), .1));
+	} else if(match("scale")){
+	    return new RenderParam(new Scale(num()));
+	}
+
+	err = "Error parsing render method";
+	return null;
     }
 
     protected WeaponParam getWeapon(){
