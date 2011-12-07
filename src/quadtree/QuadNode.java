@@ -16,8 +16,11 @@ import jig.engine.util.Vector2D;
  */
 public class QuadNode<T extends Sprite> {
 	private static int maxEntities = 10;
+	private static int maxImageWidth = 1;
+	private static int maxImageHeight = 1;
 	private QuadNode<T> parent, nwNode, neNode, swNode, seNode;
 	private Vector2D min, max;
+
 	private List<T> entities;
 
 	/**
@@ -40,26 +43,42 @@ public class QuadNode<T extends Sprite> {
 	}
 	
 	public void addEntity(T entity) {
+		if (entity.getWidth() > maxImageWidth)
+			maxImageWidth = entity.getWidth();
+		if (entity.getHeight() > maxImageHeight)
+			maxImageHeight = entity.getHeight();
 		if (entities == null) { /* Case: entities is full and has been made null, add to a child node */
 			double minX = min.getX(), maxX = max.getX();
 			double minY = min.getY(), maxY = max.getY();
 			double midX = minX + (maxX - minX) / 2, midY = minY + (maxY - minY) / 2;
 			double xPos = entity.getPosition().getX(), yPos = entity.getPosition().getY();
-			double width = entity.getWidth(), height = entity.getHeight();
-			if(((xPos > minX || xPos + width > minX) && (xPos < midX || xPos + width < midX)) &&
-					((yPos > minY || yPos + height > minY) && (yPos < midY || yPos + height < midY))) {
+//			double width = entity.getWidth(), height = entity.getHeight();
+//			if(((xPos > minX || xPos + width > minX) && (xPos < midX || xPos + width < midX)) &&
+//					((yPos > minY || yPos + height > minY) && (yPos < midY || yPos + height < midY))) {
+//				nwNode.addEntity(entity); // nwNode
+//			} 
+//			if(((xPos > midX || xPos + width > midX) && (xPos < maxX || xPos + width < maxX)) &&
+//					((yPos > minY || yPos + height > minY) && (yPos < midY || yPos + height < midY))) {
+//				neNode.addEntity(entity); //neNode				
+//			} 
+//			if(((xPos > minX || xPos + width > minX) && (xPos < midX || xPos + width < midX)) &&
+//					((yPos > midY || yPos + height > midY) && (yPos < maxY || yPos + height < maxY))) {
+//				swNode.addEntity(entity); //swNode
+//			} 
+//			if(((xPos > midX || xPos + width > midX) && (xPos < maxX || xPos + width < maxX)) &&
+//					((yPos > midY || yPos + height > midY) && (yPos < maxY || yPos + height < maxY))) {
+//				seNode.addEntity(entity); //seNode
+//			}
+			if((xPos > minX && xPos < midX) && (yPos > minY && yPos < midY)) {
 				nwNode.addEntity(entity); // nwNode
 			} 
-			if(((xPos > midX || xPos + width > midX) && (xPos < maxX || xPos + width < maxX)) &&
-					((yPos > minY || yPos + height > minY) && (yPos < midY || yPos + height < midY))) {
+			if((xPos > midX && xPos < maxX) && (yPos > minY && yPos < midY)) {
 				neNode.addEntity(entity); //neNode				
 			} 
-			if(((xPos > minX || xPos + width > minX) && (xPos < midX || xPos + width < midX)) &&
-					((yPos > midY || yPos + height > midY) && (yPos < maxY || yPos + height < maxY))) {
+			if((xPos > minX && xPos < midX) && (yPos > midY && yPos < maxY)) {
 				swNode.addEntity(entity); //swNode
 			} 
-			if(((xPos > midX || xPos + width > midX) && (xPos < maxX || xPos + width < maxX)) &&
-					((yPos > midY || yPos + height > midY) && (yPos < maxY || yPos + height < maxY))) {
+			if((xPos > midX && xPos < maxX) && (yPos > midY && yPos < maxY)) {
 				seNode.addEntity(entity); //seNode
 			}
 			
@@ -103,8 +122,8 @@ public class QuadNode<T extends Sprite> {
 	
 	public List<T> getEntities(Vector2D min, Vector2D max) {
 		List<T> list = new ArrayList<T>();
-		double aMinX = min.getX(), aMaxX = max.getX(); 
-		double aMinY = min.getY(), aMaxY = max.getY();
+		double aMinX = min.getX() - maxImageWidth, aMaxX = max.getX() + maxImageWidth; 
+		double aMinY = min.getY() - maxImageHeight, aMaxY = max.getY() + maxImageHeight;
 		double bMinX = this.min.getX(), bMaxX = this.max.getX(); 
 		double bMinY = this.min.getY(), bMaxY = this.max.getY();
 		if(entities != null &&
@@ -132,6 +151,10 @@ public class QuadNode<T extends Sprite> {
 			return entities.size();
 		else 
 			return nwNode.getSize() + neNode.getSize() + swNode.getSize() + seNode.getSize();
+	}
+	
+	public static void setMaxImageDimensions(int width, int height) {
+		maxImageWidth = width; maxImageHeight = height;
 	}
 	
 	public static void setMaxEntitiesPerNode(int newMaxEntities) {
