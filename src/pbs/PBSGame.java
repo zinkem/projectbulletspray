@@ -160,11 +160,13 @@ public class PBSGame extends ScrollingScreenGame {
 
 	//if level complete, get next level
 	if(levelData.levelComplete()){
+	    levelData.setMessage("Congratulations! Level Complete!");
 	    currentLevel = levelData.getNextLevel();
 	    waitForReset = true;
 	}
 	//if player dead, reset current level
 	if(player.alive() == false){
+	    levelData.setMessage("Better luck next time!");
 	    waitForReset = true;
 	}
 	//reset when we hit hte space bar

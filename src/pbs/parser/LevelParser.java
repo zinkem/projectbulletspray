@@ -128,8 +128,7 @@ public class LevelParser {
 	if(matches){
 	    if(source.hasNext()){
 		ctoken = nextToken();
-	    }
-	    else
+	    } else
 		System.out.println("EOF");
 	}	
 	return matches;
