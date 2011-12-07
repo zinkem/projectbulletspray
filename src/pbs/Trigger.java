@@ -3,39 +3,30 @@ package pbs;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import jig.engine.util.Vector2D;
+
 import pbs.Level.Layer;
 import pbs.Entity.*;
 import pbs.parser.Statements.*;
 
-public class Trigger extends Entity{
-        private Level lvl;
-	private ArrayList<Statement> stack;
-	
-	public Trigger(String imgrsc, Level l, ArrayList<Statement> add) {
-	    super(imgrsc);
-		lvl = l;
-		stack = add;
-	}
-	
-	public Trigger(String imgrsc, Level l){
-		super(imgrsc);
-		lvl = l;
-	}
-	
-	public void setStatements(ArrayList<Statement> s){
-		stack = s;
-	}
-	
-	public void setLevel(Level l){
-		lvl = l;
-	}
-	
-	public void addToLevel(){
-		Iterator<Statement> itr = stack.iterator();
-		while(itr.hasNext()){
-			lvl.addStatement(itr.next());
-		}
-	}
+public class Trigger implements CustomTrigger {
 
+    private ArrayList<Statement> stack;
+    
+    public Trigger(ArrayList<Statement> add) {
+	stack = add;
+    }
+    
+    public void setStatements(ArrayList<Statement> s){
+	stack = s;
+    }
+    
+    public void fire(Level l, Vector2D p){
+	Iterator<Statement> itr = stack.iterator();
+	while(itr.hasNext()){
+	    Statement s = itr.next();
+	    l.addStatement(itr.next());
+	}
+    }
 	
 }

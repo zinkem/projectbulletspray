@@ -217,7 +217,7 @@ public class LevelParser {
 	} else if(match("collision")) {
 	    return collision();
 	} else {
-	    return new TemplateDescription(symbol());
+	    return new TemplateDescription(symbol(), paramList());
 	}
     }
     
@@ -234,15 +234,15 @@ public class LevelParser {
     }
 
     protected ObjectDescription timed(){
-	return new timedTrigger(stmtList());
+	return new timedTrigger(paramList(), stmtList());
     }
 
     protected ObjectDescription onscreen(){
-	return new onscreenTrigger(stmtList());
+	return new onscreenTrigger(paramList(), stmtList());
     }
 
     protected ObjectDescription collision(){
-	return new collisionTrigger(stmtList());
+	return new collisionTrigger(paramList(), stmtList());
     }
 
     protected ArrayList<Statement> stmtList(){

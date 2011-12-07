@@ -18,24 +18,38 @@ public class Elements {
     public abstract static class ObjectDescription {
 	//returns an entity matching this description
 	//public abstract ALAYERTYPE getLayerType();
-	public abstract void mutate(Level l);	
+	protected ArrayList<Param> paramlist;
+	public void addParam(Param p){
+	    paramlist.add(p);
+	}
+       	public abstract void mutate(Level l);	
     }
 
     public static class TemplateDescription extends ObjectDescription {
+
 	String key;
-	public TemplateDescription(String s){ key = s;	}
+	public TemplateDescription(String s, ArrayList<Param> pl){ 
+	    key = s;
+	    paramlist = pl;
+	}
 	public void mutate(Level l){
-	    l.addStatement(new AddEntity(l.getTemplate(key)));
+	    ObjectDescription od = l.getTemplate(key);
+	    for(Param p : paramlist){
+		od.addParam(p);
+	    }
+	    AddEntity ae = new AddEntity(l.getTemplate(key));
+	    l.addStatement(ae);
 	}
     }
-
 
     public static class TriggerDescription extends ObjectDescription {
 	//triggers have a list of statements that get added to the
 	//event queue when they are triggered
 	ArrayList<Statement> stmtlist;
 
-	public TriggerDescription(ArrayList<Statement> sl){
+
+	public TriggerDescription(ArrayList<Param> pl, ArrayList<Statement> sl){
+	    paramlist = pl;
 	    stmtlist = sl;
 	}
 
@@ -53,7 +67,9 @@ public class Elements {
     }
 
     public static class timedTrigger extends TriggerDescription {
-	public timedTrigger(ArrayList<Statement> sl){ super(sl); }
+	public timedTrigger(ArrayList<Param> pl, ArrayList<Statement> sl){ 
+	    super(pl, sl); 
+	}
 
 	public void mutate(Level l){
 	    System.out.print("Timed ");
@@ -62,7 +78,9 @@ public class Elements {
     }
 
     public static class collisionTrigger extends TriggerDescription {
-	public collisionTrigger(ArrayList<Statement> sl){ super(sl); }
+	public collisionTrigger(ArrayList<Param> pl, ArrayList<Statement> sl){ 
+	    super(pl, sl);
+	}
 
 	public void mutate(Level l){
 	    System.out.print("Collision ");
@@ -71,7 +89,9 @@ public class Elements {
     }
 
     public static class onscreenTrigger extends TriggerDescription {
-	public onscreenTrigger(ArrayList<Statement> sl){ super(sl); }
+	public onscreenTrigger(ArrayList<Param> pl, ArrayList<Statement> sl){ 
+	    super(pl, sl);
+	}
 
 	public void mutate(Level l){
 	    System.out.print("Onscreen ");
@@ -82,7 +102,6 @@ public class Elements {
 
     public static class EntityDescription extends ObjectDescription {
 
-	ArrayList<Param> paramlist;
 	String imgsrc;
 	Layer targetLayer;
 

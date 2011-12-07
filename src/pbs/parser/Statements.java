@@ -44,7 +44,7 @@ public class Statements {
     //addEntity adds an object to the level on execute
     public static class AddEntity implements Statement {
 
-	ObjectDescription theObject;
+	protected ObjectDescription theObject;
 	
 	public AddEntity(ObjectDescription od){
 	    theObject = od;

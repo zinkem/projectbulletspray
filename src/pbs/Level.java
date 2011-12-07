@@ -16,6 +16,7 @@ public class Level {
 
     public static enum Layer { 
 	BACKGROUND, 
+	    TRIGGERS,
 	    STATIC, 
 	    FX,
 	    HOSTILE, 
@@ -80,7 +81,7 @@ public class Level {
 	score = 0;
 	gametime = 0;
 	
-	camera = new Vector2D(120,240);
+	camera = new Vector2D(320,240);
 	scrollspeed = new Vector2D(1, 0);
 	
 	events = new Stack<Statement>();
@@ -188,13 +189,22 @@ public class Level {
 	//call update on each layer
 	updateLayers(deltaMs, stwMin, stwMax);
 
-	//call "shoot" on all enemy entities in case they have weapons to fire
-	Iterator<Entity> enemylist = getLayer(Layer.ENEMY).iterator();
+	//behavior custom to each level goes here
+
+	//check to see which triggers need to be fired...
+	Iterator<Entity> enemylist = getLayer(Layer.TRIGGERS).iterator();
 	while(enemylist.hasNext()){
+	    Entity t = enemylist.next();
+	    t.fireTrigger(this, deltaMs);
+	}
+
+	//call "shoot" on all enemy entities in case they have weapons to fire
+	Iterator<Entity> elist = getLayer(Layer.ENEMY).iterator();
+	while(elist.hasNext()){
 	    Entity e = enemylist.next();
 	    e.shoot(this, deltaMs);
 	}
-	
+
 	//check for collisions
 	checkForCollisions();	
 	
