@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.io.*;
+import java.util.Scanner;
 
 import jig.engine.*;
 import jig.engine.hli.*;
@@ -39,6 +40,7 @@ public class PBSGame extends ScrollingScreenGame {
     Entity player;
 
     String currentLevel;
+    int highScore;
     
     protected boolean waitForReset;
 
@@ -71,7 +73,7 @@ public class PBSGame extends ScrollingScreenGame {
 //	hudFont = rf.getFontResource(new Font("Sans Serif", Font.PLAIN, 24), Color.white, null);
 	hudFont = rf.getFontResource(sFont, Color.white, null);
 
-	currentLevel = "resources/test.lvl";
+	currentLevel = "resources/skyhawk.lvl";
 	resetLevel();
 
 	GameClock.TimeManager tm = new GameClock.SleepIfNeededTimeManager(60.0);
@@ -93,7 +95,7 @@ public class PBSGame extends ScrollingScreenGame {
 		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
 		
 		x = SCREEN_WIDTH - 75;
-		message = "" + levelData.getScore();
+		message = "" + getHighScore();
 		hudFont.render(message, rc, AffineTransform.getTranslateInstance(x, y));
 		
 		message = "3";
@@ -248,6 +250,55 @@ public class PBSGame extends ScrollingScreenGame {
 	    e.setPosition(pos.translate(e.getVelocity().scale(deltaMs / 100.0)));
 	}
     }
+    
+	public int getHighScore() {
+		File file = null;
+		Scanner input = null;
+		PrintWriter writer = null;
+		int highScore = 10000;
+		
+		try {
+			file = new File("highscores.dat");
+			if(!file.exists()) {
+				file.createNewFile();
+				writer = new PrintWriter(new FileWriter(file));
+				writer.println(highScore);
+			} else { 
+				input = new Scanner(file);
+				highScore = input.nextInt();
+			}
+		} catch (IOException ex) {
+			System.err.println("ERROR: IO Error creating getHighScore\n" + ex);
+		} finally {
+			if(input != null) input.close();
+			if(writer != null) writer.close();
+		}
+		return highScore;
+	}
+	
+	public void setHighScore(int highScore) {
+		this.highScore = highScore;
+	}
+	
+	public void saveHighScore(int highScore) {
+		File file = null;
+		PrintWriter writer = null;
+		try {
+			file = new File("highscores.dat");
+			if(!file.exists()) {
+				file.createNewFile();
+				highScore = 10000;
+			} 
+			
+			this.highScore = highScore;
+			writer = new PrintWriter(new FileWriter(file));
+			writer.println(highScore);			
+		} catch (IOException ex) {
+			System.err.println("ERROR: Error saving high score\n" + ex);
+		} finally {
+			if(writer != null) writer.close();
+		}
+	}
 
     public static void main(String[] args) {
 

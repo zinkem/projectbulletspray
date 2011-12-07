@@ -1,0 +1,65 @@
+set scrollspeed 10
+set nextlevel resources/test.lvl
+set message Level Skyhawk
+
+create wave
+
+template wave timed 5000
+	position 800 240
+	set message blank
+	create roger
+		scoreval 50
+		position 100 -50
+		velocity 9 3
+		weapon spinning 5 5 25 300
+		
+	create roger
+		scoreval 100
+		position 100 50
+		velocity 9 -3
+		weapon spinning 5 5 25 300
+		
+	create fx small_burst
+		position 75 -75
+		spawnin 0
+		
+	create roger 
+		position 75 -75
+		velocity -3 4
+		spawnin 1
+		
+	create fx small_burst
+		position 75 75
+		spawnin 0
+		
+	create roger
+		position 75 75
+		velocity -3 4
+		spawnin 1
+		
+	create wave
+		position 1000 0
+	end
+end
+
+create bob
+	position 300 240
+	scoreval 25
+	velocity 25 10
+	
+create bob
+	position 340 300
+	velocity 10 25
+	scoreval 50
+	
+template roger enemy hex
+	velocity -2 3
+	weapon spinning 4 4 45 400
+end
+	
+template bob enemy defender
+	velocity -3 0
+	weapon outward 8 10 400
+end
+
+endspec
