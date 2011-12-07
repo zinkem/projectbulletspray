@@ -91,6 +91,8 @@ public class Level {
 	}
     }
 
+    Entity player;
+    
     //symbol table with templated entities/triggers
     HashMap<String, ObjectDescription> templates;
     public ObjectDescription getTemplate(String s){
@@ -148,6 +150,10 @@ public class Level {
 
     // setters
     public void add(Entity e, Layer l) {
+
+	if(l == Layer.PLAYER)
+	    player = e;
+	
 	getLayer(l).add(e);
     }
 
@@ -327,8 +333,10 @@ public class Level {
 	camera = camera.translate(scrollspeed.scale(deltaMs / 100.0));
 	lastaudio += deltaMs;
 	
-	// execute all statements on queue
-	execute();
+	// execute all statements on queue if the player is alivee
+	if(player != null)
+	    if(player.alive())
+		execute();
 	    
 	// call update on each layer
 	updateLayers(deltaMs, stwMin, stwMax);
