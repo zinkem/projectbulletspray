@@ -56,7 +56,10 @@ public class Level {
     public String getNextLevel(){ return nextLevel; };
     public void setNextLevel(String n){ nextLevel = n; }
 
-
+    //message to user
+    protected String message;
+    public String getMessage(){ return message; }
+    public void setMessage(String s){ message = s; }
 
     //list of layers
     private List<PBSQuadLayer<Entity>> allTheLayers;
@@ -91,6 +94,7 @@ public class Level {
     public Level(){
 	score = 0;
 	gametime = 0;
+	message = "";
 	
 	camera = new Vector2D(320,240);
 	scrollspeed = new Vector2D(1, 0);

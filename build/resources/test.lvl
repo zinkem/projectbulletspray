@@ -1,6 +1,7 @@
 set scrollspeed 10
 set scoreincrease 15
 set nextlevel resources/test.lvl
+set message welcome to hell!
 
 create badasses
 
@@ -8,11 +9,11 @@ template badasses timed 5000
 	position 600 240
 	create roger
 		position 100 -50
-		velocity 2 -2
+		velocity 14 -2
 		weapon spinning 5 5 10 200
 	create roger
 		position 101 50
-		velocity 2 2
+		velocity 14 2
 		weapon spinning 5 5 10 200
 	create badasses
 		position 1000 0

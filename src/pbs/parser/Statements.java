@@ -155,14 +155,24 @@ public class Statements {
 	}
     }
 
-    public static class SetNextLevel extends Setter {
-	protected String nextLevel;
-	public SetNextLevel(String n){
-	    nextLevel = n;
-	}
 
+    public static abstract class StringSetter extends Setter {
+	protected String str;
+	public StringSetter(String s){ str = s;}
+    }
+
+    public static class SetNextLevel extends StringSetter {
+	public SetNextLevel(String n){ super(n); }
 	public boolean execute(Level l){
-	    l.setNextLevel(nextLevel);
+	    l.setNextLevel(str);
+	    return true;
+	}
+    }
+
+    public static class SetMessage extends StringSetter {
+	public SetMessage(String n){ super(n); }
+	public boolean execute(Level l){
+	    l.setMessage(str);
 	    return true;
 	}
     }

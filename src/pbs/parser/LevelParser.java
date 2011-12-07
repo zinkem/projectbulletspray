@@ -115,6 +115,12 @@ public class LevelParser {
 	return n*1;
     }
 
+    private String getLine(){
+	String s = ctoken + " " + source.nextLine();
+	ctoken = nextToken();
+	return s;
+    }
+
     private boolean match(String s){
 	boolean matches = ctoken.equalsIgnoreCase(s);
 
@@ -127,6 +133,8 @@ public class LevelParser {
 	}	
 	return matches;
     }
+
+
     
     private String nextToken(){
 	String s = null;
@@ -138,6 +146,7 @@ public class LevelParser {
 	}
 	return s;
     }
+
 
     public Statement nextStatement(){
 
@@ -209,6 +218,8 @@ public class LevelParser {
 	    return new ScoreModifier(num());
 	} else if(match("scrollspeed")){
 	    return new ScrollSetter(new Vector2D(num(), 0));
+	} else if(match("message")){
+	    return new SetMessage(getLine());
 	}
 
 	err = "set " + ctoken + " not a valid set statement";
