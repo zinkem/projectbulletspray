@@ -46,6 +46,7 @@ public class Entity extends Body {
     
     protected int hp; //hit points left, hitting zero turns alive to false
     public int hp() { return hp; }
+    public void sethp(int h){ hp = h; }
     public boolean modhp(int m) { 
 	hp += m;
 	if(hp <= 0) kill(); //if hp hits or falls below 0, entity dies

@@ -15,6 +15,8 @@ import jig.engine.util.Vector2D;
  *
  */
 public class ScrollingBackgroundLayer extends PBSQuadLayer<Entity> implements ViewableLayer {
+    public static int SCALE = 4;
+
 	private int layerWidth;
 	private int layerHeight;
 	
@@ -68,8 +70,8 @@ public class ScrollingBackgroundLayer extends PBSQuadLayer<Entity> implements Vi
 			final int layerWidth, final int layerHeight, Vector2D velocity) {
 		super(new Vector2D(0,0), new Vector2D(layerWidth, layerHeight));
 		image = img;
-		imgHeight = img.getHeight();
-		imgWidth = img.getWidth();
+		imgHeight = img.getHeight()*SCALE;
+		imgWidth = img.getWidth()*SCALE;
 		this.layerHeight = layerHeight;
 		this.layerWidth = layerWidth;
 		this.velocity = velocity;
@@ -92,7 +94,7 @@ public class ScrollingBackgroundLayer extends PBSQuadLayer<Entity> implements Vi
 		for( int i = startx; i <= tree.max.getX(); i += imgWidth ){
 		    for( int j = starty; j <= tree.max.getY(); j += imgHeight ){
 			at.setToTranslation(i, j);
-			//at.scale(scalefactor, scalefactor) //need to adjust imgW, imgH to use this
+			at.scale(SCALE, SCALE); //need to adjust imgW, imgH to use this
 			image.render(rc, at);
 		    }
 		}

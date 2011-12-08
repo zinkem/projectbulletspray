@@ -320,6 +320,8 @@ public class LevelParser {
 	    return new SpawnTime(num());
 	} else if(match("scoreval")){
 	    return new ScoreValueParam(num());
+	} else if(match("hp")){
+	    return new HPParam(num());
 	}
 
 	return null;

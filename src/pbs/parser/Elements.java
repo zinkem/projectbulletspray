@@ -244,6 +244,15 @@ public class Elements {
 	}
     } 
 
+    public static class HPParam implements Param {
+	int hp;
+	public HPParam(int h){ hp = h; }
+	public boolean mutate(Entity e){
+	    e.sethp(hp);
+	    return true;
+	}
+    }
+
     public static class SpawnTime implements Param {
 	long time;
 	public SpawnTime(long t){ time = t; }

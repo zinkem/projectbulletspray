@@ -256,19 +256,19 @@ public class PBSGame extends ScrollingScreenGame {
 	    e.setVelocity(new Vector2D(0, 0));
 
 	    if (left && !right) {
-		e.setVelocity(new Vector2D(-30, 0));
+		e.setVelocity(new Vector2D(-15, 0));
 	    }
 
 	    if (right && !left) {
-		e.setVelocity(new Vector2D(30, 0));
+		e.setVelocity(new Vector2D(15, 0));
 	    }
 
 	    if (up && !down) {
-		e.setVelocity(new Vector2D(0, -30));
+		e.setVelocity(new Vector2D(0, -15));
 	    }
 
 	    if (down && !up) {
-		e.setVelocity(new Vector2D(0, 30));
+		e.setVelocity(new Vector2D(0, 15));
 	    }
 	    	    
 	    if (fire) {
