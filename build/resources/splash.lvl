@@ -20,7 +20,7 @@ template m1 timed 5000
 end
 
 template m2 timed 5000
-	 set message Press Space to Play!
+	 set message Press 'N' to Play!
 	 create m1
 	 end
 end
