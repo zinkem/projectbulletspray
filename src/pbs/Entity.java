@@ -16,7 +16,7 @@ public class Entity extends Body {
     }
 
     public interface CustomWeapon {
-	public void shoot(Level lvl, Entity type, long deltaMs);
+	public boolean shoot(Level lvl, Entity type, long deltaMs);
     }
 
     public interface CustomAnimation {
@@ -120,14 +120,15 @@ public class Entity extends Body {
 	setActivation(age > 0 && alive);
     }
 
-    public void shoot(Level lvl, long deltaMs){
+    public boolean shoot(Level lvl, long deltaMs){
 	if(active){
 	    if(cw != null){
-		cw.shoot(lvl, this, deltaMs);
+		return cw.shoot(lvl, this, deltaMs);
 	    }else{
 		//System.out.println("Custom Weapon class not found for:"+this.toString());
 	    }
 	}
+	return false;
     }
 
     public void fireTrigger(Level l, long deltaMs){

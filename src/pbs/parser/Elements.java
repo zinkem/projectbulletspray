@@ -8,11 +8,14 @@ import pbs.*;
 import pbs.Level.*;
 import pbs.Entity.*;
 import pbs.Animations.*;
-import pbs.parser.Statements.*;
+import pbs.Renders.*;
+import pbs.Weapons.*;
 import pbs.Trigger.*;
 import pbs.Triggers.*;
 import pbs.parser.BooleanElements.*;
 import pbs.parser.ExpressionElements.*;
+import pbs.parser.Statements.*;
+
 
 public class Elements {
 
@@ -250,8 +253,10 @@ public class Elements {
 	}
     }
 
+    //multi use parameter for static behaviors
     public static class UpdateParam implements Param {
 	CustomUpdate cu;
+	public UpdateParam(){ cu = null; }
 	public UpdateParam(CustomUpdate u){ cu = u; }
 	public boolean mutate(Entity e){
 	    e.setCustomUpdate(cu);
@@ -261,6 +266,7 @@ public class Elements {
 
     public static class RenderParam implements Param {
 	CustomRender cr;
+	public RenderParam(){ cr = null; }
 	public RenderParam(CustomRender r){ cr = r; }
 	public boolean mutate(Entity e){
 	    e.setCustomRender(cr);
@@ -270,6 +276,7 @@ public class Elements {
 
     public static class WeaponParam implements Param {
 	CustomWeapon cw;
+	public WeaponParam(){ cw = null; }
 	public WeaponParam(CustomWeapon w){ cw = w; }
 	public boolean mutate(Entity e){
 	    e.setCustomWeapon(cw);
@@ -279,13 +286,53 @@ public class Elements {
 
     public static class AnimationParam implements Param {
 	CustomAnimation ca;
+	public AnimationParam(){ ca = null; }
 	public AnimationParam(CustomAnimation a){ ca = a; }
 	public boolean mutate(Entity e){
 	    e.setCustomAnimation(ca);
 	    return true;
 	}
     }
+    //end static behaviors block
 
+    //these parameters need their own instance
+    //because their behavior relies on the object state
+    public static class SpinRenderParam extends RenderParam {
+	double dTheta;
+	public SpinRenderParam(double dw){ dTheta = dw; }
+	public boolean mutate(Entity e){
+	    e.setCustomRender(new Spin(0.0, dTheta));
+	    return true;
+	}
+    }
+    
 
+    public static class SurroundShotParam extends WeaponParam {
+	int numShots;
+	double shotVel;
+	long firePeriod;
+	public SurroundShotParam(int ns, double v, long dt){
+	    numShots = ns;
+	    shotVel = v;
+	    firePeriod = dt;
+	}
+
+	public boolean mutate(Entity e){
+	    e.setCustomWeapon(new SurroundShot(numShots, shotVel, firePeriod));
+	    return true;
+	}
+    }
+
+    public static class SpinningSurroundShotParam extends SurroundShotParam {
+	double dTheta;
+	public SpinningSurroundShotParam(int ns, double v, double dw, long dt){
+	    super(ns, v, dt);
+	    dTheta = dw;
+	}
+	public boolean mutate(Entity e){
+	    e.setCustomWeapon(new SpinningSurroundShot(numShots, shotVel, dTheta, firePeriod));
+	    return true;
+	}
+    }
 
 }
