@@ -72,9 +72,10 @@ public class Weapons {
 	}
 
     public static class FriendlySpread extends FriendlyWeapon {
+	boolean last;
 	public FriendlySpread() {
 	    super();
-	    repeatTimer = 100;
+	    repeatTimer = 48;
 	    lastShot = repeatTimer;
 	}
 	
@@ -87,7 +88,8 @@ public class Weapons {
 		    //this chunk could get moved to factory
 		    shot = new Entity("resources/pbs-spritesheet.png#green_laser");
 		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8 + (i * 4))));
-		    shot.setVelocity(new Vector2D(50, (i * 2) - 4));
+		    shot.setVelocity(new Vector2D(100, (i * 2) - 4)
+				     .translate(new Vector2D(e.getVelocity().getX(), 0)));
 		    shot.setCustomUpdate(new Strait());
 		    shot.setCustomRender(new Scale(2));
 		    shot.setTimeToLive(1000);
@@ -101,7 +103,8 @@ public class Weapons {
 		shot.setCustomAnimation(new AnimateOnce(64));
 		lvl.add(shot, Layer.FX);
 
-		return true;
+		last = !last;
+		return last;
 	    }
 
 	    return false;
@@ -147,6 +150,7 @@ public class Weapons {
 		    shot = new Entity("resources/pbs-spritesheet.png#red_bullet");
 		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(xv, yv)));
 		    shot.setVelocity(e.getVelocity().translate(new Vector2D(xv*speed, yv*speed)));
+		    shot.setCustomRender(new Scale(2));
 		    shot.setTimeToLive(DEFAULT_TTL);
 		    lvl.add(shot, targetLayer);
 		    
@@ -190,6 +194,7 @@ public class Weapons {
 		    shot = new Entity("resources/pbs-spritesheet.png#red_bullet");
 		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(xv, yv)));
 		    shot.setVelocity(new Vector2D(xv*speed, yv*speed).translate(e.getVelocity()));
+		    shot.setCustomRender(new Scale(2));
 		    shot.setTimeToLive(DEFAULT_TTL);
 		    lvl.add(shot, targetLayer);
 		    

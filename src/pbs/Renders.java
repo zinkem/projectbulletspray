@@ -80,6 +80,8 @@ public class Renders {
     }
     
 
+
+
     public static class Scale implements CustomRender {
 	protected double scalefactor;
 	public Scale(double sf){
@@ -95,6 +97,17 @@ public class Renders {
 	    e.getImage().render(rc, at);
 	}
 
+    }
+
+    public static class FlipHorizontalScale extends Scale {
+	public void render(RenderingContext rc, Entity e){
+	    Vector2D center = e.getCenterPosition();
+	    AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
+	    at.translate(e.getPosition().getX()-(scalefactor-1)*e.getWidth()/2,
+			 e.getPosition().getY()-(scalefactor-1)*e.getHeight()/2);
+	    at.scale(-scalefactor, scalefactor);
+	    e.getImage().render(rc, at);
+	}
     }
 
     public static class Throb extends Scale {

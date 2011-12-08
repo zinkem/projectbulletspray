@@ -255,11 +255,6 @@ public class PBSGame extends ScrollingScreenGame {
 	    Vector2D pos = e.getPosition();
 	    e.setVelocity(new Vector2D(0, 0));
 
-	    if (fire) {
-		if(e.shoot(levelData, deltaMs))
-		    fireSound.play();
-	    }
-
 	    if (left && !right) {
 		e.setVelocity(new Vector2D(-30, 0));
 	    }
@@ -274,6 +269,11 @@ public class PBSGame extends ScrollingScreenGame {
 
 	    if (down && !up) {
 		e.setVelocity(new Vector2D(0, 30));
+	    }
+	    	    
+	    if (fire) {
+		if(e.shoot(levelData, deltaMs))
+		    fireSound.play();
 	    }
 
 	    e.setPosition(pos.translate(e.getVelocity().scale(deltaMs / 100.0)));

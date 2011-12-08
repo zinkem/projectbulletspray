@@ -65,24 +65,24 @@
     <name>red_bullet</name>
     <top>28</top>
     <left>0</left>
-    <width>6</width>
-    <height>6</height>
+    <width>8</width>
+    <height>8</height>
   </frameset>
 
   <frameset>
     <name>purple_bullet</name>
     <top>28</top>
     <left>8</left>
-    <width>6</width>
-    <height>6</height>
+    <width>8</width>
+    <height>8</height>
   </frameset>
 
   <frameset>
     <name>blue_bullet</name>
     <top>28</top>
     <left>16</left>
-    <width>6</width>
-    <height>6</height>
+    <width>8</width>
+    <height>8</height>
   </frameset>
 
    <frameset>
