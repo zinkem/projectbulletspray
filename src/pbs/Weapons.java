@@ -179,7 +179,7 @@ public class Weapons {
 		    
 		    shot = new Entity("resources/pbs-spritesheet.png#red_bullet");
 		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(xv, yv)));
-		    shot.setVelocity(new Vector2D(xv*speed, yv*speed));
+		    shot.setVelocity(new Vector2D(xv*speed, yv*speed).translate(e.getVelocity()));
 		    shot.setTimeToLive(DEFAULT_TTL);
 		    lvl.add(shot, targetLayer);
 		    

@@ -355,7 +355,7 @@ public class LevelParser {
 	} else if(match("stare")){
 	    return new RenderParam(new FollowVelocity());
 	} else if(match("throb")){
-	    return new RenderParam(new Throb(num(), .1));
+	    return new RenderParam(new Throb(num(), .9));
 	} else if(match("scale")){
 	    return new RenderParam(new Scale(num()));
 	}

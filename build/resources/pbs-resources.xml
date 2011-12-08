@@ -10,4 +10,16 @@
     <framesrc>terrain.xml</framesrc>
   </spritesheet>
 
+  <audioclip>
+    <src>explosion3.wav</src>
+  </audioclip>
+
+  <audioclip>
+    <src>explosion2.wav</src>
+  </audioclip>
+
+  <audioclip>
+    <src>lasershot1.wav</src>
+  </audioclip>
+
 </resources>
