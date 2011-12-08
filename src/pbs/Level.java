@@ -115,8 +115,8 @@ public class Level {
 	laserfire = rf.getAudioClip("resources/lasershot1.wav");
 	laserhit = rf.getAudioClip("resources/laserhit1.wav");
 
-	audiopause = 50;
-	lastaudio = 50;
+	audiopause = 16;
+	lastaudio = 16;
 
 	score = 0;
 	gametime = 0;

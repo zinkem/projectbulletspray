@@ -8,11 +8,13 @@ import pbs.*;
 import pbs.Level.*;
 import pbs.Entity.*;
 import pbs.Animations.*;
-import pbs.parser.Statements.*;
+import pbs.Renders.*;
 import pbs.Trigger.*;
 import pbs.Triggers.*;
 import pbs.parser.BooleanElements.*;
 import pbs.parser.ExpressionElements.*;
+import pbs.parser.Statements.*;
+
 
 public class Elements {
 
