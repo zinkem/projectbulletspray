@@ -78,8 +78,6 @@ public class Renders {
 	}
 	
     }
-    
-
 
 
     public static class Scale implements CustomRender {
@@ -89,7 +87,6 @@ public class Renders {
 	}
 	
 	public void render(RenderingContext rc, Entity e){
-	    Vector2D center = e.getCenterPosition();
 	    AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
 	    at.translate(e.getPosition().getX()-(scalefactor-1)*e.getWidth()/2,
 			 e.getPosition().getY()-(scalefactor-1)*e.getHeight()/2);
@@ -99,13 +96,19 @@ public class Renders {
 
     }
 
-    public static class FlipHorizontalScale extends Scale {
+    public static class Stretch extends Scale {
+	double scalefactorY;
+	public Stretch(double xscale, double yscale){
+	    super(xscale);
+	    scalefactorY = yscale;
+	}
+
 	public void render(RenderingContext rc, Entity e){
-	    Vector2D center = e.getCenterPosition();
 	    AffineTransform at = AffineTransform.getTranslateInstance(0, 0);
+
 	    at.translate(e.getPosition().getX()-(scalefactor-1)*e.getWidth()/2,
-			 e.getPosition().getY()-(scalefactor-1)*e.getHeight()/2);
-	    at.scale(-scalefactor, scalefactor);
+			 e.getPosition().getY()-(scalefactorY-1)*e.getHeight()/2);
+	    at.scale(scalefactor, scalefactorY);
 	    e.getImage().render(rc, at);
 	}
     }

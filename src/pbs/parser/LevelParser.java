@@ -309,7 +309,7 @@ public class LevelParser {
 	if(match("position")){
 	    return new PositionParam(new Vector2D(num(), num()));
 	} else if(match("velocity")){
-	    return new VelocityParam(new Vector2D(num(), num()));
+	    return new VelocityParam(new Vector2D(num()/1.0, num()/10.0));
 	} else if(match("update")){
 	    return getUpdate();
 	} else if(match("render")){
@@ -358,6 +358,14 @@ public class LevelParser {
 	    return new RenderParam(new Throb(num(), .9));
 	} else if(match("scale")){
 	    return new RenderParam(new Scale(num()));
+	} else if(match("stretch")){
+	    return new RenderParam(new Stretch(num(), num()));
+	} else if(match("flip")){
+	    if(match("horizontal")){
+		return new RenderParam(new Stretch(-1, 0));
+	    } else if(match("vertical")){
+		return new RenderParam(new Stretch(1, -1));
+	    }
 	}
 
 	err = "Error parsing render method";

@@ -83,6 +83,7 @@ public class Weapons {
 	    Entity shot;
 
 	    if(timerReady(deltaMs)){
+		
 		for (int i = 0; i < 4; i++) {
 		    
 		    //this chunk could get moved to factory
@@ -117,6 +118,57 @@ public class Weapons {
 	    super(Layer.HOSTILE);
 	}
     }
+
+    public static class HostileSpread extends HostileWeapon {
+	boolean last;
+	int burst;
+	int shotsfired;
+	public HostileSpread(int b) {
+	    super();
+	    repeatTimer = 150;
+	    lastShot = repeatTimer;
+	    burst = b;
+	    shotsfired = 0;
+	}
+	
+	public boolean shoot(Level lvl, Entity e, long deltaMs) {
+	    Entity shot;
+
+	    if(lastShot >= repeatTimer){
+		shotsfired++;
+		if(shotsfired >= burst){
+		    shotsfired = 0;
+		    lastShot = 0;
+		}
+		
+		for (int i = 0; i < 4; i++) {
+		    
+		    //this chunk could get moved to factory
+		    shot = new Entity("resources/pbs-spritesheet.png#green_laser");
+		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8 + (i * 4))));
+		    shot.setVelocity(new Vector2D(-50, 25*((i * 2) - 4))
+				     .translate(new Vector2D(e.getVelocity().getX(), 0)));
+		    shot.setCustomUpdate(new Strait());
+		    shot.setCustomRender(new Scale(2));
+		    shot.setTimeToLive(1000);
+		    lvl.add(shot, targetLayer);
+		}
+
+		//same here... ideally: lvl.add(SOMEFACTORYMETHOD(), Layer.FX);
+		shot = new Entity("resources/pbs-spritesheet.png#laser_trail");
+		shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8)));
+		shot.setVelocity(new Vector2D(-Math.random()*20, -Math.random()*40+20));
+		shot.setCustomAnimation(new AnimateOnce(64));
+		lvl.add(shot, Layer.FX);
+
+		last = !last;
+		return last;
+	    }
+
+	    return false;
+	}
+    }
+
 
     public static class SurroundShot extends HostileWeapon {
 	int numShots;
