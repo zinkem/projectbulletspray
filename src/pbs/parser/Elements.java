@@ -287,5 +287,18 @@ public class Elements {
     }
 
 
+    //these parameters need their own instance
+    //because their behavior relies on the object state
+    public static class SpinRenderParam implements Param {
+	double dTheta;
+	public SpinRenderParam(int dw){ dTheta = dw; }
+	public boolean mutate(Entity e){
+	    e.setCustomRender(new Spin(0.0, dTheta));
+	    return true;
+	}
+    }
+    
+
+
 
 }
