@@ -1,0 +1,18 @@
+set scrollspeed 0
+set message Nice bloom!
+set nextlevel resources/skyhawk.lvl
+
+
+create enemy shuttle
+       position 560 240
+       velocity 0 0
+       weapon spinning 8 4 13 250
+       render stretch -2 2
+       hp 1000
+
+create timed 20000
+       set levelcomplete
+end
+
+
+endspec
