@@ -1,0 +1,135 @@
+set scrollspeed 10
+set scoreincrease 15
+set nextlevel resources/skyhawk.lvl
+set message So long and thanks for all the fish
+
+create timed 50000
+	set levelcomplete
+end
+
+create pushy
+create pushx
+create ships
+
+template pushy timed 5000
+	position 800 -100
+	create enemy hex
+		position 0 100
+		velocity -15 0
+		update yoscil
+		render spin 4
+		scoreval 400
+	create enemy hex
+		position 100 200
+		velocity -15 0
+		update yoscil
+		render spin 8
+		scoreval 400
+	create enemy hex
+		position 200 300
+		velocity -15 0
+		update yoscil
+		render spin 12
+		weapon spinning 2 1 1 350
+		scoreval 400
+	create enemy hex
+		position 300 400
+		velocity -15 0
+		update yoscil
+		render spin 16
+		scoreval 400
+	create enemy hex
+		position 400 500
+		velocity -15 0
+		update yoscil
+		render spin 20
+		scoreval 400
+	create pushy
+		position 900 0
+	end
+end
+
+
+template pushx timed 5000
+	position 700 -100
+	create enemy hex
+		position 400 100
+		velocity -25 0
+		update xoscil
+		render spin 4
+		scoreval 400
+	create enemy hex
+		position 300 200
+		velocity -25 0
+		update xoscil
+		render spin 8
+	        weapon spinning 3 5 1 500
+		scoreval 400
+	create enemy hex
+		position 200 300
+		velocity -25 0
+		update xoscil
+		render spin 12
+		scoreval 400
+	create enemy hex
+		position 100 400
+		velocity -25 0
+		update xoscil
+		weapon spinning 3 5 1 500
+		render spin 16
+		scoreval 400
+	create enemy hex
+		position 0 500
+		velocity -25 0
+		update xoscil
+		render spin 20
+		scoreval 400
+	create pushx
+		position 700 0
+	end
+end
+
+template ships timed 10000
+	position 0 0
+	set message blank
+	create enemy shuttle
+		position -100 100
+		velocity 15 1
+		weapon outward 3 5 500
+		scoreval 800
+	create enemy shuttle
+		position -100 520
+		velocity 15 -1
+		weapon outward 3 5 500
+		scoreval 800
+	create ships
+		position 0 0 
+	end
+end
+
+template dive timed 7000
+      position 0 0
+      create enemy minihex
+	      position 640 -50
+	      velocity -10 -10
+	      scoreval 100
+
+      create dive
+	      position 200 0
+      end
+end
+
+
+create enemy hex
+	position 640 300
+	velocity 3 0 
+	spawnin 0
+	weapon outward 3 5 500
+
+create enemy hex
+	position 640 100
+	velocity 3 0 
+	spawnin 0
+	weapon spinning 3 10 1 100
+
+endspec

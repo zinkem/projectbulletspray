@@ -1,0 +1,28 @@
+set scrollspeed 0
+set nextlevel resources/skyhawk.lvl
+set message Press space to play!
+set levelcomplete
+
+
+
+
+create m1
+
+create static title
+       position 210 100
+       render throb 1
+
+
+template m1 timed 5000
+	 set message Project Bullet Spray
+	 create m2
+	 end
+end
+
+template m2 timed 5000
+	 set message Press Space to Play!
+	 create m1
+	 end
+end
+
+endspec
