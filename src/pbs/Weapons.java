@@ -216,10 +216,10 @@ public class Weapons {
 	double angleoffset;
 	double dtheta; //how much the angle moves after eveery shot
 
-	public SpinningSurroundShot(int ns, double s, double degrees, long rt){ 
+	public SpinningSurroundShot(int ns, double s, double rad, long rt){ 
 	    super(ns, s, rt);
 	    angleoffset = 0;
-	    dtheta = degrees*Math.PI/180;
+	    dtheta = rad;
 	}
 	
 	public boolean shoot(Level lvl, Entity e, long deltaMs){
