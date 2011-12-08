@@ -349,7 +349,7 @@ public class LevelParser {
 	//Spin
 
 	if(match("spin")){
-	    return new SpinRenderParam(num()/180.0);
+	    return new SpinRenderParam(num()/(2*Math.PI));
 	} else if(match("veldir")){
 	    return new RenderParam(new FollowVelocity());
 	} else if(match("stare")){
@@ -368,7 +368,7 @@ public class LevelParser {
 	if(match("outward")){
 	    return new SurroundShotParam(num(), num(), num());
 	} else if(match("spinning")){
-	    return new SpinningSurroundShotParam(num(), num(), num()/180, num());
+	    return new SpinningSurroundShotParam(num(), num(), num()/(2*Math.PI), num());
 	}
 
 	err = "No weapon parameter found";

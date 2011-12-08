@@ -47,11 +47,11 @@ template badasses timed 5000
 	create roger
 		position 100 -50
 		velocity 14 -2
-		weapon spinning 3 15 10 400
+		weapon spinning 3 15 45 400
 	create roger
 		position 100 50
 		velocity 14 2
-		weapon spinning 3 15 10 400
+		weapon spinning 3 15 45 400
 	create badasses
 		position 500 0
 	end
