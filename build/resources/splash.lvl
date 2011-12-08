@@ -1,5 +1,5 @@
 set scrollspeed 0
-set nextlevel resources/skyhawk.lvl
+set nextlevel resources/maxx.lvl
 set message Press 'N' to play!
 set levelcomplete
 

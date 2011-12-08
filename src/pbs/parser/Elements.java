@@ -305,7 +305,15 @@ public class Elements {
 	    return true;
 	}
     }
-    
+
+    public static class HostileSpreadParam extends WeaponParam {
+	int burst;
+	public HostileSpreadParam(int n){ burst = n; }
+	public boolean mutate(Entity e){
+	    e.setCustomWeapon(new HostileSpread(burst));
+	    return true;
+	}
+    }
 
     public static class SurroundShotParam extends WeaponParam {
 	int numShots;

@@ -10,7 +10,7 @@ import pbs.Animations.*;
 
 public class Weapons {
 
-    public static long DEFAULT_TTL = 2000;
+    public static long DEFAULT_TTL = 20000;
 
 	public static class TriShot implements CustomWeapon {
 
@@ -125,7 +125,7 @@ public class Weapons {
 	int shotsfired;
 	public HostileSpread(int b) {
 	    super();
-	    repeatTimer = 150;
+	    repeatTimer = 1000;
 	    lastShot = repeatTimer;
 	    burst = b;
 	    shotsfired = 0;
@@ -133,7 +133,9 @@ public class Weapons {
 	
 	public boolean shoot(Level lvl, Entity e, long deltaMs) {
 	    Entity shot;
+	    int sf = 10; //spreadfactor
 
+	    lastShot += deltaMs;
 	    if(lastShot >= repeatTimer){
 		shotsfired++;
 		if(shotsfired >= burst){
@@ -141,25 +143,18 @@ public class Weapons {
 		    lastShot = 0;
 		}
 		
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 		    
 		    //this chunk could get moved to factory
-		    shot = new Entity("resources/pbs-spritesheet.png#green_laser");
+		    shot = new Entity("resources/pbs-spritesheet.png#red_laser");
 		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8 + (i * 4))));
-		    shot.setVelocity(new Vector2D(-50, 25*((i * 2) - 4))
+		    shot.setVelocity(new Vector2D(-50, (i/2.0 - 1)*sf)
 				     .translate(new Vector2D(e.getVelocity().getX(), 0)));
 		    shot.setCustomUpdate(new Strait());
-		    shot.setCustomRender(new Scale(2));
+		    shot.setCustomRender(new Stretch(-2, 2));
 		    shot.setTimeToLive(1000);
 		    lvl.add(shot, targetLayer);
 		}
-
-		//same here... ideally: lvl.add(SOMEFACTORYMETHOD(), Layer.FX);
-		shot = new Entity("resources/pbs-spritesheet.png#laser_trail");
-		shot.setPosition(e.getCenterPosition().translate(new Vector2D(0, -8)));
-		shot.setVelocity(new Vector2D(-Math.random()*20, -Math.random()*40+20));
-		shot.setCustomAnimation(new AnimateOnce(64));
-		lvl.add(shot, Layer.FX);
 
 		last = !last;
 		return last;
@@ -202,7 +197,7 @@ public class Weapons {
 		    shot = new Entity("resources/pbs-spritesheet.png#red_bullet");
 		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(xv, yv)));
 		    shot.setVelocity(e.getVelocity().translate(new Vector2D(xv*speed, yv*speed)));
-		    shot.setCustomRender(new Scale(2));
+		    shot.setCustomRender(new Scale(1.25));
 		    shot.setTimeToLive(DEFAULT_TTL);
 		    lvl.add(shot, targetLayer);
 		    
@@ -246,7 +241,7 @@ public class Weapons {
 		    shot = new Entity("resources/pbs-spritesheet.png#red_bullet");
 		    shot.setPosition(e.getCenterPosition().translate(new Vector2D(xv, yv)));
 		    shot.setVelocity(new Vector2D(xv*speed, yv*speed).translate(e.getVelocity()));
-		    shot.setCustomRender(new Scale(2));
+		    shot.setCustomRender(new Scale(1.25));
 		    shot.setTimeToLive(DEFAULT_TTL);
 		    lvl.add(shot, targetLayer);
 		    

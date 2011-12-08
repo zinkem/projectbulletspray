@@ -362,7 +362,7 @@ public class LevelParser {
 	    return new RenderParam(new Stretch(num(), num()));
 	} else if(match("flip")){
 	    if(match("horizontal")){
-		return new RenderParam(new Stretch(-1, 0));
+		return new RenderParam(new Stretch(-1, 1));
 	    } else if(match("vertical")){
 		return new RenderParam(new Stretch(1, -1));
 	    }
@@ -377,6 +377,8 @@ public class LevelParser {
 	    return new SurroundShotParam(num(), num(), num());
 	} else if(match("spinning")){
 	    return new SpinningSurroundShotParam(num(), num(), num()/(2*Math.PI), num());
+	} else if (match("spread")){
+	    return new HostileSpreadParam(num());
 	}
 
 	err = "No weapon parameter found";
