@@ -21,6 +21,7 @@ import pbs.Renders.*;
 
 public class PBSGame extends ScrollingScreenGame {
     
+
     public static int SCREEN_WIDTH = 640;
     public static int SCREEN_HEIGHT = 480;
     public static int X_MID = SCREEN_WIDTH / 2;
@@ -45,8 +46,6 @@ public class PBSGame extends ScrollingScreenGame {
     String currentLevel;
     int highScore;
     int lives;
-
-
     
     protected boolean waitForReset;
 
@@ -77,7 +76,6 @@ public class PBSGame extends ScrollingScreenGame {
 		System.out.println("Canonical Path:" + new java.io.File(".").getAbsolutePath());
 		e.printStackTrace();
 	}
-//	hudFont = rf.getFontResource(new Font("Sans Serif", Font.PLAIN, 24), Color.white, null);
 	hudFont = rf.getFontResource(sFont, Color.white, null);
 
 	currentLevel = START_LEVEL;
@@ -141,7 +139,6 @@ public class PBSGame extends ScrollingScreenGame {
 
     public void update(long deltaMs) {
     
-	//centerOnPoint(levelData.getCam()); // center on level camera
 	centerOnPoint(levelData.getCam());
 	if(levelData.getScore() > highScore) {
 		setHighScore(levelData.getScore());
@@ -159,8 +156,6 @@ public class PBSGame extends ScrollingScreenGame {
 
 	//if level complete, get next level
 	if(levelData.levelComplete() || keyboard.isPressed(KeyEvent.VK_C)){
-//		s = levelData.score;
-		//levelData.setMessage("Congratulations! Level Complete!");
 	    currentLevel = levelData.getNextLevel();
 	    waitForReset = true;
 	}
@@ -177,7 +172,7 @@ public class PBSGame extends ScrollingScreenGame {
 		    lives = START_LIVES;
 		    levelData.score = 0;
 		} else {
-			levelData.setMessage("Better luck next time!");
+			levelData.setMessage("Better luck next time! Press N to continue!");
 		}	    
 	}
 

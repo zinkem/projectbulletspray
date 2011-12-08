@@ -20,7 +20,7 @@ create timed 50000
        position 5600 120
        create enemy hex
        	      position 0 0
-	      weapon outward 5 15 400
+	      weapon spinning 5 15 8 400
 	      scoreval 500
        create enemy hex
        	      position 0 120
@@ -28,7 +28,7 @@ create timed 50000
 	      scoreval 500
        create enemy hex 
        	      position 0 240
-	      weapon outward 5 15 200
+	      weapon spinning 5 15 3 400
 	      scoreval 500
 end
 
@@ -36,22 +36,22 @@ create timed 25000
        position 3000 50
        create enemy hex
        	      position 0 100
-	      weapon outward 3 15 400
+	      weapon spinning 3 15 5 400
        create enemy hex
        	      position 0 300
-	      weapon outward 3 15 400
+	      weapon spinning 3 15 1 400
 end
 
 template badasses timed 5000
-	position 600 240
+	position 950 240
 	create roger
 		position 100 -50
-		velocity 14 -2
-		weapon spinning 5 6 45 400
+		velocity 9 -2
+		weapon spinning 8 10 13 400
 	create roger
 		position 100 50
-		velocity 14 2
-		weapon spinning 5 6 36 400
+		velocity 9 2
+		weapon spinning 8 10 13 400
 	create badasses
 		position 500 0
 	end
@@ -85,25 +85,10 @@ create enemy hex
 	render spin 2
 	scoreval 750	
 
-create recurse
-       position 300 240
-
-
 template roger enemy shuttle
 	position 250 100
 	velocity -3 0
 	render flip horizontal
-end
-
-template recurse timed 3000
-	position 640 0
-	create roger
-		position 0 0
-		velocity 15 0
-	create recurse
-	       render spin 15
-	       position 300 0
-	end
 end
 
 endspec
