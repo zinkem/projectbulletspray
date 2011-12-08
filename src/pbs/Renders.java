@@ -26,9 +26,9 @@ public class Renders {
 	}
     }
     
-    public static class PointDirection implements CustomRender{
+    public static class FaceEntity implements CustomRender{
 	private Entity tar;
-	public PointDirection(Entity t){ this.tar = t; }
+	public FaceEntity(Entity t){ this.tar = t; }
 	
 	@Override
 	    public void render(RenderingContext rc, Entity e) {

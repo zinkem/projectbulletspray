@@ -349,7 +349,7 @@ public class LevelParser {
 	//Spin
 
 	if(match("spin")){
-	    return new RenderParam(new Spin(0.0, num()/180.0));
+	    return new SpinRenderParam(num()/180.0);
 	} else if(match("veldir")){
 	    return new RenderParam(new FollowVelocity());
 	} else if(match("stare")){

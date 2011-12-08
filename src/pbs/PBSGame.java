@@ -233,8 +233,11 @@ public class PBSGame extends ScrollingScreenGame {
 
     protected class KeyboardControls implements CustomUpdate {
 	Keyboard key;
+	AudioClip fireSound;
 	public KeyboardControls(Keyboard k) {
 	    key = k;
+	    ResourceFactory rf = ResourceFactory.getFactory();
+	    fireSound =  rf.getAudioClip("resources/lasershot1.wav");
 	}
 
 	public void update(Entity e, long deltaMs) {
@@ -252,7 +255,8 @@ public class PBSGame extends ScrollingScreenGame {
 	    e.setVelocity(new Vector2D(0, 0));
 
 	    if (fire) {
-		e.shoot(levelData, deltaMs);
+		if(e.shoot(levelData, deltaMs))
+		    fireSound.play();
 	    }
 
 	    if (left && !right) {

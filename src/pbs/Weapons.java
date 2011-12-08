@@ -24,7 +24,7 @@ public class Weapons {
 		}
 
 		@Override
-		public void shoot(Level ld, Entity e, long deltaMs) {
+		public boolean shoot(Level ld, Entity e, long deltaMs) {
 			Entity m;
 			Vector2D pos = e.getCenterPosition();
 
@@ -32,6 +32,8 @@ public class Weapons {
 				m = shoot_bullet(pos, new Vector2D(20, j), 0.0);
 				ld.add(m, Layer.ENEMY);
 			}
+
+			return true;
 		}
 	}
 
@@ -76,7 +78,7 @@ public class Weapons {
 	    lastShot = repeatTimer;
 	}
 	
-	public void shoot(Level lvl, Entity e, long deltaMs) {
+	public boolean shoot(Level lvl, Entity e, long deltaMs) {
 	    Entity shot;
 
 	    if(timerReady(deltaMs)){
@@ -98,7 +100,11 @@ public class Weapons {
 		shot.setVelocity(new Vector2D(-Math.random()*20, -Math.random()*40+20));
 		shot.setCustomAnimation(new AnimateOnce(64));
 		lvl.add(shot, Layer.FX);
+
+		return true;
 	    }
+
+	    return false;
 	}
     }
     
@@ -125,7 +131,7 @@ public class Weapons {
 	    
 	}
 
-	public void shoot(Level lvl, Entity e, long deltaMs){
+	public boolean shoot(Level lvl, Entity e, long deltaMs){
 	    Entity shot;
 	    double xv;
 	    double yv;
@@ -145,7 +151,11 @@ public class Weapons {
 		    lvl.add(shot, targetLayer);
 		    
 		}
+
+		return true;
 	    }
+
+	    return false;
 
 	}
     }
@@ -161,7 +171,7 @@ public class Weapons {
 	    dtheta = degrees*Math.PI/180;
 	}
 	
-	public void shoot(Level lvl, Entity e, long deltaMs){
+	public boolean shoot(Level lvl, Entity e, long deltaMs){
 	    Entity shot;
 	    double xv;
 	    double yv;
@@ -184,7 +194,10 @@ public class Weapons {
 		    lvl.add(shot, targetLayer);
 		    
 		}
+		return true;
 	    }
+
+	    return false;
 
 	}
     }
