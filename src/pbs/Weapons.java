@@ -227,10 +227,11 @@ public class Weapons {
 	    double xv;
 	    double yv;
 	    double ang = angleoffset; 
-	    angleoffset += dtheta;
+
 
 	    lastShot += deltaMs;
 	    if(lastShot >= repeatTimer){
+		angleoffset += dtheta;
 		lastShot -= repeatTimer;
 		for(int i = 0; i < numShots; i++){
 	    

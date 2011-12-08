@@ -349,7 +349,7 @@ public class LevelParser {
 	//Spin
 
 	if(match("spin")){
-	    return new SpinRenderParam(num()/(2*Math.PI));
+	    return new SpinRenderParam((num()*Math.PI/180.0));
 	} else if(match("veldir")){
 	    return new RenderParam(new FollowVelocity());
 	} else if(match("stare")){
@@ -376,7 +376,7 @@ public class LevelParser {
 	if(match("outward")){
 	    return new SurroundShotParam(num(), num(), num());
 	} else if(match("spinning")){
-	    return new SpinningSurroundShotParam(num(), num(), num()/(2*Math.PI), num());
+	    return new SpinningSurroundShotParam(num(), num(), num()*(Math.PI/180.0), num());
 	} else if (match("spread")){
 	    return new HostileSpreadParam(num());
 	}
