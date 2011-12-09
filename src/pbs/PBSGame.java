@@ -54,7 +54,6 @@ public class PBSGame extends ScrollingScreenGame {
     
     public PBSGame() {
 	super(SCREEN_WIDTH, SCREEN_HEIGHT, false);
-//	s = 0;
 	waitForReset = false;
 
 	ef = new EntityFactory();
