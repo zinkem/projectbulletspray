@@ -5,7 +5,7 @@ set nextlevel resources/skyhawk.lvl
 create enemy shuttle
        position 560 240
        velocity 0 0
-       weapon spinning 16 5 1 16
+       weapon spinning 21 5 10 16
        render flip horizontal
        hp 1000
 
