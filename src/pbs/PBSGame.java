@@ -32,9 +32,10 @@ public class PBSGame extends ScrollingScreenGame {
     public static String SPRITE_SHEET = "resources/pbs-spritesheet.png";
     private static final String START_LEVEL = "resources/splash.lvl";
     private static final int START_LIVES = 3;
-    int s;
     public static int PLAYER_MAX_HP = 10;
-    
+    public static int PLAYER_SPEED = 20;
+
+    int s;    
     ResourceFactory rf;
     
     Level levelData;
@@ -250,19 +251,19 @@ public class PBSGame extends ScrollingScreenGame {
 	    e.setVelocity(new Vector2D(0, 0));
 
 	    if (left && !right) {
-		e.setVelocity(new Vector2D(-15, 0));
+		e.setVelocity(new Vector2D(-PLAYER_SPEED, 0));
 	    }
 
 	    if (right && !left) {
-		e.setVelocity(new Vector2D(15, 0));
+		e.setVelocity(new Vector2D(PLAYER_SPEED, 0));
 	    }
 
 	    if (up && !down) {
-		e.setVelocity(new Vector2D(0, -15));
+		e.setVelocity(new Vector2D(0, -PLAYER_SPEED));
 	    }
 
 	    if (down && !up) {
-		e.setVelocity(new Vector2D(0, 15));
+		e.setVelocity(new Vector2D(0, PLAYER_SPEED));
 	    }
 	    	    
 	    if (fire) {
