@@ -148,10 +148,11 @@ public class PBSGame extends ScrollingScreenGame {
 	Vector2D botright = screenToWorld(new Vector2D(SCREEN_WIDTH, SCREEN_HEIGHT));
 
 	pushPlayerToBounds(topleft, botright);
-	
+
 	player.setPosition(player.getPosition().translate(levelData.getScrollSpeed()
-							  .scale(deltaMs/100.0)));
+							  .scale(FRAME_SIZE/100.0)));	
 	levelData.update(FRAME_SIZE, topleft, botright);
+
 
 
 	//if level complete, get next level
