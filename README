@@ -1,2 +1,9 @@
 jig.jar needs to be in lib/
 A directory called "build" may need to be created to use ant
+
+JIGE supplied by Scott Wallace, Washington State University
+
+Project Authors/Designers
+Matthew Zinke
+Josh Roppo
+Skylar Heibart
